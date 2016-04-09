@@ -1,6 +1,8 @@
 #
 # Base PHP Dockerfile
 #
+# https://github.com/phalcon/dockerfiles
+#
 
 # Pull base image
 FROM klay/ubuntu
@@ -63,6 +65,11 @@ RUN phpenv install 5.4.45 && rm /tmp/* -rf && \
     phpenv install 5.6.20 && rm /tmp/* -rf && \
     phpenv install 7.0.5 && rm /tmp/* -rf
 
+# Cleanup package manager
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Set workdir
 WORKDIR /app
 
 # Define mountable directories
