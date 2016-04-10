@@ -1,5 +1,7 @@
 #
-# Base PHP Dockerfile
+# PHP 5.4 Dockerfile
+#
+# https://github.com/phalcon/dockerfiles
 #
 
 # Pull base image
