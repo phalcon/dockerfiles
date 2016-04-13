@@ -114,11 +114,6 @@ RUN printf "\n" | pecl install -a libsodium && \
     echo 'extension=libsodium.so' | tee /etc/php/7.0/mods-available/libsodium.ini && \
     ln -s /etc/php/7.0/mods-available/libsodium.ini /etc/php/7.0/cli/conf.d/20-libsodium.ini
 
-# Install ext-igbinary
-RUN printf "\n" | pecl install -a igbinary && \
-    echo 'extension=igbinary.so' | tee /etc/php/7.0/mods-available/igbinary.ini && \
-    ln -sf /etc/php/7.0/mods-available/igbinary.ini /etc/php/7.0/cli/conf.d/20-igbinary.ini
-
 # Install ext-mongodb
 RUN printf "\n" | pecl install -a mongodb && \
     echo 'extension=mongodb.so' | tee /etc/php/7.0/mods-available/mongodb.ini && \
