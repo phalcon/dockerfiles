@@ -69,17 +69,11 @@ RUN apt-get install -y --force-yes \
     libxslt1-dev \
     libyaml-dev
 
-RUN pecl channel-update pecl.php.net && \
-    export CFLAGS="-O1 -g3 -fno-strict-aliasing -std=gnu90" && \
-    PHP_EXT_DIR=`php-config --extension-dir`
+RUN pecl channel-update pecl.php.net
 
 # Install ext-aerospike
 ADD installers/aerospike.sh aerospike.sh
 RUN bash aerospike.sh && rm aerospike.sh
-
-# Install ext-ssh2
-ADD installers/ssh2.sh ssh2.sh
-RUN bash ssh2.sh && rm ssh2.sh
 
 # Install ext-pinba
 ADD installers/pinba.sh pinba.sh
@@ -88,6 +82,11 @@ RUN bash pinba.sh && rm pinba.sh
 # Install ext-handlersocketi
 ADD installers/handlersocketi.sh handlersocketi.sh
 RUN bash handlersocketi.sh && rm handlersocketi.sh
+
+# Install ext-ssh2
+RUN printf "\n" | pecl install -a ssh2-0.12 && \
+    echo 'extension=ssh2.so' | tee /etc/php5/mods-available/ssh2.ini && \
+    ln -s /etc/php5/mods-available/ssh2.ini /etc/php5/conf.d/20-ssh2.ini
 
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
