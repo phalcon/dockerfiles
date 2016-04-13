@@ -92,17 +92,17 @@ RUN bash handlersocketi.sh && rm handlersocketi.sh
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
     echo 'extension=yaml.so' | tee /etc/php5/mods-available/yaml.ini && \
-    ln -s /etc/php5/mods-available/yaml.ini /etc/php5/conf.d/
+    ln -s /etc/php5/mods-available/yaml.ini /etc/php5/cli/conf.d/30-yaml.ini
 
 # Install ext-libsodium
 RUN printf "\n" | pecl install -a libsodium && \
     echo 'extension=libsodium.so' | tee /etc/php5/mods-available/libsodium.ini && \
-    ln -s /etc/php5/mods-available/libsodium.ini /etc/php5/conf.d/
+    ln -s /etc/php5/mods-available/libsodium.ini /etc/php5/cli/conf.d/30-libsodium.ini
 
 # Install ext-igbinary
 RUN printf "\n" | pecl install -a igbinary && \
     echo 'extension=igbinary.so' | tee /etc/php5/mods-available/igbinary.ini && \
-    ln -s /etc/php5/mods-available/igbinary.ini /etc/php5/conf.d/
+    ln -s /etc/php5/mods-available/igbinary.ini /etc/php5/cli/conf.d/30-igbinary.ini
 
 # Fix PHP warnongs
 RUN find /etc/php5/mods-available/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
