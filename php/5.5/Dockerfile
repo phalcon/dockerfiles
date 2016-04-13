@@ -129,7 +129,7 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
     sed -i 's|display_startup_errors =.*|display_startup_errors = On|' /etc/php5/cli/php.ini && \
     sed -i -re 's|^(;?)(session.save_path) =.*|\2 = "/tmp"|g' /etc/php5/cli/php.ini && \
     sed -i -re 's|^(;?)(phar.readonly) =.*|\2 = off|g' /etc/php5/cli/php.ini && \
-    echo "apc.enable_cli = 1" | tee -a /etc/php5/mods-available/apc.ini
+    echo "apc.enable_cli = 1" | tee -a /etc/php5/mods-available/apcu.ini
 
 # Cleanup package manager
 RUN apt-get autoremove && \
