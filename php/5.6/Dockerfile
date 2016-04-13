@@ -91,17 +91,28 @@ RUN printf "\n" | pecl install -a ssh2-0.12 && \
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
     echo 'extension=yaml.so' | tee /etc/php5/mods-available/yaml.ini && \
-    ln -s /etc/php5/mods-available/yaml.ini /etc/php5/cli/conf.d/30-yaml.ini
+    ln -s /etc/php5/mods-available/yaml.ini /etc/php5/cli/conf.d/20-yaml.ini
 
 # Install ext-libsodium
 RUN printf "\n" | pecl install -a libsodium && \
     echo 'extension=libsodium.so' | tee /etc/php5/mods-available/libsodium.ini && \
-    ln -s /etc/php5/mods-available/libsodium.ini /etc/php5/cli/conf.d/30-libsodium.ini
+    ln -s /etc/php5/mods-available/libsodium.ini /etc/php5/cli/conf.d/20-libsodium.ini
 
 # Install ext-igbinary
 RUN printf "\n" | pecl install -a igbinary && \
     echo 'extension=igbinary.so' | tee /etc/php5/mods-available/igbinary.ini && \
-    ln -s /etc/php5/mods-available/igbinary.ini /etc/php5/cli/conf.d/30-igbinary.ini
+    ln -s /etc/php5/mods-available/igbinary.ini /etc/php5/cli/conf.d/20-igbinary.ini
+
+# Install ext-xdebug
+RUN pecl install xdebug && \
+    echo 'zend_extension=xdebug.so' | tee /etc/php5/mods-available/xdebug.ini && \
+    echo "xdebug.remote_enable=true" | tee -a /etc/php5/mods-available/xdebug.ini && \
+    echo "xdebug.remote_host=localhost" | tee -a /etc/php5/mods-available/xdebug.ini && \
+    echo "xdebug.remote_port=10000" | tee -a /etc/php5/mods-available/xdebug.ini && \
+    echo "xdebug.remote_handler=\"dbgp\"" | tee -a /etc/php5/mods-available/xdebug.ini && \
+    echo "xdebug.remote_connect_back=1" | tee -a /etc/php5/mods-available/xdebug.ini && \
+    echo "xdebug.cli_color=1" | tee -a /etc/php5/mods-available/xdebug.ini && \
+    ln -sf /etc/php5/mods-available/xdebug.ini /etc/php5/cli/conf.d/20-xdebug.ini
 
 # Fix PHP warnongs
 RUN find /etc/php5/mods-available/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
