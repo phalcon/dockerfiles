@@ -15,7 +15,7 @@ ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    rm -f /usr/local/phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+    rm /etc/php5/conf.d/20-xdebug.ini
 
 # Display version information
 RUN composer --ansi --version
