@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 PHP_EXT_DIR=`php-config --extension-dir`
-CFLAGS="-O1 -g3 -fno-strict-aliasing -std=gnu90"
 
 mkdir -p /tmp/pinba-ext && cd /tmp/pinba-ext
 

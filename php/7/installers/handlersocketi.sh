@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PHP_EXT_DIR=`php-config --extension-dir`
+
 mkdir -p /tmp/handlersocketi-ext && cd /tmp/handlersocketi-ext
 
 git clone https://github.com/tony2001/php-ext-handlersocketi.git -b badoo-7.0 && cd php-ext-handlersocketi
