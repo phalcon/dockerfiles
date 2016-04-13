@@ -122,7 +122,7 @@ RUN printf "\n" | pecl install -a mongodb && \
 
 # Install ext-xdebug
 RUN pecl install xdebug && \
-    echo 'zend_extension=xdebug.so' | tee /etc/php/7.0/mods-available/xdebug.ini && \
+    echo 'zend_extension=/usr/lib/php/20151012/xdebug.so' | tee /etc/php/7.0/mods-available/xdebug.ini && \
     echo "xdebug.remote_enable=true" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
     echo "xdebug.remote_host=localhost" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
     echo "xdebug.remote_port=10000" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
