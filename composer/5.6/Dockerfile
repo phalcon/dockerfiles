@@ -13,9 +13,6 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 ENV COMPOSER_HOME /root/composer
 ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 
-# Memory Limit
-RUN sed -i "s|memory_limit =.*|memory_limit = -1|" /usr/local/phpenv/versions/$(phpenv global)/etc/php.ini
-
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     rm -f /usr/local/phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
