@@ -67,29 +67,15 @@ RUN apt-get install -y --force-yes \
     libxslt1-dev \
     libyaml-dev
 
-RUN pecl channel-update pecl.php.net && \
-    export CFLAGS="-O1 -g3 -fno-strict-aliasing -std=gnu90" && \
-    PHP_EXT_DIR=`php-config --extension-dir`
+RUN pecl channel-update pecl.php.net
 
 # Install ext-redis
 ADD installers/redis.sh redis.sh
 RUN bash redis.sh && rm redis.sh
 
-# Install ext-mongo
-ADD installers/mongo.sh mongo.sh
-RUN bash mongo.sh && rm mongo.sh
-
-# Install ext-gearman
-ADD installers/gearman.sh gearman.sh
-RUN bash gearman.sh && rm gearman.sh
-
 # Install ext-aerospike
 ADD installers/aerospike.sh aerospike.sh
 RUN bash aerospike.sh && rm aerospike.sh
-
-# Install ext-ssh2
-ADD installers/ssh2.sh ssh2.sh
-RUN bash ssh2.sh && rm ssh2.sh
 
 # Install ext-pinba
 ADD installers/pinba.sh pinba.sh
@@ -99,10 +85,25 @@ RUN bash pinba.sh && rm pinba.sh
 ADD installers/handlersocketi.sh handlersocketi.sh
 RUN bash handlersocketi.sh && rm handlersocketi.sh
 
+# Install ext-gearman
+RUN printf "\n" | pecl install -a gearman && \
+    echo 'extension=gearman.so' | tee /etc/php5/mods-available/gearman.ini && \
+    ln -s /etc/php5/mods-available/gearman.ini /etc/php5/conf.d/20-gearman.ini
+
+# Install ext-mongo
+RUN printf "\n" | pecl install -a mongo && \
+    echo 'extension=mongo.so' | tee /etc/php5/mods-available/mongo.ini && \
+    ln -s /etc/php5/mods-available/mongo.ini /etc/php5/conf.d/20-mongo.ini
+
+# Install ext-ssh2
+RUN printf "\n" | pecl install -a ssh2-0.12 && \
+    echo 'extension=ssh2.so' | tee /etc/php5/mods-available/ssh2.ini && \
+    ln -s /etc/php5/mods-available/ssh2.ini /etc/php5/conf.d/20-ssh2.ini
+
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
     echo 'extension=yaml.so' | tee /etc/php5/mods-available/yaml.ini && \
-    ln -s /etc/php5/mods-available/yaml.ini /etc/php5/conf.d/
+    ln -s /etc/php5/mods-available/yaml.ini /etc/php5/conf.d/20-yaml.ini
 
 # Install ext-libsodium
 RUN printf "\n" | pecl install -a libsodium && \
