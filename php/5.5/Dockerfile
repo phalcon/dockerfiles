@@ -117,7 +117,7 @@ RUN pecl install xdebug && \
     echo "xdebug.cli_color=1" | tee -a /etc/php5/mods-available/xdebug.ini && \
     ln -sf /etc/php5/mods-available/xdebug.ini /etc/php5/cli/conf.d/20-xdebug.ini
 
-# Fix PHP warnongs
+# Fix PHP warnings
 RUN find /etc/php5/mods-available/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
 # Tune up PHP CLI
