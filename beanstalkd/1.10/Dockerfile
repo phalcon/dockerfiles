@@ -19,6 +19,22 @@ COPY alpine.patch /root/alpine.patch
 ADD install.sh /install.sh
 RUN bash /install.sh && rm /install.sh
 
+# Cleanup package manager
+RUN apk del ca-certificates \
+    curl \
+    make \
+    clang \
+    gcc \
+    bash \
+    bash-completion \
+    grep \
+    less \
+    nano \
+    wget \
+    musl-dev \
+    tar && \
+    rm -rf /var/cache/* /tmp/* /var/tmp/*
+
 # Expose ports
 EXPOSE 11300
 
