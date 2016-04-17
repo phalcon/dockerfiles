@@ -38,7 +38,7 @@ RUN \
 RUN apt-get update -qq && apt-get upgrade -y
 
 # Install dependencies
-RUN apt-get install -y \
+RUN apt-get install -y --force-yes --no-install-recommends \
     autoconf \
     build-essential \
     ca-certificates \
@@ -96,7 +96,9 @@ RUN cd ~ && git clone https://github.com/nanorc/nanorc.git && \
     rm -rf ~/nanorc
 
 # Cleanup package manager
-RUN apt-get clean && \
+RUN apt-get autoremove && \
+    apt-get autoclean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Define working directory
