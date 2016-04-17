@@ -16,7 +16,7 @@ RUN apt-add-repository -y ppa:chris-lea/libsodium && \
 RUN apt-get update -y && apt-get upgrade -y
 
 # Install PHP
-RUN apt-get install -y --force-yes \
+RUN apt-get install -y --force-yes  --no-install-recommends \
     php7.0-cli \
     php7.0-common \
     php7.0-curl \
