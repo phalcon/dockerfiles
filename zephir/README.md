@@ -2,7 +2,7 @@
 
 ## Base Docker Image
 
-[`phalconphp/php`](https://github.com/phalcon/dockerfiles/tree/master/php)
+[phalconphp/php](https://hub.docker.com/r/phalconphp/php/)
 
 ## Installation
 
@@ -47,7 +47,7 @@ fi
 Make it executable:
 
 ```sh
-$ sudo chmod a+x /usr/local/bin/php
+$ sudo chmod a+x /usr/local/bin/zephir
 ```
 
 Test:
