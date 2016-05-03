@@ -100,9 +100,8 @@ RUN printf "\n" | pecl install -a imagick && \
     ln -s /etc/php/7.0/mods-available/imagick.ini /etc/php/7.0/cli/conf.d/20-imagick.ini
 
 # Install ext-apcu
-RUN printf "\n" | pecl install -a apcu beta && \
-    echo 'extension=apcu.so' | tee /etc/php/7.0/mods-available/apcu.ini && \
-    ln -s /etc/php/7.0/mods-available/apcu.ini /etc/php/7.0/cli/conf.d/20-apcu.ini
+ADD installers/apcu.sh apcu.sh
+RUN bash apcu.sh && rm apcu.sh
 
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
