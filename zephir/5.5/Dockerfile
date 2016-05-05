@@ -21,7 +21,7 @@ RUN mkdir -p /usr/share/zephir && \
     cd /tmp/zephir && \
     echo "#!/usr/bin/env bash\nexec \"\$@\"" | tee /usr/bin/sudo &&  \
     chmod +x /usr/bin/sudo && \
-    (cd parser && make clean &>/dev/null && cd .. ) && \
+    (cd parser && phpize --clean) && \
     ./install -c && \
     cd / && rm -rf /tmp/zephir && \
     chmod +x /usr/local/bin/docker-entrypoint.sh
