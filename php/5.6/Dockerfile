@@ -1,5 +1,5 @@
 #
-# PHP 5.6 Dockerfile
+# PHP-CLI 5.6 Dockerfile
 #
 # https://github.com/phalcon/dockerfiles
 #
@@ -120,7 +120,7 @@ RUN pecl install xdebug && \
 # Fix PHP warnings
 RUN find /etc/php5/mods-available/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
-# Tune up PHP CLI
+# Tune up PHP-CLI
 RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php5/cli/php.ini && \
     sed -i "s|memory_limit =.*|memory_limit = -1|" /etc/php5/cli/php.ini && \
     sed -i 's|short_open_tag =.*|short_open_tag = On|' /etc/php5/cli/php.ini && \
