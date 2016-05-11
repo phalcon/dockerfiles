@@ -15,8 +15,10 @@ ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    rm /etc/php5/cli/conf.d/20-xdebug.ini
+RUN sed -i "s|apc.enable_cli = 1|apc.enable_cli = 0|" /etc/php5/mods-available/apcu.ini && \
+    rm /etc/php5/cli/conf.d/20-xdebug.ini && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    chmod +x /usr/local/bin/composer
 
 # Display version information
 RUN composer --ansi --version
