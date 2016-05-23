@@ -12,8 +12,8 @@ make install
 
 ls -al /usr/local/aerospike/
 
-echo 'extension=aerospike.so' | tee /etc/php5/mods-available/aerospike.ini
-echo 'aerospike.udf.lua_system_path=/usr/local/aerospike/lua' | tee -a /etc/php5/mods-available/aerospike.ini
-echo 'aerospike.udf.lua_user_path=/usr/local/aerospike/usr-lua' | tee -a /etc/php5/mods-available/aerospike.ini
+echo 'extension=aerospike.so' | tee /etc/php/5.6/mods-available/aerospike.ini
+echo 'aerospike.udf.lua_system_path=/usr/local/aerospike/lua' | tee -a /etc/php/5.6/mods-available/aerospike.ini
+echo 'aerospike.udf.lua_user_path=/usr/local/aerospike/usr-lua' | tee -a /etc/php/5.6/mods-available/aerospike.ini
 
-ln -s /etc/php5/mods-available/aerospike.ini /etc/php5/cli/conf.d/20-aerospike.ini
+ln -s /etc/php/5.6/mods-available/aerospike.ini /etc/php/5.6/cli/conf.d/20-aerospike.ini
