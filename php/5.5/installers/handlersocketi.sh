@@ -14,5 +14,5 @@ make install
 
 mv /tmp/handlersocketi-ext/php-ext-handlersocketi/modules/handlersocketi.so "${PHP_EXT_DIR}/handlersocketi.so"
 
-touch /etc/php5/mods-available/handlersocketi.ini && echo extension=handlersocketi.so > /etc/php5/mods-available/handlersocketi.ini
-ln -s /etc/php5/mods-available/handlersocketi.ini /etc/php5/cli/conf.d/20-handlersocketi.ini
+touch /etc/php/5.5/mods-available/handlersocketi.ini && echo extension=handlersocketi.so > /etc/php/5.5/mods-available/handlersocketi.ini
+ln -s /etc/php/5.5/mods-available/handlersocketi.ini /etc/php/5.5/cli/conf.d/20-handlersocketi.ini
