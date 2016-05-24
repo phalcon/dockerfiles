@@ -136,7 +136,7 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
 RUN apt-get autoremove && \
     apt-get autoclean && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/php/5.5 /etc/php/7.0 /usr/lib/php/7.0 /usr/lib/php/20121212 /usr/lib/php/20151012 /usr/lib/php/20151012
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/php/5.5 /etc/php/7.0 /usr/lib/php/7.0 /usr/lib/php/20121212 /usr/lib/php/20151012
 
 # Set workdir
 WORKDIR /app
