@@ -54,5 +54,5 @@ Test:
 
 ```sh
 $ zephir version
-0.9.2a-dev
+0.9.3a-dev
 ```
