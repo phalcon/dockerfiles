@@ -109,7 +109,7 @@ RUN printf "\n" | pecl install -a libsodium && \
     ln -s /etc/php/5.6/mods-available/libsodium.ini /etc/php/5.6/cli/conf.d/20-libsodium.ini
 
 # Tune Up ext-xdebug
-RUN echo 'zend_extension=/usr/lib/php5/20131226/xdebug.so' | tee /etc/php/5.6/mods-available/xdebug.ini && \
+RUN echo 'zend_extension=/usr/lib/php/20131226/xdebug.so' | tee /etc/php/5.6/mods-available/xdebug.ini && \
     echo "xdebug.remote_enable=true" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
     echo "xdebug.remote_host=localhost" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
     echo "xdebug.remote_port=10000" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
