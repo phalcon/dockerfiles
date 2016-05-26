@@ -38,6 +38,7 @@ RUN apt-get install -y --force-yes  --no-install-recommends \
     php5.6-memcache \
     php5.6-mcrypt \
     php5.6-mongo \
+    php5.6-mongodb \
     php5.6-mysql \
     php-pear \
     php5.6-odbc \
