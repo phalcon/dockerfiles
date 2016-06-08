@@ -109,6 +109,11 @@ RUN printf "\n" | pecl install -a libsodium && \
     echo 'extension=libsodium.so' | tee /etc/php/5.5/mods-available/libsodium.ini && \
     ln -s /etc/php/5.5/mods-available/libsodium.ini /etc/php/5.5/cli/conf.d/20-libsodium.ini
 
+# Install ext-msgpack
+RUN printf "\n" | pecl install -a msgpack-0.5.7 && \
+    echo 'extension=msgpack.so' | tee /etc/php/5.5/mods-available/msgpack.ini && \
+    ln -sf /etc/php/5.5/mods-available/msgpack.ini /etc/php/5.5/cli/conf.d/20-msgpack.ini
+
 # Tune Up ext-xdebug
 RUN echo 'zend_extension=/usr/lib/php/20121212/xdebug.so' | tee /etc/php/5.5/mods-available/xdebug.ini && \
     echo "xdebug.remote_enable=true" | tee -a /etc/php/5.5/mods-available/xdebug.ini && \

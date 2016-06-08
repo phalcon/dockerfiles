@@ -93,6 +93,11 @@ RUN printf "\n" | pecl install -a gearman && \
     echo 'extension=gearman.so' | tee /etc/php5/mods-available/gearman.ini && \
     ln -s /etc/php5/mods-available/gearman.ini /etc/php5/conf.d/20-gearman.ini
 
+# Install ext-msgpack
+RUN printf "\n" | pecl install -a msgpack-0.5.7 && \
+    echo 'extension=msgpack.so' | tee /etc/php5/mods-available/msgpack.ini && \
+    ln -s /etc/php5/mods-available/msgpack.ini /etc/php5/conf.d/20-msgpack.ini
+
 # Install ext-mongo
 RUN printf "\n" | pecl install -a mongo && \
     echo 'extension=mongo.so' | tee /etc/php5/mods-available/mongo.ini && \
