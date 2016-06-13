@@ -94,6 +94,10 @@ RUN bash pinba.sh && rm pinba.sh
 ADD installers/handlersocketi.sh handlersocketi.sh
 RUN bash handlersocketi.sh && rm handlersocketi.sh
 
+# Install ext-phalcon
+ADD installers/phalcon.sh phalcon.sh
+RUN bash phalcon.sh && rm phalcon.sh
+
 # Install ext-ssh2
 RUN printf "\n" | pecl install -a ssh2-0.12 && \
     echo 'extension=ssh2.so' | tee /etc/php/5.5/mods-available/ssh2.ini && \
