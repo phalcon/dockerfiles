@@ -93,6 +93,10 @@ RUN bash handlersocketi.sh && rm handlersocketi.sh
 ADD installers/pinba.sh pinba.sh
 RUN bash pinba.sh && rm pinba.sh
 
+# Install ext-phalcon
+ADD installers/phalcon.sh phalcon.sh
+RUN bash phalcon.sh && rm phalcon.sh
+
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
     echo 'extension=yaml.so' | tee /etc/php/7.0/mods-available/yaml.ini && \
