@@ -49,6 +49,8 @@ RUN sed -i -e "s|;listen.mode =.*|listen.mode = 0750|g" /etc/php/7.0/fpm/pool.d/
     chown -R www-data:www-data /etc/php/7.0/fpm/ && \
     usermod -u 1000 www-data
 
+RUN phpenmod -s fpm phalcon
+
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stderr /var/log/php7.0-fpm.log
 
