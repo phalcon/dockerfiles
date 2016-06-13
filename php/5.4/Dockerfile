@@ -88,6 +88,10 @@ RUN bash pinba.sh && rm pinba.sh
 ADD installers/handlersocketi.sh handlersocketi.sh
 RUN bash handlersocketi.sh && rm handlersocketi.sh
 
+# Install ext-phalcon
+ADD installers/phalcon.sh phalcon.sh
+RUN bash phalcon.sh && rm phalcon.sh
+
 # Install ext-gearman
 RUN printf "\n" | pecl install -a gearman && \
     echo 'extension=gearman.so' | tee /etc/php5/mods-available/gearman.ini && \
