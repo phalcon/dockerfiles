@@ -18,6 +18,7 @@ RUN apt-get update -y && apt-get upgrade -y
 # Install PHP
 RUN apt-get install -y --force-yes  --no-install-recommends \
     php7.0-apcu \
+    php-apcu-bc \
     php7.0-bcmath \
     php7.0-bz2 \
     php7.0-cli \
