@@ -19,7 +19,7 @@ RUN LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y --force-yes php5.6-fpm
+    apt-get install -yq --no-install-suggests --no-install-recommends --force-yes php5.6-fpm
 
 # Tune up PHP FPM
 RUN sed -i -e "s|;catch_workers_output\s*=.*|catch_workers_output = yes|g" /etc/php/5.6/fpm/pool.d/www.conf && \

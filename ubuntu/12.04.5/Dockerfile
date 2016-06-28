@@ -38,7 +38,7 @@ RUN \
 RUN apt-get update -qq && apt-get upgrade -y
 
 # Install dependencies
-RUN apt-get install -y --force-yes --no-install-recommends \
+RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-yes \
     autoconf \
     build-essential \
     ca-certificates \
