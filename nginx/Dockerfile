@@ -13,7 +13,7 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 RUN add-apt-repository -y ppa:nginx/stable && \
     apt-get update -y && apt-get upgrade -y
 
-# Install PHP
+# Install Nginx
 RUN apt-get install -y --force-yes --no-install-recommends nginx
 
 # Cleanup package manager
