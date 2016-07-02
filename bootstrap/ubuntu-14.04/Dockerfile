@@ -13,9 +13,8 @@ ENV TIMEZONE UTC
 ENV LANG     en_US.UTF-8
 ENV LC_ALL   en_US.UTF-8
 
-LABEL vendor="Phalcon Framework"
-LABEL docker.phalcon.layout=8
-LABEL docker.phalcon.layout=0.1.0
+LABEL vendor=Phalcon\ Framework \
+      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Ubuntu 14.04\",\"License\":\"BSD\",\"Version\":\"0.1.0\",\"Layouts\":7}"
 
 # Add base tools
 ADD baselayout.tar /
