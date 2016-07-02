@@ -8,7 +8,7 @@
 
 1. Install [Docker](https://www.docker.com/)
 2. Download [build](https://hub.docker.com/r/phalconphp/zephir/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull phalconphp/zephir:<PHP_VERSION>`
-  Where `<PHP_VERSION>` is: 5.4, 5.5, 5.6 ot 7
+  Where `<PHP_VERSION>` is: `5.4`, `5.5`, `5.6`, `7.0`, `7` or `latest`
 
 ## Usage
 
