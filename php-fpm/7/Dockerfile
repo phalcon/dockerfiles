@@ -9,10 +9,10 @@ FROM phalconphp/php:7
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-ENV PHP_MEMORY_LIMIT 512M
-ENV MAX_UPLOAD 100M
-ENV PHP_MAX_FILE_UPLOAD 200
-ENV PHP_MAX_POST 100M
+ENV PHP_MEMORY_LIMIT=512M \
+    MAX_UPLOAD=50M \
+    PHP_MAX_FILE_UPLOAD=200 \
+    PHP_MAX_POST=100M
 
 # Adding repositories
 RUN LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php
