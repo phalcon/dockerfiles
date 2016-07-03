@@ -10,8 +10,8 @@ FROM phalconphp/php:7
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set environment variables
-ENV ZEPHIRDIR /usr/share/zephir
-ENV PATH $PATH:/usr/share/zephir/bin
+ENV ZEPHIRDIR=/usr/share/zephir \
+    PATH=$PATH:/usr/share/zephir/bin
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
