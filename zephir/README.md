@@ -9,7 +9,7 @@ Zephir is a compiled high level language aimed to the creation of C-extensions f
 * `5.6` [(5.6/Dockerfile)](https://github.com/phalcon/dockerfiles/tree/master/zephir/5.6)
 * `7`, `7.0`, `latest` [(7/Dockerfile)](https://github.com/phalcon/dockerfiles/tree/master/zephir/7)
 
-This image is updated via pull requests to the phalconphp/dockerfiles [GitHub repo](https://github.com/phalcon/dockerfiles).
+This image is updated via pull requests to the `phalconphp/dockerfiles` [GitHub repo](https://github.com/phalcon/dockerfiles).
 
 ## What is Zephir?
 
@@ -72,7 +72,6 @@ $ zephir version
 0.9.3a-dev
 ```
 
-
 ## License
 
 View [license](https://github.com/phalcon/zephir/blob/master/LICENSE) information for the software contained in this image.
@@ -82,6 +81,6 @@ View [license](https://github.com/phalcon/zephir/blob/master/LICENSE) informatio
 
 This image is officially supported on Docker version 1.12.0.
 
-Support for older versions (down to 1.0) is provided on a best-effort basis.
+Support for older versions (down to 1.10) is provided on a best-effort basis.
 
 Please see [the Docker installation documentation](https://docs.docker.com/installation/) for details on how to upgrade your Docker daemon.
