@@ -72,25 +72,14 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-ye
 
 RUN pecl channel-update pecl.php.net
 
-# Install ext-redis
-ADD installers/redis.sh redis.sh
-RUN bash redis.sh && rm redis.sh
+# Add installers
+ADD installers/*.sh /installers/
 
-# Install ext-aerospike
-ADD installers/aerospike.sh aerospike.sh
-RUN bash aerospike.sh && rm aerospike.sh
-
-# Install ext-pinba
-ADD installers/pinba.sh pinba.sh
-RUN bash pinba.sh && rm pinba.sh
-
-# Install ext-handlersocketi
-ADD installers/handlersocketi.sh handlersocketi.sh
-RUN bash handlersocketi.sh && rm handlersocketi.sh
-
-# Install ext-phalcon
-ADD installers/phalcon.sh phalcon.sh
-RUN bash phalcon.sh && rm phalcon.sh
+RUN bash /installers/redis.sh && \
+    bash /installers/aerospike.sh && \
+    bash /installers/pinba.sh && \
+    bash /installers/handlersocketi.sh && \
+    bash /installers/phalcon.sh
 
 # Install ext-gearman
 RUN printf "\n" | pecl install -a gearman && \
@@ -156,7 +145,7 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
 RUN apt-get autoremove && \
     apt-get autoclean && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /installers && \
     mkdir -p /etc/php && \
     ln -s /etc/php5 /etc/php/5.4
 
