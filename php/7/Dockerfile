@@ -86,17 +86,12 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-ye
 RUN pecl channel-update pecl.php.net && \
     pecl config-set preferred_state beta
 
-# Install ext-handlersocketi
-ADD installers/handlersocketi.sh handlersocketi.sh
-RUN bash handlersocketi.sh && rm handlersocketi.sh
+# Add installers
+ADD installers/*.sh /installers/
 
-# Install ext-pinba
-ADD installers/pinba.sh pinba.sh
-RUN bash pinba.sh && rm pinba.sh
-
-# Install ext-phalcon
-ADD installers/phalcon.sh phalcon.sh
-RUN bash phalcon.sh && rm phalcon.sh
+RUN bash /installers/handlersocketi.sh && \
+    bash /installers/pinba.sh && \
+    bash /installers/phalcon.sh
 
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \

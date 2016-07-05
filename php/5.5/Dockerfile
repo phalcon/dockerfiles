@@ -82,21 +82,13 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-ye
 
 RUN pecl channel-update pecl.php.net
 
-# Install ext-aerospike
-ADD installers/aerospike.sh aerospike.sh
-RUN bash aerospike.sh && rm aerospike.sh
+# Add installers
+ADD installers/*.sh /installers/
 
-# Install ext-pinba
-ADD installers/pinba.sh pinba.sh
-RUN bash pinba.sh && rm pinba.sh
-
-# Install ext-handlersocketi
-ADD installers/handlersocketi.sh handlersocketi.sh
-RUN bash handlersocketi.sh && rm handlersocketi.sh
-
-# Install ext-phalcon
-ADD installers/phalcon.sh phalcon.sh
-RUN bash phalcon.sh && rm phalcon.sh
+RUN bash /installers/aerospike.sh && \
+    bash /installers/pinba.sh && \
+    bash /installers/handlersocketi.sh && \
+    bash /installers/phalcon.sh
 
 # Install ext-ssh2
 RUN printf "\n" | pecl install -a ssh2-0.12 && \
