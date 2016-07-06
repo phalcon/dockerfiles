@@ -24,13 +24,13 @@ Zephir is a language that addresses the major needs of a PHP developer trying to
 You can run the default `zephir` command simply:
 
 ```
-$ docker run -it --rm phalconphp/zephir "zephir version"
+$ docker run -it --rm phalconphp/zephir version
 ```
 
 You can also pass in additional flags to `zephir`:
 
 ```
-$ docker run -it --rm -v $(pwd):/zephir phalconphp/zephir "zephir builddev --backend=ZendEngine3"
+$ docker run -it --rm -v $(pwd):/zephir phalconphp/zephir builddev --backend=ZendEngine3
 ```
 
 And you can create alias in order to implement convenient runner. Create file called `/usr/local/bin/zephir` as follows:
@@ -47,7 +47,7 @@ ${docker_bin} run -it --rm \
     --privileged=true \
     -e ZEND_DONT_UNLOAD_MODULES=1 \
     -v $(pwd):/zephir \
-    phalconphp/zephir:${PHP_VERSION} "zephir $@"
+    phalconphp/zephir:${PHP_VERSION} "$@"
 
 ret=$?
 

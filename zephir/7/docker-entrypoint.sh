@@ -13,12 +13,19 @@
 #
 #  Authors: Serghei Iakovlev <serghei@phalconphp.com>
 
+set -e
+
 rm -rf /tmp/*
 
 echo "/tmp/core-%e.%p" | tee /proc/sys/kernel/core_pattern &> /dev/null
 ulimit -c unlimited
 
-$@
+# Add zephir as command if needed
+if [ "${1:0:6}" != 'zephir' ]; then
+    set -- zephir "$@"
+fi
+
+exec $@
 
 ret=$?
 
@@ -32,8 +39,8 @@ shopt -s nullglob
 export LC_ALL=C
 
 for i in /tmp/core-*.*; do
-	if [ -f "$i" -a "$(file "$i" | grep -o 'core file')" ]; then
-		gdb -q $(which php) "$i" <<EOF
+    if [ -f "$i" -a "$(file "$i" | grep -o 'core file')" ]; then
+      gdb -q $(which php) "$i" <<EOF
 set pagination 0
 backtrace full
 info registers
@@ -41,7 +48,7 @@ x/16i \$pc
 thread apply all backtrace
 quit
 EOF
-	fi
+    fi
 done
 
 exit ${ret};

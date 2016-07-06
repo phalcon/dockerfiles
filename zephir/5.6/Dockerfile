@@ -13,7 +13,7 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 ENV ZEPHIRDIR=/usr/share/zephir \
     PATH=$PATH:/usr/share/zephir/bin
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # Install Zephir
 RUN mkdir -p /usr/share/zephir && \
@@ -22,8 +22,8 @@ RUN mkdir -p /usr/share/zephir && \
     echo "#!/usr/bin/env bash\nexec \"\$@\"" | tee /usr/bin/sudo &&  \
     chmod +x /usr/bin/sudo && \
     ./install -c && \
-    cd / && rm -rf /tmp/zephir && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh
+    chmod +x /docker-entrypoint.sh && \
+    rm -rf /tmp/*
 
 # Set up the Zephir directory
 VOLUME ["/zephir"]
@@ -32,5 +32,5 @@ VOLUME ["/zephir"]
 WORKDIR /zephir
 
 # Set up the command arguments
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["zephir"]
