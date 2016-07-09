@@ -38,7 +38,7 @@ And you can create alias in order to implement convenient runner. Create file ca
 ```sh
 #!/usr/bin/env bash
 
-docker_bin="$(which docker.io 2> /dev/null || which docker 2> /dev/null)"
+docker_bin="$(which docker 2> /dev/null)"
 
 # 5.4, 5.5, 5.6, 7, 7.0, latest
 PHP_VERSION=7
