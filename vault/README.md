@@ -27,13 +27,18 @@ $ docker run -it --rm --cap-add IPC_LOCK phalconphp/vault vault
 You can also pass in additional flags to `vault`:
 
 ```
-$ docker run -it \
-  --rm \
+$ docker run -d \
   --cap-add IPC_LOCK \
   --name vs \
   -v $(pwd)/custom.conf:/etc/custom.conf:ro \
   -p 127.0.0.1:8200:9000 \
   phalconphp/vault server -config /etc/custom.conf
+```
+
+Then you can get access via CLI tool:
+
+```
+$ docker exec -it vs vault help
 ```
 
 And you can create alias in order to implement convenient runner. Create file called `/usr/local/bin/vault` as follows:
