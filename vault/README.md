@@ -10,9 +10,9 @@ This image is updated via pull requests to the `phalconphp/dockerfiles` [GitHub 
 
 ## What is Vault?
 
-A secret is anything that you want to tightly control access to, such as API keys, passwords, certificates, and more. Vault provides a unified interface to any secret, while providing tight access control and recording a detailed audit log.
-
-A modern system requires access to a multitude of secrets: database credentials, API keys for external services, credentials for service-oriented architecture communication, etc. Understanding who is accessing what secrets is already very difficult and platform-specific. Adding on key rolling, secure storage, and detailed audit logs is almost impossible without a custom solution. This is where Vault steps in.
+Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in
+modern computing. Vault handles leasing, key revocation, key rolling, and auditing. Vault presents a unified API to
+access multiple backends: HSMs, AWS IAM, SQL databases, raw key/value, and more.
 
 > [www.vaultproject.io](https://www.vaultproject.io/)
 
