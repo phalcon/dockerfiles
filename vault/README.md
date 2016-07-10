@@ -30,9 +30,9 @@ You can also pass in additional flags to `vault`:
 $ docker run -d \
   --cap-add IPC_LOCK \
   --name vs \
-  -v $(pwd)/custom.conf:/etc/custom.conf:ro \
+  -v $(pwd)/custom.conf:/etc/vault.conf:ro \
   -p 127.0.0.1:8200:9000 \
-  phalconphp/vault server -config /etc/custom.conf
+  phalconphp/vault server --help
 ```
 
 Then you can get access via CLI tool:
