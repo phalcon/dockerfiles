@@ -1,27 +1,36 @@
-#!/usr/bin/env bash
-
-PURPLE="\e[0;35m"
-GREEN="\033[0;32m"
-YELLOW="\e[1;33m"
-NC="\033[0m"
-
+#!/usr/bin/env sh
 set -e
 
-echo -e "\nWelcome to the containerized Vault."
-echo -e "${GREEN}Vault${NC} version ${YELLOW}${VAULT_VERSION}${NC}"
+# VAULT_CONFIG_DIR isn't exposed as a volume but you can compose additional
+# config files in there if you use this image as a base, or use
+# VAULT_LOCAL_CONFIG below.
+#
+# You can also set the VAULT_LOCAL_CONFIG environment variable to pass some
+# Vault configuration JSON without having to bind any volumes.
 
-ulimit -c unlimited
+echo "${VAULT_LOCAL_CONFIG}" > "${VAULT_CONFIG_DIR}/local.json"
 
-setcap cap_ipc_lock=+ep ${VAULT_HOME}/vault
-
-# Add vault as command if needed
-if [ "${1:0:5}" != 'vault' ]; then
+# If the user is trying to run Vault directly with some arguments, then
+# pass them to Vault.
+if [ "${1:0:1}" = '-' ]; then
     set -- vault "$@"
 fi
 
-# Add config as option if needed
-if [ "${2:0:6}" == 'server' ]; then
-    set -- vault "server -config /etc/vault.conf $@"
+# Look for Vault subcommands.
+if [ "$1" = 'server' ]; then
+    shift
+    set -- vault server \
+        -config="${VAULT_CONFIG_DIR}" \
+        -dev-root-token-id="${VAULT_DEV_ROOT_TOKEN_ID}" \
+        -dev-listen-address="${VAULT_DEV_LISTEN_ADDRESS}" \
+        "$@"
+elif [ "$1" = 'version' ]; then
+    # This needs a special case because there's no help output.
+    set -- version "$@"
+elif vault --help "$1" 2>&1 | grep -q "vault $1"; then
+    # We can't use the return code to check for the existence of a subcommand, so
+    # we have to use grep to look for a pattern in the help output.
+    set -- vault "$@"
 fi
 
 exec $@
@@ -32,4 +41,6 @@ if [ ${ret} -eq 0 ]; then
     exit 0;
 fi
 
-echo -e "${PURPLE}The command '${@}' terminated with non-zero status code.${NC}"
+echo -e "------------------------------------------------------------"
+echo -e "The command '${@}' terminated with non-zero status code."
+echo -e "------------------------------------------------------------"

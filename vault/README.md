@@ -21,24 +21,39 @@ access multiple backends: HSMs, AWS IAM, SQL databases, raw key/value, and more.
 You can run the default `vault` command simply:
 
 ```
-$ docker run -it --rm --cap-add IPC_LOCK phalconphp/vault vault
+$ docker run -it --rm --cap-add IPC_LOCK phalconphp/vault
 ```
 
 You can also pass in additional flags to `vault`:
 
 ```
 $ docker run -d \
-  --cap-add IPC_LOCK \
-  --name vs \
-  -v $(pwd)/custom.conf:/etc/vault.conf:ro \
-  -p 127.0.0.1:8200:9000 \
-  phalconphp/vault server --help
+  --cap-add IPC_LOCK                         # Is mandatory only for "server" without "-dev" key
+  --name vs \                                # Optional
+  -v $(pwd)/storage:/var/db/vault \          # Optional
+  -v $(pwd)/logs:/var/log/vault \            # Optional
+  -e VAULT_DEV_ROOT_TOKEN_ID=<token> \       # Optional
+  -e VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200 \ # Optional
+  -p 127.0.0.1:8200:8200 \
+  phalconphp/vault vault server --help
 ```
 
-Then you can get access via CLI tool:
+**Note:** For production derivatives of this container, you shoud add
+the `IPC_LOCK` capability so that Vault can mlock memory.
+
+The minimal command required to run server for development purposes:
 
 ```
-$ docker exec -it vs vault help
+$ docker run -d \
+  -p 127.0.0.1:8200:8200 \
+  -e VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200 \
+  phalconphp/vault
+```
+
+You can get access via CLI tool:
+
+```
+$ docker exec -it <container_name> vault help
 ```
 
 And you can create alias in order to implement convenient runner. Create file called `/usr/local/bin/vault` as follows:
@@ -52,7 +67,7 @@ ${docker_bin} run -it \
   --rm \
   --cap-add IPC_LOCK \
   --name vs \
-  -p 127.0.0.1:8200:9000 \
+  -p 127.0.0.1:8200:8200 \
   phalconphp/vault "$@"
 ```
 
