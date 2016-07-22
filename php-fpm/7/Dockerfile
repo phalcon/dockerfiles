@@ -55,7 +55,7 @@ RUN phpenmod -s fpm phalcon
 RUN ln -sf /dev/stderr /var/log/php7.0-fpm.log
 
 # Cleanup package manager
-RUN apt-get autoremove && \
+RUN apt-get autoremove -y && \
     apt-get autoclean && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
