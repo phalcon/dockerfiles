@@ -1,6 +1,6 @@
 # Phalcon Zephir
 
-Zephir is a compiled high level language aimed to the creation of C-extensions for PHP
+Zephir is a compiled high level language aimed to the creation of C-extensions for PHP.
 
 ## Supported tags and respective `Dockerfile` links
 
