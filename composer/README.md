@@ -41,17 +41,11 @@ And you can create alias in order to implement convenient runner. Create file ca
 mkdir -p ${HOME}/.ssh
 mkdir -p ${HOME}/.composer
 
-docker_bin="$(which docker 2> /dev/null)"
-
-# 5.4, 5.5, 5.6, 7, 7.0, latest
-PHP_VERSION=7
-
-${docker_bin} run -it --rm \
-    --name composer-${PHP_VERSION} \
+docker run -it --rm \
     -v $(pwd):/app \
     -v ${HOME}/.ssh:/root/.ssh \
     -v ${HOME}/.composer:/root/composer \
-    phalconphp/composer:${PHP_VERSION} "$@"
+    phalconphp/composer "$@"
 ```
 
 Make it executable:
