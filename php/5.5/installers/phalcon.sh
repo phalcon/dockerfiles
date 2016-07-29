@@ -19,7 +19,7 @@ chmod +x /usr/bin/sudo
 ./install -c
 cd / && rm -rf /tmp/zephir
 
-git clone --depth=1 -v https://github.com/phalcon/cphalcon.git -b 2.1.x /tmp/phalcon-ext
+git clone --depth=1 -v https://github.com/phalcon/cphalcon.git /tmp/phalcon-ext
 cd /tmp/phalcon-ext
 zephir build
 cp ext/modules/phalcon.so $(php-config --extension-dir)/phalcon.so
