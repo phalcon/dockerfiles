@@ -89,7 +89,8 @@ RUN pecl channel-update pecl.php.net && \
 # Add installers
 ADD installers/*.sh /installers/
 
-RUN bash /installers/handlersocketi.sh && \
+RUN bash /installers/aerospike.sh && \
+    bash /installers/handlersocketi.sh && \
     bash /installers/pinba.sh && \
     bash /installers/phalcon.sh
 
