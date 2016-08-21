@@ -27,7 +27,9 @@ RUN apt-get update -y && \
     binutils-dev \
     zlib1g-dev \
     doxygen && \
-    echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
+    curl -L https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - && \
+    curl -L https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add -
 
 # Cleanup package manager
 RUN apt-get autoremove -y && \
