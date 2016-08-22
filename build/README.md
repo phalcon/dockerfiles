@@ -15,11 +15,13 @@ Docker images to build Phalcon in supported platforms.
 
 ### Debian
 
-| Codename  | OS Release | Phalcon Releases  | PHP version  | Docker image                                        |
-| --------- | ---------- | ----------------- | ------------ | --------------------------------------------------- |
-| `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.1` | `5.6.x`      | [`phalconphp/build:debian-jessie`][:debian-jessie:] |
+| Codename  | OS Release | Phalcon Releases  | PHP version  | Docker image                                          |
+| --------- | ---------- | ----------------- | ------------ | ----------------------------------------------------- |
+| `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.1` | `5.6.x`      | [`phalconphp/build:debian-jessie`][:debian-jessie:]   |
+| `stretch` | 9          | `3.0.0` - `3.0.1` | `7.0.x`      | [`phalconphp/build:debian-stretch`][:debian-stretch:] |
 
 [:ubuntu-trusty:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-trusty/Dockerfile
 [:ubuntu-wily:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-wily/Dockerfile
 [:ubuntu-xenial:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-xenial/Dockerfile
 [:debian-jessie:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-jessie/Dockerfile
+[:debian-stretch:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-stretch/Dockerfile
