@@ -7,7 +7,8 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 ENV PATH=/usr/lib/ccache:$PATH
 
 RUN /usr/local/bin/yum-upgrade \
-    && /usr/local/bin/yum-install autoconf \
+    && /usr/local/bin/yum-install \
+    autoconf \
     automake \
     binutils \
     bison \
@@ -28,6 +29,9 @@ RUN /usr/local/bin/yum-upgrade \
     sudo \
     wget \
     git \
+    gnupg \
+    pygpgme \
+    wget \
     ccache \
     cmake3 \
     readline-devel \
@@ -36,5 +40,7 @@ RUN /usr/local/bin/yum-upgrade \
     zlib-devel \
     doxygen \
     perl-Test-Harness \
+    && wget -qO - https://packagecloud.io/install/repositories/phalcon/stable/script.rpm.sh | bash \
+    && wget -qO - https://packagecloud.io/install/repositories/phalcon/nightly/script.rpm.sh | bash \
     && sed -i.bak -n -e '/^Defaults.*requiretty/ { s/^/# /;};/^%wheel.*ALL$/ { s/^/# / ;} ;/^#.*wheel.*NOPASSWD/ { s/^#[ ]*//;};p' /etc/sudoers \
     && yum clean all

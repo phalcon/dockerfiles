@@ -11,7 +11,7 @@ RUN apt-get clean -y \
     && /usr/local/bin/apt-install \
     gdb \
     gnupg \
-    curl \
+    wget \
     git \
     ccache \
     devscripts \
@@ -29,8 +29,8 @@ RUN apt-get clean -y \
     zlib1g-dev \
     doxygen \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    && curl -s -L https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
-    && curl -s -L https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
+    && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
+    && wget -qO - https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \

@@ -13,7 +13,7 @@ RUN \
     && /usr/local/bin/apt-install \
     gdb \
     gnupg \
-    curl \
+    wget \
     git \
     ccache \
     devscripts \
@@ -34,8 +34,8 @@ RUN \
     php7.0-common \
     php7.0-cli \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    && curl -s -L https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
-    && curl -s -L https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
+    && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
+    && wget -qO - https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \
