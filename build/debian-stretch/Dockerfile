@@ -7,7 +7,6 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 ENV DEBIAN_FRONTEND="noninteractive" LC_ALL="C.UTF-8" LANG="C.UTF-8"
 
 RUN apt-get clean -y \
-    # System update
     && /usr/local/bin/apt-upgrade \
     && /usr/local/bin/apt-install \
     build-essential \
