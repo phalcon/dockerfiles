@@ -6,11 +6,12 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 # Set environment variables
 ENV DEBIAN_FRONTEND="noninteractive" LC_ALL="C.UTF-8" LANG="C.UTF-8"
 
-# Install dependencies to speed up builds
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y \
+RUN apt-get clean -y \
+    && /usr/local/bin/apt-upgrade \
+    && /usr/local/bin/apt-install \
     gdb \
+    gnupg \
+    curl \
     git \
     ccache \
     devscripts \
@@ -26,13 +27,11 @@ RUN apt-get update -y && \
     libyaml-dev \
     binutils-dev \
     zlib1g-dev \
-    doxygen && \
-    echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-    curl -L https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - && \
-    curl -L https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add -
-
-# Cleanup package manager
-RUN apt-get autoremove -y && \
-    apt-get autoclean && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    doxygen \
+    && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && curl -s -L https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
+    && curl -s -L https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

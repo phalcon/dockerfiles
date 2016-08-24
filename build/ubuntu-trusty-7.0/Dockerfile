@@ -1,12 +1,14 @@
 # Pull base image
-FROM phalconphp/bootstrap:ubuntu-15.10
+FROM phalconphp/bootstrap:ubuntu-14.04
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set environment variables
 ENV DEBIAN_FRONTEND="noninteractive" LC_ALL="C.UTF-8" LANG="C.UTF-8"
 
-RUN apt-get clean -y \
+RUN \
+    LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
+    && apt-get clean -y \
     && /usr/local/bin/apt-upgrade \
     && /usr/local/bin/apt-install \
     gdb \
@@ -28,6 +30,9 @@ RUN apt-get clean -y \
     binutils-dev \
     zlib1g-dev \
     doxygen \
+    php7.0-dev \
+    php7.0-common \
+    php7.0-cli \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && curl -s -L https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
     && curl -s -L https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
