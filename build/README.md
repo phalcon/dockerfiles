@@ -18,7 +18,7 @@ Docker images to build Phalcon in supported platforms.
 | Codename  | OS Release | Phalcon Releases  | PHP version  | Docker image                                          |
 | --------- | ---------- | ----------------- | ------------ | ----------------------------------------------------- |
 | `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.2` | `5.6.x`      | [`phalconphp/build:debian-jessie`][:debian-jessie:]   |
-| `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.2` | `7.0.x`      | [`phalconphp/build:debian-jessie`][:debian-jessie:]   |
+| `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.2` | `7.0.x`      | [`phalconphp/build:debian-jessie-7.0`][:jessie-7.0:]  |
 | `stretch` | 9          | `3.0.0` - `3.0.2` | `7.0.x`      | [`phalconphp/build:debian-stretch`][:debian-stretch:] |
 
 [:trusty-7:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-trusty-7.0/Dockerfile
@@ -26,4 +26,5 @@ Docker images to build Phalcon in supported platforms.
 [:ubuntu-wily:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-wily/Dockerfile
 [:ubuntu-xenial:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-xenial/Dockerfile
 [:debian-jessie:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-jessie/Dockerfile
+[:jessie-7.0:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-jessie-7.0/Dockerfile
 [:debian-stretch:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-stretch/Dockerfile
