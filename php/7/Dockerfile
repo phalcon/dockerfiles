@@ -10,13 +10,14 @@ FROM phalconphp/ubuntu:14.04.4
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Adding repositories
-RUN apt-add-repository -y ppa:chris-lea/libsodium && \
-    LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php
-
-RUN apt-get update -y && apt-get upgrade -y
+RUN curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash && \
+    apt-add-repository -y ppa:chris-lea/libsodium && \
+    LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php && \
+    apt-get update -y && \
+    apt-get upgrade -y
 
 # Install PHP
-RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-yes \
+RUN apt-get install -yq --no-install-suggests --no-install-recommends \
     php7.0-apcu \
     php-apcu-bc \
     php7.0-bcmath \
@@ -44,6 +45,7 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-ye
     php-pear \
     php7.0-odbc \
     php7.0-pgsql \
+    php7.0-phalcon \
     php7.0-pspell \
     php7.0-readline \
     php7.0-redis \
@@ -91,8 +93,7 @@ ADD installers/*.sh /installers/
 
 RUN bash /installers/aerospike.sh && \
     bash /installers/handlersocketi.sh && \
-    bash /installers/pinba.sh && \
-    bash /installers/phalcon.sh
+    bash /installers/pinba.sh
 
 # Install ext-yaml
 RUN printf "\n" | pecl install yaml && \
@@ -133,10 +134,10 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
 RUN phpenmod gearman redis memcache
 
 # Cleanup package manager
-RUN apt-get autoremove && \
-    apt-get autoclean && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/php5 /usr/lib/php/20121212 /usr/lib/php/20131226
+RUN apt-get autoremove -y && \
+    apt-get autoclean -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/php5 /etc/php/5* /usr/lib/php/20121212 /usr/lib/php/20131226
 
 # Set workdir
 WORKDIR /app
