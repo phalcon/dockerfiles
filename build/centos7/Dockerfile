@@ -16,6 +16,7 @@ RUN /usr/local/bin/yum-upgrade \
     gcc \
     gcc-c++ \
     gettext \
+    dnf \
     libtool \
     make \
     patch \
