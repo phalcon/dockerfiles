@@ -1,5 +1,5 @@
 # Pull base image
-FROM phalconphp/build:centos-7
+FROM phalconphp/build:centos7
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 

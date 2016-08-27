@@ -25,7 +25,8 @@ Docker images to build Phalcon in supported platforms.
 
 | Codename  | OS Release | Phalcon Releases  | PHP version  | Docker image                                            |
 | --------- | ---------- | ----------------- | ------------ | ------------------------------------------------------- |
-| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.2` | `5.6.x`      | [`phalconphp/build:centos-7-ius5.6`][:centos-7-ius5.6:] |
+| `Core`    | 7.2 LTS    | -                 | `5.4.x`      | [`phalconphp/build:centos7`][:centos7:]               |
+| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.2` | `php56u`     | [`phalconphp/build:centos7-ius56`][:centos7-ius56:]  |
 
 [:trusty-7:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-trusty-7.0/Dockerfile
 [:ubuntu-trusty:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-trusty/Dockerfile
@@ -34,4 +35,5 @@ Docker images to build Phalcon in supported platforms.
 [:debian-jessie:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-jessie/Dockerfile
 [:jessie-7.0:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-jessie-7.0/Dockerfile
 [:debian-stretch:]: https://github.com/phalcon/dockerfiles/blob/master/build/debian-stretch/Dockerfile
-[:centos-7-ius5.6:]: https://github.com/phalcon/dockerfiles/blob/master/build/centos-7-ius5.6/Dockerfile
+[:centos7:]: https://github.com/phalcon/dockerfiles/blob/master/build/centos7/Dockerfile
+[:centos7-ius56:]: https://github.com/phalcon/dockerfiles/blob/master/build/centos7-ius56/Dockerfile
