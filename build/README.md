@@ -23,7 +23,7 @@ Docker images to build Phalcon in supported platforms.
 
 ### CentOS (RHEL)
 
-| Codename  | OS Release | Phalcon Releases  | PHP version  | PHP repository | Docker image                                         |
+| Codename  | OS Release | Phalcon Releases  | PHP version  | RPM repository | Docker image                                         |
 | --------- | ---------- | ----------------- | ------------ | -------------- | ---------------------------------------------------- |
 | `Core`    | 7.2 LTS    | -                 | `5.4.x`      | -              | [`phalconphp/build:centos7`][:centos7:]              |
 | `Core`    | 7.2 LTS    | `3.0.1` - `3.0.2` | `php56u`     | `IUS`          | [`phalconphp/build:centos7-ius56`][:centos7-ius56:]  |
