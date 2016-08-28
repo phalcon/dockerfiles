@@ -17,7 +17,10 @@ RUN /usr/local/bin/yum-upgrade \
     gcc-c++ \
     gettext \
     dnf \
+    dnf-plugins-core \
+    yum-utils \
     libtool \
+    re2c \
     make \
     patch \
     pkgconfig \
