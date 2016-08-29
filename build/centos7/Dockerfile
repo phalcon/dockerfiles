@@ -44,6 +44,8 @@ RUN /usr/local/bin/yum-upgrade \
         zlib-devel \
         doxygen \
         perl-Test-Harness \
+        scl-utils \
+        scl-utils-build \
     && wget -qO - https://packagecloud.io/install/repositories/phalcon/stable/script.rpm.sh | bash \
     && wget -qO - https://packagecloud.io/install/repositories/phalcon/nightly/script.rpm.sh | bash \
     && sed -i.bak -n -e '/^Defaults.*requiretty/ { s/^/# /;};/^%wheel.*ALL$/ { s/^/# / ;} ;/^#.*wheel.*NOPASSWD/ { s/^#[ ]*//;};p' /etc/sudoers \
