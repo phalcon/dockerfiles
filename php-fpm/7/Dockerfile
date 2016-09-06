@@ -49,7 +49,7 @@ RUN sed -i -e "s|;listen.mode =.*|listen.mode = 0750|g" /etc/php/7.0/fpm/pool.d/
     chown -R www-data:www-data /etc/php/7.0/fpm/ && \
     usermod -u 1000 www-data
 
-RUN phpenmod -s fpm phalcon
+RUN phpenmod -s fpm phalcon xdebug
 
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stderr /var/log/php7.0-fpm.log
@@ -61,7 +61,7 @@ RUN apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Expose ports
-EXPOSE 9000 10000
+EXPOSE 9000 9001
 
 # Expose volumes
 VOLUME ["/etc/php/7.0/fpm/pool.d/"]
