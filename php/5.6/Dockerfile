@@ -51,7 +51,6 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends --force-ye
     php5.6-soap \
     php5.6-sqlite3 \
     php5.6-tidy \
-    php5.6-xdebug \
     php5.6-xmlrpc \
     php5.6-xsl \
     php5.6-zip \
@@ -110,14 +109,17 @@ RUN printf "\n" | pecl install -a msgpack-0.5.7 && \
     echo 'extension=msgpack.so' | tee /etc/php/5.6/mods-available/msgpack.ini && \
     ln -sf /etc/php/5.6/mods-available/msgpack.ini /etc/php/5.6/cli/conf.d/20-msgpack.ini
 
-# Tune Up ext-xdebug
-RUN echo 'zend_extension=/usr/lib/php/20131226/xdebug.so' | tee /etc/php/5.6/mods-available/xdebug.ini && \
-    echo "xdebug.remote_enable=true" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
-    echo "xdebug.remote_host=localhost" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
-    echo "xdebug.remote_port=10000" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
-    echo "xdebug.remote_handler=\"dbgp\"" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
-    echo "xdebug.remote_connect_back=1" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
-    echo "xdebug.cli_color=1" | tee -a /etc/php/5.6/mods-available/xdebug.ini && \
+# Install ext-xdebug
+RUN pecl install xdebug && \
+    echo '[Xdebug]' >  /etc/php/5.6/mods-available/xdebug.ini && \
+    echo 'zend_extension = /usr/lib/php/20131226/xdebug.so' >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo "xdebug.remote_enable = 1" >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo "xdebug.remote_host = 0.0.0.0" >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo "xdebug.remote_port = 9001" >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo 'xdebug.remote_handler = "dbgp"' >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo "xdebug.remote_connect_back = 1" >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo "xdebug.cli_color = 1" >> /etc/php/5.6/mods-available/xdebug.ini && \
+    echo 'xdebug.idekey = "PHPSTORM"' >> /etc/php/5.6/mods-available/xdebug.ini && \
     ln -sf /etc/php/5.6/mods-available/xdebug.ini /etc/php/5.6/cli/conf.d/20-xdebug.ini
 
 # Fix PHP warnings

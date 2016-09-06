@@ -107,14 +107,15 @@ RUN printf "\n" | pecl install -a libsodium && \
 
 # Install ext-xdebug
 RUN pecl install xdebug && \
-    echo 'zend_extension=/usr/lib/php/20151012/xdebug.so' | tee /etc/php/7.0/mods-available/xdebug.ini && \
-    echo "xdebug.remote_enable=true" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
-    echo "xdebug.remote_host=localhost" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
-    echo "xdebug.remote_port=10000" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
-    echo "xdebug.remote_handler=\"dbgp\"" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
-    echo "xdebug.remote_connect_back=1" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
-    echo "xdebug.cli_color=1" | tee -a /etc/php/7.0/mods-available/xdebug.ini && \
-    ln -sf /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/20-xdebug.ini
+    echo '[Xdebug]' >  /etc/php/7.0/mods-available/xdebug.ini && \
+    echo 'zend_extension = /usr/lib/php/20151012/xdebug.so' >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo "xdebug.remote_enable = 1" >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo "xdebug.remote_host = 0.0.0.0" >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo "xdebug.remote_port = 9001" >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo 'xdebug.remote_handler = "dbgp"' >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo "xdebug.remote_connect_back = 1" >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo "xdebug.cli_color = 1" >> /etc/php/7.0/mods-available/xdebug.ini && \
+    echo 'xdebug.idekey = "PHPSTORM"' >> /etc/php/7.0/mods-available/xdebug.ini
 
 # Fix PHP warnings
 RUN find /etc/php/7.0/mods-available/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
@@ -131,7 +132,7 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
     echo "apc.enable_cli = 1" | tee -a /etc/php/7.0/mods-available/apcu.ini && \
     echo 'extension=memcache.so' | tee /etc/php/7.0/mods-available/memcache.ini
 
-RUN phpenmod gearman redis memcache
+RUN phpenmod gearman redis memcache xdebug
 
 # Cleanup package manager
 RUN apt-get autoremove -y && \
