@@ -19,11 +19,16 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN mkdir -p /usr/share/zephir && \
     git clone --depth=1 -v https://github.com/phalcon/zephir /tmp/zephir && \
     cd /tmp/zephir && \
-    echo "#!/usr/bin/env bash\nexec \"\$@\"" | tee /usr/bin/sudo &&  \
-    chmod +x /usr/bin/sudo && \
+    apt-get update -y -qq && \
+    apt-get install sudo && \
+    (cd parser && phpize --clean) && \
     ./install -c && \
     chmod +x /docker-entrypoint.sh && \
-    rm -rf /tmp/*
+    # Cleanup package manager
+    apt-get autoremove && \
+    apt-get autoclean && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set up the Zephir directory
 VOLUME ["/zephir"]
