@@ -119,7 +119,7 @@ RUN printf "\n" | pecl install -a igbinary && \
 # Install ext-xdebug
 RUN pecl install xdebug && \
     echo '[Xdebug]' >  /etc/php5/mods-available/xdebug.ini && \
-    echo 'zend_extension = /usr/lib/php/20100525/xdebug.so' >> /etc/php5/mods-available/xdebug.ini && \
+    echo 'zend_extension = /usr/lib/php5/20100525/xdebug.so' >> /etc/php5/mods-available/xdebug.ini && \
     echo "xdebug.remote_enable = 1" >> /etc/php5/mods-available/xdebug.ini && \
     echo "xdebug.remote_host = 0.0.0.0" >> /etc/php5/mods-available/xdebug.ini && \
     echo "xdebug.remote_port = 9001" >> /etc/php5/mods-available/xdebug.ini && \
