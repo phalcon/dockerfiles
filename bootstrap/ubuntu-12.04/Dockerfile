@@ -1,5 +1,5 @@
 #
-# Bootstrap Dockerfile for Ubuntu 14.02
+# Bootstrap Dockerfile for Ubuntu 12.04
 #
 # https://github.com/phalcon/dockerfiles
 #
