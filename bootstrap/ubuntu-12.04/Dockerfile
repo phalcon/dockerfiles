@@ -13,7 +13,7 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 ENV TIMEZONE=UTC \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
-    DEBIAN_FRONTEND=noninteractive \
+    LANGUAGE=en_US.UTF-8 \
     TERM=xterm
 
 LABEL vendor=Phalcon\ Framework \
@@ -31,9 +31,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && echo "deb http://archive.ubuntu.com/ubuntu/ precise multiverse" >> /etc/apt/sources.list \
     && echo "deb-src http://archive.ubuntu.com/ubuntu/ precise multiverse" >> /etc/apt/sources.list \
     # Fix root terminal
-    && echo "export TERM=$TERM" >> /root/.bashrc \
+    && echo "export TERM=${TERM}" >> /root/.bashrc \
+    # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
+    && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     # Generate base locale
-    && locale-gen ${LANG} \
+    && locale-gen en_US ${LANG} \
+    && dpkg-reconfigure locales \
     && update-locale LANG=${LANG} \
     # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
