@@ -1,5 +1,5 @@
 NAME = phalconphp/bootstrap
-VERSION = ubuntu-12.04
+TAG = ubuntu-12.04
 SHELL = /bin/bash
 
 .PHONY: pre-build docker-build post-build build release push do-push post-push
@@ -7,18 +7,20 @@ SHELL = /bin/bash
 build: pre-build docker-build post-build
 
 pre-build:
+	tar -cvf base.tar usr
 
 post-build:
+	rm -f base.tar
 
 docker-build:
-	docker build -t $(NAME):$(VERSION) --no-cache --rm .
+	docker build -t $(NAME):$(TAG) --no-cache --rm .
 
 release: build push
 
 push: do-push post-push
 
 do-push:
-	docker push $(NAME):$(VERSION)
+	docker push $(NAME):$(TAG)
 
 post-push:
 
