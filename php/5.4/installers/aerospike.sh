@@ -1,18 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-mkdir -p /tmp/aerospike-ext && cd /tmp/aerospike-ext
+git clone --depth=1 -q https://github.com/aerospike/aerospike-client-php /tmp/aerospike-ext && cd /tmp/aerospike-ext/src/aerospike
 
-wget -O aerospike.zip https://github.com/aerospike/aerospike-client-php/archive/master.zip
-unzip aerospike.zip
+ln -sf /usr/lib/x86_64-linux-gnu/libcrypto.so /usr/local/lib/libcrypto.so
+ln -sf /usr/lib/x86_64-linux-gnu/libcrypto.a /usr/local/lib/libcrypto.a
 
-cd aerospike-client-php-master/src/aerospike
-./build.sh
+./build.sh -l ERROR || exit 1
 make install
 
-ls -al /usr/local/aerospike/
+echo extension=aerospike.so > /etc/php5/mods-available/aerospike.ini
+echo aerospike.udf.lua_system_path=/usr/local/aerospike/lua >> /etc/php5/mods-available/aerospike.ini
+echo aerospike.udf.lua_user_path=/usr/local/aerospike/usr-lua >> /etc/php5/mods-available/aerospike.ini
 
-echo 'extension=aerospike.so' | tee /etc/php5/mods-available/aerospike.ini
-echo 'aerospike.udf.lua_system_path=/usr/local/aerospike/lua' | tee -a /etc/php5/mods-available/aerospike.ini
-echo 'aerospike.udf.lua_user_path=/usr/local/aerospike/usr-lua' | tee -a /etc/php5/mods-available/aerospike.ini
-
-ln -s /etc/php5/mods-available/aerospike.ini /etc/php5/conf.d/20-aerospike.ini
+ln -sf /etc/php5/mods-available/aerospike.ini /etc/php5/conf.d/20-aerospike.ini

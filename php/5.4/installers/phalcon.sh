@@ -1,35 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-ORIG_PATH=$PATH
-
-export ZEPHIRDIR=/usr/share/zephir
-export PATH=$PATH:/usr/share/zephir/bin
-
-mkdir -p $ZEPHIRDIR
-
-git clone --depth=1 -v https://github.com/phalcon/zephir /tmp/zephir
-cd /tmp/zephir
-
-# because containers does not have sudo
-echo "#!/usr/bin/env bash
-exec \"\$@\"" > /usr/bin/sudo
-
-chmod +x /usr/bin/sudo
-(cd parser && phpize --clean)
-./install -c
-cd / && rm -rf /tmp/zephir
-
-git clone --depth=1 -v https://github.com/phalcon/cphalcon.git /tmp/phalcon-ext
+git clone -q https://github.com/phalcon/cphalcon.git /tmp/phalcon-ext
 cd /tmp/phalcon-ext
-zephir build
-cp ext/modules/phalcon.so $(php-config --extension-dir)/phalcon.so
+git reset --hard 9c66927
 
-echo 'extension=phalcon.so' | tee /etc/php5/mods-available/phalcon.ini
+cd /tmp/phalcon-ext/build
+./install
 
-ln -s /etc/php5/mods-available/phalcon.ini /etc/php5/conf.d/50-phalcon.ini
-
-cd /
-rm -rf $ZEPHIRDIR /tmp/phalcon-ext /usr/bin/sudo
-export PATH=$ORIG_PATH
-unset ZEPHIRDIR
-unset ORIG_PATH
+echo extension=phalcon.so > /etc/php5/mods-available/phalcon.ini
+ln -sf /etc/php5/mods-available/phalcon.ini /etc/php5/conf.d/50-phalcon.ini

@@ -1,10 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 PHP_EXT_DIR=`php-config --extension-dir`
 
-mkdir -p /tmp/handlersocketi-ext && cd /tmp/handlersocketi-ext
-
-git clone https://github.com/tony2001/php-ext-handlersocketi.git -b badoo && cd php-ext-handlersocketi
+git clone --depth=1 -q -b badoo https://github.com/tony2001/php-ext-handlersocketi.git /tmp/handlersocketi-ext && cd /tmp/handlersocketi-ext
 
 phpize
 ./configure
@@ -12,7 +10,8 @@ phpize
 make
 make install
 
-mv /tmp/handlersocketi-ext/php-ext-handlersocketi/modules/handlersocketi.so "${PHP_EXT_DIR}/handlersocketi.so"
+mv /tmp/handlersocketi-ext/modules/handlersocketi.so "${PHP_EXT_DIR}/handlersocketi.so"
 
-touch /etc/php5/mods-available/handlersocketi.ini && echo extension=handlersocketi.so > /etc/php5/mods-available/handlersocketi.ini
+touch /etc/php5/mods-available/handlersocketi.ini
+echo extension=handlersocketi.so > /etc/php5/mods-available/handlersocketi.ini
 ln -s /etc/php5/mods-available/handlersocketi.ini /etc/php5/conf.d/20-handlersocketi.ini

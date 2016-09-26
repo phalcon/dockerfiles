@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-mkdir -p /tmp/redis && cd /tmp/redis
-
-git clone https://github.com/phpredis/phpredis/ /tmp/redis
+git clone --depth=1 -q https://github.com/phpredis/phpredis/ /tmp/redis && cd /tmp/redis
 
 phpize
 ./configure
+
 make
 make install
 
-touch /etc/php5/mods-available/redis.ini && echo extension=redis.so > /etc/php5/mods-available/redis.ini
+touch /etc/php5/mods-available/redis.ini
+echo extension=redis.so > /etc/php5/mods-available/redis.ini
 ln -s /etc/php5/mods-available/redis.ini /etc/php5/conf.d/20-redis.ini
