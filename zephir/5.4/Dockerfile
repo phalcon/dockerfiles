@@ -9,26 +9,36 @@ FROM phalconphp/php:5.4
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-# Set environment variables
-ENV ZEPHIRDIR=/usr/share/zephir \
-    PATH=$PATH:/usr/share/zephir/bin
+LABEL vendor=Phalcon\ Framework \
+      com.phalconphp.image-specs="{\"Description\":\"Zephir for PHP 5.4\",\"License\":\"BSD\",\"Version\":\"1.0.0\",\"Layouts\":14}"
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+ADD docker-entrypoint.sh /docker-entrypoint.sh
 
-# Install Zephir
-RUN mkdir -p /usr/share/zephir && \
-    git clone --depth=1 -v https://github.com/phalcon/zephir /tmp/zephir && \
-    cd /tmp/zephir && \
-    apt-get update -y -qq && \
-    apt-get install sudo && \
-    (cd parser && phpize --clean) && \
-    ./install -c && \
-    chmod +x /docker-entrypoint.sh && \
-    # Cleanup package manager
-    apt-get autoremove && \
-    apt-get autoclean && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN \
+    echo "export ZEPHIRDIR=/usr/share/zephir" >> /root/.bashrc \
+    && echo "export PATH=$PATH:/usr/share/zephir/bin" >> /root/.bashrc \
+    && export ZEPHIRDIR=/usr/share/zephir \
+    && export PATH=$PATH:/usr/share/zephir/bin \
+    # System update
+    && /usr/local/bin/apt-upgrade \
+    # Install base stuff
+    && /usr/local/bin/apt-install \
+        libpcre3-dev \
+        gcc \
+        make \
+        re2c \
+    # Install Zephir
+    && mkdir -p /usr/share/zephir \
+    && git clone --depth=1 -q https://github.com/phalcon/zephir /tmp/zephir \
+    && cd /tmp/zephir/parser \
+    && phpize --clean \
+    && cd /tmp/zephir \
+    && ./install -c \
+    && chmod +x /docker-entrypoint.sh \
+    # Cleanup
+    && apt-get autoremove -y -f \
+    && apt-get clean -y \
+    && rm -rf /tmp/*
 
 # Set up the Zephir directory
 VOLUME ["/zephir"]
