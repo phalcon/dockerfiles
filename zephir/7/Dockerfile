@@ -19,8 +19,8 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN mkdir -p /usr/share/zephir && \
     git clone --depth=1 -v https://github.com/phalcon/zephir /tmp/zephir && \
     cd /tmp/zephir && \
-    apt-get update -y -qq && \
-    apt-get install sudo && \
+    echo "#!/usr/bin/env bash\nexec \"\$@\"" | tee /usr/bin/sudo &&  \
+    chmod +x /usr/bin/sudo && \
     (cd parser && phpize --clean) && \
     ./install -c && \
     chmod +x /docker-entrypoint.sh && \
