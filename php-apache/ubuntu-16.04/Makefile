@@ -7,6 +7,7 @@ SHELL = /bin/bash
 build: pre-build docker-build post-build
 
 pre-build:
+	tar -cvf installers.tar installers
 
 post-build: clean
 
@@ -23,5 +24,6 @@ do-push:
 post-push:
 
 clean:
+	rm -f installers.tar
 
 # vim:ft=make:noet:ci:pi:sts=0:sw=4:ts=4:tw=78:fenc=utf-8:et
