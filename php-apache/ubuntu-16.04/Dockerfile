@@ -26,7 +26,6 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && export COMPOSER_HOME=/root/composer \
     && export PATH=/root/composer/vendor/bin:$PATH \
     && export COMPOSER_ALLOW_SUPERUSER=1 \
-    && export \
     && chown -R $APPLICATION_USER:$APPLICATION_GROUP $APPLICATION_PATH \
     # Adding repositories
     && curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash \
