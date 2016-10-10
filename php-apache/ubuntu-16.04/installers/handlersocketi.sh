@@ -14,4 +14,4 @@ touch /etc/php/7.0/mods-available/handlersocketi.ini
 echo extension=handlersocketi.so > /etc/php/7.0/mods-available/handlersocketi.ini
 
 ln -s /etc/php/7.0/mods-available/handlersocketi.ini /etc/php/7.0/cli/conf.d/20-handlersocketi.ini
-ln -s /etc/php/7.0/mods-available/handlersocketi.ini /etc/php/7.0/apache2/conf.d/20-handlersocketi.ini
+ln -s /etc/php/7.0/mods-available/handlersocketi.ini /etc/php/7.0/fpm/conf.d/20-handlersocketi.ini

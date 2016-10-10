@@ -13,4 +13,4 @@ echo aerospike.udf.lua_system_path=/usr/local/aerospike/lua >> /etc/php/7.0/mods
 echo aerospike.udf.lua_user_path=/usr/local/aerospike/usr-lua >> /etc/php/7.0/mods-available/aerospike.ini
 
 ln -s /etc/php/7.0/mods-available/aerospike.ini /etc/php/7.0/cli/conf.d/20-aerospike.ini
-ln -s /etc/php/7.0/mods-available/aerospike.ini /etc/php/7.0/apache2/conf.d/20-aerospike.ini
+ln -s /etc/php/7.0/mods-available/aerospike.ini /etc/php/7.0/fpm/conf.d/20-aerospike.ini

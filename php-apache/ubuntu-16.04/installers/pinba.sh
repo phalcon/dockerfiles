@@ -14,4 +14,4 @@ touch /etc/php/7.0/mods-available/pinba.ini
 echo extension=pinba.so > /etc/php/7.0/mods-available/pinba.ini
 
 ln -s /etc/php/7.0/mods-available/pinba.ini /etc/php/7.0/cli/conf.d/20-pinba.ini
-ln -s /etc/php/7.0/mods-available/pinba.ini /etc/php/7.0/apache2/conf.d/20-pinba.ini
+ln -s /etc/php/7.0/mods-available/pinba.ini /etc/php/7.0/fpm/conf.d/20-pinba.ini
