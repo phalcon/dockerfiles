@@ -21,9 +21,6 @@ LABEL vendor=Phalcon\ Framework \
 # Add installers
 ADD installers.tar /
 
-# Fix https://github.com/webdevops/Dockerfile/issues/137
-ADD 10-php.conf /opt/docker/etc/httpd/conf.d/10-php.conf
-
 RUN mkdir -p $APPLICATION_PATH/public \
     # These vars need to be exported twice
     && export COMPOSER_HOME=/root/composer \
