@@ -32,8 +32,6 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
     # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
-    # Fix https://github.com/webdevops/Dockerfile/issues/138
-    && sed -i -re 's/^(mesg n)(.*)$/#\1\2/g' /root/.profile \
     # Install base stuff
     && /usr/local/bin/apt-install \
         php7.0-apcu \
