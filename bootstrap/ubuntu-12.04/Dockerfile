@@ -17,7 +17,7 @@ ENV TIMEZONE=UTC \
     TERM=xterm
 
 LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Ubuntu 12.04\",\"License\":\"BSD\",\"Version\":\"1.0.0\",\"Layouts\":5}"
+      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Ubuntu 12.04\",\"License\":\"BSD\",\"Version\":\"1.0.1\"}"
 
 # Add base tools
 ADD base.tar /
@@ -38,8 +38,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && locale-gen en_US ${LANG} \
     && dpkg-reconfigure locales \
     && update-locale LANG=${LANG} \
-    # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
-    && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     # Setup timezone
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" > /etc/timezone \
