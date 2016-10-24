@@ -24,6 +24,7 @@ ADD base.tar /
 
 # Init bootstrap
 RUN set -x \
+    && chmod +x /usr/local/bin/* \
     # Fix root terminal
     && echo "export TERM=${TERM}" >> /root/.bashrc \
     # Add testing
