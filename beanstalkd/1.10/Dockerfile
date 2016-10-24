@@ -5,41 +5,36 @@
 #
 
 # Pull base image
-FROM phalconphp/alpine:3.3
+FROM phalconphp/base:alpine-3
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-# Set environment variables
-ENV PATH /root/bin:$PATH
+ENV BEANSTALKD_VERSION="1.10"
 
-# Fix fatal error: 'fcntl.h' file not found
-COPY alpine.patch /root/alpine.patch
-
-# Install Beanstalk
-ADD install.sh /install.sh
-RUN bash /install.sh && rm /install.sh
-
-# Cleanup package manager
-RUN apk del ca-certificates \
-    curl \
-    make \
-    clang \
-    gcc \
-    bash \
-    bash-completion \
-    grep \
-    less \
-    nano \
-    wget \
-    musl-dev \
-    tar && \
-    rm -rf /var/cache/* /tmp/* /var/tmp/*
+RUN addgroup -S beanstalk \
+    && adduser -S -G beanstalk beanstalk \
+    && /usr/local/bin/apk-install 'su-exec>=0.2' \
+    && /usr/local/bin/apk-install --virtual build-dependencies \
+        gcc \
+        make \
+        musl-dev \
+    && curl -sL https://github.com/kr/beanstalkd/archive/v$BEANSTALKD_VERSION.tar.gz | tar xvz -C /tmp \
+    && cd /tmp/beanstalkd-$BEANSTALKD_VERSION \
+    && sed -i "s|#include <sys/fcntl.h>|#include <fcntl.h>|g" sd-daemon.c \
+    && make || return 1 \
+    && make PREFIX=/usr install \
+    && mkdir -p /var/lib/beanstalkd \
+    && chown beanstalk:beanstalk /var/lib/beanstalkd \
+    && /usr/local/bin/apk-delete build-dependencies \
+    && rm -rf /tmp/* \
+    && rm -rf /var/cache/apk/*
 
 # Expose ports
 EXPOSE 11300
 
 # Expose volumes
-VOLUME ["/data"]
+VOLUME ["/var/lib/beanstalkd"]
 
 # Set up the command arguments
-CMD ["beanstalkd", "-p", "11300", "-b", "/data"]
+ENTRYPOINT ["beanstalkd", "-p", "11300", "-u", "beanstalk"]
+CMD ["-b", "/var/lib/beanstalkd"]
