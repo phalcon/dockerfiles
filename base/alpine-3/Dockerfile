@@ -21,7 +21,9 @@ RUN \
         net-tools \
         sudo \
         wget \
-    && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && rm -rf /tmp/* \
+    && rm -rf /var/cache/apk/*
 
 # Define working directory
 WORKDIR /root
