@@ -27,8 +27,6 @@ ADD base.tar /
 # Init bootstrap
 RUN set -x \
     && chmod +x /usr/local/bin/* \
-    # Use dl-4, as the main repo is down
-    && sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories \
     # Tune Up root terminal
     && echo '[ -z "\$PS1" ] && return' >> /root/.bashrc \
     && echo 'HISTCONTROL=ignoredups:ignorespace' >> /root/.bashrc \
