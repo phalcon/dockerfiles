@@ -25,6 +25,8 @@ ADD base.tar /
 # Init bootstrap
 RUN set -x \
     && chmod +x /usr/local/bin/* \
+    # Use dl-4, as the main repo is down
+    && sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories \
     # Fix root terminal
     && echo "export TERM=${TERM}" >> /root/.bashrc \
     # Add testing
@@ -35,4 +37,6 @@ RUN set -x \
     && /usr/local/bin/apk-install \
         bash \
         bash-completion \
-        ca-certificates
+        ca-certificates \
+    && rm -rf /tmp/* \
+    && rm -rf /var/cache/apk/*
