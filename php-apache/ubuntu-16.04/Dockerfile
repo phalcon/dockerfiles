@@ -61,6 +61,13 @@ RUN mkdir -p $APPLICATION_PATH/public \
         build-essential \
         make \
         re2c \
+    # Getting PHIVE
+    && wget https://phar.io/releases/phive.phar \
+    && wget https://phar.io/releases/phive.phar.asc \
+    && gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79 \
+    && gpg --verify phive.phar.asc phive.phar \
+    && chmod +x phive.phar \
+    && sudo mv phive.phar /usr/bin/phive \
     && pecl channel-update pecl.php.net \
     # Install aerospike
     && bash /installers/aerospike.sh \
