@@ -36,6 +36,7 @@ RUN \
     && ./install -c \
     && chmod +x /docker-entrypoint.sh \
     # Cleanup
+    && rm -f /etc/php5/conf.d/20-redis.ini \
     && apt-get autoremove -y -f \
     && apt-get clean -y \
     && rm -rf /tmp/*

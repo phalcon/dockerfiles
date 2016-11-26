@@ -24,7 +24,7 @@ RUN mkdir -p /usr/share/zephir && \
     (cd parser && phpize --clean) && \
     ./install -c && \
     chmod +x /docker-entrypoint.sh && \
-    # Cleanup package manager
+    rm -f /etc/php/7.0/cli/conf.d/20-redis.ini && \
     apt-get autoremove && \
     apt-get autoclean && \
     apt-get clean && \
