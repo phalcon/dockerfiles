@@ -10,9 +10,9 @@ FROM phalconphp/php:7
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set environment variables
-ENV COMPOSER_HOME /root/composer
-ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
-ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_HOME=/root/composer \
+    PATH $COMPOSER_HOME/vendor/bin:$PATH \
+    COMPOSER_ALLOW_SUPERUSER=1
 
 # Install Composer
 RUN sed -i "s|apc.enable_cli = 1|apc.enable_cli = 0|" /etc/php/7.0/mods-available/apcu.ini && \
