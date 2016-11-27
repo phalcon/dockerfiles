@@ -61,7 +61,7 @@ RUN mkdir -p $APPLICATION_PATH/public \
         build-essential \
         make \
         re2c \
-    # Getting PHIVE
+    # Getting phive
     && wget https://phar.io/releases/phive.phar \
     && wget https://phar.io/releases/phive.phar.asc \
     && gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79 \
@@ -69,6 +69,22 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && chmod +x phive.phar \
     && sudo mv phive.phar /usr/bin/phive \
     && pecl channel-update pecl.php.net \
+    # Getting phpcs
+    && curl -sOL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
+    && chmod +x phpcs.phar \
+    && mv phpcs.phar /usr/local/bin/phpcs \
+    # Getting phpcbf
+    && curl -sOL https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
+    && chmod +x phpcbf.phar \
+    && mv phpcbf.phar /usr/local/bin/phpcbf \
+    # Getting phpmd
+    && curl -sOL http://static.phpmd.org/php/latest/phpmd.phar \
+    && chmod +x phpmd.phar \
+    && mv phpmd.phar /usr/local/bin/phpmd \
+    # Getting phing
+    && curl -sOL http://www.phing.info/get/phing-latest.phar \
+    && chmod +x phing-latest.phar \
+    && mv phing-latest.phar /usr/local/bin/phing \
     # Install aerospike
     && bash /installers/aerospike.sh \
     # Install handlersocketi
