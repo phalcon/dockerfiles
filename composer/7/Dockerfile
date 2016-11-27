@@ -11,7 +11,7 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set environment variables
 ENV COMPOSER_HOME=/root/composer \
-    PATH $COMPOSER_HOME/vendor/bin:$PATH \
+    PATH=$COMPOSER_HOME/vendor/bin:$PATH \
     COMPOSER_ALLOW_SUPERUSER=1
 
 # Install Composer
