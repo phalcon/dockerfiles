@@ -91,6 +91,8 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && bash /installers/handlersocketi.sh \
     # Install pinba
     && bash /installers/pinba.sh \
+    # Install Weakref
+    && bash /installers/weakref.sh \
     # Install Composer
     && mkdir $COMPOSER_HOME \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
