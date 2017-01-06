@@ -1,5 +1,5 @@
 #
-# Bootstrap Dockerfile for Alpine 3.4
+# phalconphp/bootstrap:alpine-3 Dockerfile
 #
 # https://github.com/phalcon/dockerfiles
 #
@@ -19,7 +19,7 @@ ENV TIMEZONE=UTC \
     HOME="/root"
 
 LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Alpine 3.4\",\"License\":\"BSD\",\"Version\":\"1.0.0\"}"
+      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Alpine 3.4\",\"License\":\"BSD\",\"Version\":\"1.0.1\"}"
 
 # Add base tools
 ADD base.tar /

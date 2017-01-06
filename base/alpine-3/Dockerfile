@@ -1,5 +1,5 @@
 #
-# Base Dockerfile for Alpine 3.4
+# phalconphp/base:alpine-3 Dockerfile
 #
 # https://github.com/phalcon/dockerfiles
 #
