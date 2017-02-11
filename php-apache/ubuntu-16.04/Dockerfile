@@ -23,6 +23,7 @@ ADD installers.tar /
 
 RUN mkdir -p $APPLICATION_PATH/public \
     # These vars need to be exported twice
+    && export DEBIAN_FRONTEND=noninteractive \
     && export COMPOSER_HOME=/root/composer \
     && export PATH=/root/composer/vendor/bin:$PATH \
     && export COMPOSER_ALLOW_SUPERUSER=1 \
@@ -32,8 +33,10 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
     # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
+    # Update apt cache
+    && apt-get update -y \
     # Install base stuff
-    && /usr/local/bin/apt-install \
+    && apt-get -o Dpkg::Options::="--force-confnew" install -y -f --no-install-recommends \
         php7.0-apcu \
         php-apcu-bc \
         php7.0-dev \
@@ -42,7 +45,7 @@ RUN mkdir -p $APPLICATION_PATH/public \
         php7.0-gmp \
         php-igbinary \
         php7.0-imagick \
-        php7.0-imap\
+        php7.0-imap \
         php-libsodium \
         php-memcache \
         php7.0-mongodb \
@@ -115,7 +118,9 @@ RUN mkdir -p $APPLICATION_PATH/public \
         re2c \
     && apt-get autoremove -y -f \
     && apt-get clean -y \
-    && rm -rf /tmp/* \
+    && rm -rf \
+        /tmp/* \
+        /var/lib/apt/lists/* \
         /installers
 
 # Expose ports
