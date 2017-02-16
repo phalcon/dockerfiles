@@ -30,6 +30,7 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && chown -R $APPLICATION_USER:$APPLICATION_GROUP $APPLICATION_PATH \
     # Adding repositories
     && curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash \
+    && add-apt-repository ppa:ondrej/apache2 \
     && LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
     # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
@@ -121,7 +122,8 @@ RUN mkdir -p $APPLICATION_PATH/public \
     && rm -rf \
         /tmp/* \
         /var/lib/apt/lists/* \
-        /installers
+        /installers \
+        /opt/docker/etc/php/fpm/pool.d/www.conf
 
 # Expose ports
 EXPOSE 80 443 9000
