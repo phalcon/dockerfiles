@@ -4,9 +4,9 @@
 # https://github.com/phalcon/dockerfiles
 #
 
+# Pull base image
 FROM webdevops/php:alpine-3-php7
 
-# Pull base image
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # To override this run: docker run -e
