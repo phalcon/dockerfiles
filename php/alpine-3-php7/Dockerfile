@@ -38,6 +38,11 @@ RUN \
     && /usr/local/bin/apk-install \
         php7-dba \
         php7-gmp \
+        php7-imap \
+        php7-odbc \
+        php7-pgsql \
+        php7-pspell \
+        php7-tidy \
         php7-xdebug \
     && sed -ri 's|;zend_extension|zend_extension|g' /etc/php7/conf.d/xdebug.ini \
     # Install phalcon
