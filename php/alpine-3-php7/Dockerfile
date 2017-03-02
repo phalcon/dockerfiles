@@ -65,6 +65,8 @@ RUN \
     && sed -ri "s|#( ?)(include <sys/poll.h>)|#\1include <poll.h>|g" /usr/include/php7/main/php_network.h \
     # Install phalcon
     && bash /installers/phalcon.sh \
+    # Install pinba
+    && bash /installers/pinba.sh \
     # Patch PECL
     && sed -i "$ s|\-n||g" /usr/bin/pecl \
     && pecl channel-update pecl.php.net \
