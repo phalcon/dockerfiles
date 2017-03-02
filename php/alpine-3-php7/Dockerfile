@@ -41,6 +41,8 @@ RUN \
         imagemagick-dev \
         yaml-dev \
         php7-dev \
+    # Install missed deps from EDGE
+    && /usr/local/bin/apk-install gearman-dev --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
     && ln -s /usr/bin/phpize7 /usr/bin/phpize \
     && ln -s /usr/bin/php-config7 /usr/bin/php-config \
     # Install dependencies
@@ -67,6 +69,8 @@ RUN \
     && bash /installers/phalcon.sh \
     # Install pinba
     && bash /installers/pinba.sh \
+    # Install gearman
+    && bash /installers/gearman.sh \
     # Patch PECL
     && sed -i "$ s|\-n||g" /usr/bin/pecl \
     && pecl channel-update pecl.php.net \
@@ -89,8 +93,20 @@ RUN \
     && echo "extension=libsodium.so" > /etc/php7/conf.d/20-libsodium.ini \
     && printf "\n" | pecl install -a yaml-${YAML_DRIVER_VERSION} \
     && echo "extension=yaml.so" > /etc/php7/conf.d/20-yaml.ini \
+    # Install apcu_bc
+    && pecl config-set preferred_state beta \
+    && printf "\n" | pecl install -a apcu_bc \
+    # See See https://pear.php.net/bugs/bug.php?id=21007
+    && echo "[APCu]" > /etc/php7/conf.d/apcu.ini \
+    && echo "extension=apcu.so" >> /etc/php7/conf.d/apcu.ini \
+    && echo "[APC]" >> /etc/php7/conf.d/apcu.ini \
+    && echo "extension=apc.so" >> /etc/php7/conf.d/apcu.ini \
+    && echo "apc.enabled=1" >> /etc/php7/conf.d/apcu.ini \
+    && echo "apc.enable_cli=1" >> /etc/php7/conf.d/apcu.ini \
     # Cleanup
-    && apk del .dev-deps \
+    && apk del \
+        .dev-deps \
+        gearman-dev \
     && rm -rf \
         /installers \
         /var/cache/apk/* \
