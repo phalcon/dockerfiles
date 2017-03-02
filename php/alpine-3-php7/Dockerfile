@@ -43,6 +43,7 @@ RUN \
         php7-dev \
     # Install missed deps from EDGE
     && /usr/local/bin/apk-install gearman-dev --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+    # Create useful symlinks
     && ln -s /usr/bin/phpize7 /usr/bin/phpize \
     && ln -s /usr/bin/php-config7 /usr/bin/php-config \
     # Install dependencies
@@ -106,7 +107,6 @@ RUN \
     # Cleanup
     && apk del \
         .dev-deps \
-        gearman-dev \
     && rm -rf \
         /installers \
         /var/cache/apk/* \
