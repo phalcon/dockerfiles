@@ -34,6 +34,12 @@ RUN \
         php7-dev \
     && ln -s /usr/bin/phpize7 /usr/bin/phpize \
     && ln -s /usr/bin/php-config7 /usr/bin/php-config \
+    # Install extensions
+    && /usr/local/bin/apk-install \
+        php7-dba \
+        php7-gmp \
+        php7-xdebug \
+    && sed -ri 's|;zend_extension|zend_extension|g' /etc/php7/conf.d/xdebug.ini \
     # Install phalcon
     && bash /installers/phalcon.sh \
     # Cleanup
