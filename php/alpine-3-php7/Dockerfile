@@ -72,6 +72,8 @@ RUN \
     && bash /installers/pinba.sh \
     # Install gearman
     && bash /installers/gearman.sh \
+    # Install handlersoketi
+    && bash /installers/handlersocketi.sh \
     # Patch PECL
     && sed -i "$ s|\-n||g" /usr/bin/pecl \
     && pecl channel-update pecl.php.net \
