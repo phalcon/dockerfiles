@@ -40,11 +40,15 @@ RUN \
         php7-gmp \
         php7-imap \
         php7-odbc \
+        php7-pdo_odbc \
+        php7-pdo_pgsql \
         php7-pgsql \
         php7-pspell \
         php7-tidy \
         php7-xdebug \
-    && sed -ri 's|;zend_extension|zend_extension|g' /etc/php7/conf.d/xdebug.ini \
+    && sed -ri "s|;zend_extension|zend_extension|g" /etc/php7/conf.d/xdebug.ini \
+    # Patch PHP 7
+    && sed -ri "s|#( ?)(include <sys/poll.h>)|#\1include <poll.h>|g" /usr/include/php7/main/php_network.h \
     # Install phalcon
     && bash /installers/phalcon.sh \
     # Cleanup
