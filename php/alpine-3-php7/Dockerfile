@@ -12,7 +12,11 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 # To override this run: docker run -e
 ENV COMPOSER_HOME=/root/composer \
     PATH=/root/composer/vendor/bin:$PATH \
-    COMPOSER_ALLOW_SUPERUSER=1
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    SSH2_DRIVER_VERSION=1.0 \
+    YAML_DRIVER_VERSION=2.0.0 \
+    # https://github.com/mongodb/mongo-php-driver/issues/507 (Not compile with latest)
+    MONGODB_DRIVER_VERSION=1.1.10
 
 # Add installers
 ADD installers.tar /
@@ -31,9 +35,19 @@ RUN \
         make \
         pkgconf \
         re2c \
+        cyrus-sasl-dev \
+        libsodium-dev \
+        libssh2-dev \
+        imagemagick-dev \
+        yaml-dev \
         php7-dev \
     && ln -s /usr/bin/phpize7 /usr/bin/phpize \
     && ln -s /usr/bin/php-config7 /usr/bin/php-config \
+    # Install dependencies
+    && /usr/local/bin/apk-install \
+        libsodium \
+        libmemcached-dev \
+        libtool \
     # Install extensions
     && /usr/local/bin/apk-install \
         php7-dba \
@@ -51,6 +65,28 @@ RUN \
     && sed -ri "s|#( ?)(include <sys/poll.h>)|#\1include <poll.h>|g" /usr/include/php7/main/php_network.h \
     # Install phalcon
     && bash /installers/phalcon.sh \
+    # Patch PECL
+    && sed -i "$ s|\-n||g" /usr/bin/pecl \
+    && pecl channel-update pecl.php.net \
+    # Install PECL extensions
+    && printf "\n" | pecl install -a imagick \
+    && echo "extension=imagick.so" > /etc/php7/conf.d/20-imagick.ini \
+    && printf "\n" | pecl install -a memcached \
+    && echo "extension=memcached.so" > /etc/php7/conf.d/20-memcached.ini \
+    && printf "\n" | pecl install -f mongodb-${MONGODB_DRIVER_VERSION} \
+    && echo "extension=mongodb.so" > /etc/php7/conf.d/20-mongodb.ini \
+    && printf "\n" | pecl install -a msgpack \
+    && echo "extension=msgpack.so" > /etc/php7/conf.d/20-msgpack.ini \
+    && printf "\n" | pecl install -a igbinary \
+    && echo "extension=igbinary.so" > /etc/php7/conf.d/20-igbinary.ini \
+    && printf "\n" | pecl install -a redis \
+    && echo "extension=redis.so" > /etc/php7/conf.d/20-redis.ini \
+    && printf "\n" | pecl install -a ssh2-${SSH2_DRIVER_VERSION} \
+    && echo "extension=ssh2.so" > /etc/php7/conf.d/20-ssh2.ini \
+    && printf "\n" | pecl install -a libsodium \
+    && echo "extension=libsodium.so" > /etc/php7/conf.d/20-libsodium.ini \
+    && printf "\n" | pecl install -a yaml-${YAML_DRIVER_VERSION} \
+    && echo "extension=yaml.so" > /etc/php7/conf.d/20-yaml.ini \
     # Cleanup
     && apk del .dev-deps \
     && rm -rf \
