@@ -28,6 +28,7 @@ RUN \
     # Install dev environment
     && /usr/local/bin/apk-install --no-cache --virtual .dev-deps \
         autoconf \
+        automake \
         file \
         g++ \
         gcc \
@@ -35,6 +36,9 @@ RUN \
         make \
         pkgconf \
         re2c \
+        libtool \
+        check \
+        check-dev \
         cyrus-sasl-dev \
         libsodium-dev \
         libssh2-dev \
@@ -106,6 +110,8 @@ RUN \
     && echo "extension=apc.so" >> /etc/php7/conf.d/apcu.ini \
     && echo "apc.enabled=1" >> /etc/php7/conf.d/apcu.ini \
     && echo "apc.enable_cli=1" >> /etc/php7/conf.d/apcu.ini \
+    # Install php nanotime support
+    && bash /installers/nanotime.sh \
     # Cleanup
     && apk del \
         .dev-deps \
