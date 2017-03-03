@@ -8,5 +8,3 @@ phpize &> /dev/null
 
 make --silent -j"$(getconf _NPROCESSORS_ONLN)" &> /dev/null
 make --silent install
-
-echo "extension=pinba.so" > /etc/php7/conf.d/20-pinba.ini

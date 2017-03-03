@@ -17,7 +17,4 @@ phpize
 
 make --silent -j"$(getconf _NPROCESSORS_ONLN)" &> /dev/null
 make --silen install
-
-echo "extension=nanotime.so" > /etc/php7/conf.d/20-nanotime.ini
-
 make test

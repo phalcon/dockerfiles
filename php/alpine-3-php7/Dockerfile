@@ -67,7 +67,6 @@ RUN \
         php7-pspell \
         php7-tidy \
         php7-xdebug \
-    && sed -ri "s|;zend_extension|zend_extension|g" /etc/php7/conf.d/xdebug.ini \
     # Patch PHP 7
     && sed -ri "s|#( ?)(include <sys/poll.h>)|#\1include <poll.h>|g" /usr/include/php7/main/php_network.h \
     # Install phalcon
@@ -83,35 +82,21 @@ RUN \
     && pecl channel-update pecl.php.net \
     # Install PECL extensions
     && printf "\n" | pecl install -a imagick \
-    && echo "extension=imagick.so" > /etc/php7/conf.d/20-imagick.ini \
     && printf "\n" | pecl install -a memcached \
-    && echo "extension=memcached.so" > /etc/php7/conf.d/20-memcached.ini \
     && printf "\n" | pecl install -f mongodb-${MONGODB_DRIVER_VERSION} \
-    && echo "extension=mongodb.so" > /etc/php7/conf.d/20-mongodb.ini \
     && printf "\n" | pecl install -a msgpack \
-    && echo "extension=msgpack.so" > /etc/php7/conf.d/20-msgpack.ini \
     && printf "\n" | pecl install -a igbinary \
-    && echo "extension=igbinary.so" > /etc/php7/conf.d/20-igbinary.ini \
     && printf "\n" | pecl install -a redis \
-    && echo "extension=redis.so" > /etc/php7/conf.d/20-redis.ini \
     && printf "\n" | pecl install -a ssh2-${SSH2_DRIVER_VERSION} \
-    && echo "extension=ssh2.so" > /etc/php7/conf.d/20-ssh2.ini \
     && printf "\n" | pecl install -a libsodium \
-    && echo "extension=libsodium.so" > /etc/php7/conf.d/20-libsodium.ini \
     && printf "\n" | pecl install -a yaml-${YAML_DRIVER_VERSION} \
-    && echo "extension=yaml.so" > /etc/php7/conf.d/20-yaml.ini \
     # Install apcu_bc
     && pecl config-set preferred_state beta \
     && printf "\n" | pecl install -a apcu_bc \
-    # See See https://pear.php.net/bugs/bug.php?id=21007
-    && echo "[APCu]" > /etc/php7/conf.d/apcu.ini \
-    && echo "extension=apcu.so" >> /etc/php7/conf.d/apcu.ini \
-    && echo "[APC]" >> /etc/php7/conf.d/apcu.ini \
-    && echo "extension=apc.so" >> /etc/php7/conf.d/apcu.ini \
-    && echo "apc.enabled=1" >> /etc/php7/conf.d/apcu.ini \
-    && echo "apc.enable_cli=1" >> /etc/php7/conf.d/apcu.ini \
     # Install php nanotime support
     && bash /installers/nanotime.sh \
+    # Install configs
+    && mv /installers/etc/php7/conf.d/*.ini /etc/php7/conf.d/ \
     # Cleanup
     && apk del \
         .dev-deps \

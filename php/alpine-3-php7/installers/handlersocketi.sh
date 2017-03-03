@@ -8,5 +8,3 @@ phpize &> /dev/null
 
 make --silent -j"$(getconf _NPROCESSORS_ONLN)" &> /dev/null
 make --silent install
-
-echo "extension=handlersocketi.so" > /etc/php7/conf.d/20-handlersocketi.ini
