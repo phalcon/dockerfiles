@@ -104,4 +104,6 @@ RUN \
         /installers \
         /var/cache/apk/* \
         /tmp/* \
-        /var/tmp/*
+        /var/tmp/* \
+    # Remove unneeded envirnment vars
+    && unset MONGODB_DRIVER_VERSION SSH2_DRIVER_VERSION YAML_DRIVER_VERSION
