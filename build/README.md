@@ -8,27 +8,27 @@ Docker images to build Phalcon in supported platforms.
 
 | Codename  | OS Release | Phalcon Releases  | PHP version  | Docker image                                        |
 | --------- | ---------- | ----------------- | ------------ | --------------------------------------------------- |
-| `trusty`  | 14.04 LTS  | `3.0.0` - `3.0.2` | `5.5.x`      | [`phalconphp/build:ubuntu-trusty`][:ubuntu-trusty:] |
-| `trusty`  | 14.04 LTS  | `3.0.0` - `3.0.2` | `7.0.x`      | [`phalconphp/build:ubuntu-trusty-7.0`][:trusty-7:]  |
-| `wily`    | 15.10      | `3.0.0` - `3.0.2` | `5.6.x`      | [`phalconphp/build:ubuntu-wily`][:ubuntu-wily:]     |
-| `xenial`  | 16.04 LTS  | `3.0.0` - `3.0.2` | `7.0.x`      | [`phalconphp/build:ubuntu-xenial`][:ubuntu-xenial:] |
+| `trusty`  | 14.04 LTS  | `3.0.0` - `3.0.4` | `5.5.x`      | [`phalconphp/build:ubuntu-trusty`][:ubuntu-trusty:] |
+| `trusty`  | 14.04 LTS  | `3.0.0` - `3.0.4` | `7.0.x`      | [`phalconphp/build:ubuntu-trusty-7.0`][:trusty-7:]  |
+| `wily`    | 15.10      | `3.0.0` - `3.0.4` | `5.6.x`      | [`phalconphp/build:ubuntu-wily`][:ubuntu-wily:]     |
+| `xenial`  | 16.04 LTS  | `3.0.0` - `3.0.4` | `7.0.x`      | [`phalconphp/build:ubuntu-xenial`][:ubuntu-xenial:] |
 
 ### Debian
 
 | Codename  | OS Release | Phalcon Releases  | PHP version  | Docker image                                          |
 | --------- | ---------- | ----------------- | ------------ | ----------------------------------------------------- |
-| `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.2` | `5.6.x`      | [`phalconphp/build:debian-jessie`][:debian-jessie:]   |
-| `jessie`  | 8.5 LTS    | `3.0.1` - `3.0.2` | `7.0.x`      | [`phalconphp/build:debian-jessie-7.0`][:jessie-7.0:]  |
-| `stretch` | 9          | `3.0.0` - `3.0.2` | `7.0.x`      | [`phalconphp/build:debian-stretch`][:debian-stretch:] |
+| `jessie`  | 8.5 LTS    | `3.0.0` - `3.0.4` | `5.6.x`      | [`phalconphp/build:debian-jessie`][:debian-jessie:]   |
+| `jessie`  | 8.5 LTS    | `3.0.1` - `3.0.4` | `7.0.x`      | [`phalconphp/build:debian-jessie-7.0`][:jessie-7.0:]  |
+| `stretch` | 9          | `3.0.0` - `3.0.4` | `7.0.x`      | [`phalconphp/build:debian-stretch`][:debian-stretch:] |
 
 ### CentOS (RHEL)
 
 | Codename  | OS Release | Phalcon Releases  | PHP version  | RPM repo | Docker image                                         |
 | --------- | ---------- | ----------------- | ------------ | -------- | ---------------------------------------------------- |
 | `Core`    | 7.2 LTS    | -                 | `5.4.x`      | -        | [`phalconphp/build:centos7`][:centos7:]              |
-| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.2` | `php55u`     | `IUS`    | [`phalconphp/build:centos7-ius55`][:centos7-ius55:]  |
-| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.2` | `php56u`     | `IUS`    | [`phalconphp/build:centos7-ius56`][:centos7-ius56:]  |
-| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.2` | `php70u`     | `IUS`    | [`phalconphp/build:centos7-ius70`][:centos7-ius70:]  |
+| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.4` | `php55u`     | `IUS`    | [`phalconphp/build:centos7-ius55`][:centos7-ius55:]  |
+| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.4` | `php56u`     | `IUS`    | [`phalconphp/build:centos7-ius56`][:centos7-ius56:]  |
+| `Core`    | 7.2 LTS    | `3.0.1` - `3.0.4` | `php70u`     | `IUS`    | [`phalconphp/build:centos7-ius70`][:centos7-ius70:]  |
 
 [:trusty-7:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-trusty-7.0/Dockerfile
 [:ubuntu-trusty:]: https://github.com/phalcon/dockerfiles/blob/master/build/ubuntu-trusty/Dockerfile
