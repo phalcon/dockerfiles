@@ -30,7 +30,6 @@ RUN apt-get clean -y \
     doxygen \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
-    && wget -qO - https://packagecloud.io/phalcon/nightly/gpgkey | apt-key add - \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \
