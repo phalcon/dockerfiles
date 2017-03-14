@@ -71,7 +71,9 @@ ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
     PHP_ASC_URL="https://secure.php.net/get/php-7.1.2.tar.xz.asc/from/this/mirror" \
     PHP_SHA256="d815a0c39fd57bab1434a77ff0610fb507c22f790c66cd6f26e27030c4b3e971" \
     PHP_MD5="d79afea1870277c86fac903566fb6c5d" \
-    ZEPHIRDIR=/usr/share/zephir
+    ZEPHIRDIR=/usr/share/zephir \
+    ZEND_DONT_UNLOAD_MODULES=1 \
+    CC="ccache gcc"
 
 RUN cd /usr/src \
     && wget -O php.tar.xz "$PHP_URL"; \
@@ -115,12 +117,7 @@ RUN cd /usr/src \
     && apt-get clean -y \
     && rm -r \
         /var/lib/apt/lists/* \
-        /tmp/* \
-    && export PRE_PHP_INCLUDES=`php-config --includes`
-
-ENV PRE_PHP_INCLUDES=$PRE_PHP_INCLUDES \
-    ZEND_DONT_UNLOAD_MODULES=1 \
-    CC="ccache gcc"
+        /tmp/*
 
 # Set workdir
 WORKDIR /app
