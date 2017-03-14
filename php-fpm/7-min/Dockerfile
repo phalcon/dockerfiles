@@ -5,7 +5,7 @@
 #
 
 # Pull base image
-FROM php:7.0-cli
+FROM php:7.0-fpm
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
