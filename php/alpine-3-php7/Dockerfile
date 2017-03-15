@@ -24,7 +24,7 @@ ADD installers.tar /
 RUN \
     # Update composer
     mkdir -p $COMPOSER_HOME \
-    && /usr/local/bin/composer self-update \ 
+    && /usr/local/bin/composer self-update \
     # Install dev environment
     && /usr/local/bin/apk-install --no-cache --virtual .dev-deps \
         autoconf \

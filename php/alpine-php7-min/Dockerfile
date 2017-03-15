@@ -1,5 +1,5 @@
 #
-# Dockerfile for phalconphp/php:alpine-3-php7
+# Dockerfile for phalconphp/php:alpine-php7-min
 #
 # https://github.com/phalcon/dockerfiles
 #
@@ -9,16 +9,29 @@ FROM php:7.0-alpine
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-RUN apk update && apk add \
+ENV PHALCON_VERSION=3.0.4
+
+RUN \
+    # Install dev dependencies
+    apk --update add --virtual build-dependencies \
         autoconf \
         g++ \
-        make && curl -O https://codeload.github.com/phalcon/cphalcon/tar.gz/v3.0.4 && \
-        tar xvzf v3.0.4 && \
-        cd cphalcon-3.0.4/build && sh install && \
-        cd ../../ && rm -Rf cphalcon-3.0.4 && rm -Rf v3.0.4 && \
-        echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini \
-    && rm -rf \
+        file \
+        re2c \
+        make \
+    # Install latest Phalcon
+    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v$PHALCON_VERSION \
+    && cd /tmp/ \
+    && tar xvzf phalcon.tar.gz \
+    && cd cphalcon-$PHALCON_VERSION/build \
+    && sh install \
+    && echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/50-phalcon.ini \
+    # Cleanup
+    && apk del build-dependencies \
+    && rm -rf cphalcon-$PHALCON_VERSION \
+        v3.0.4 \
         /var/cache/apk/* \
         /tmp/* \
         /var/tmp/* \
-    && apk del autoconf g++ make
+    # Remove unneeded envirnment vars
+    && unset PHALCON_VERSION
