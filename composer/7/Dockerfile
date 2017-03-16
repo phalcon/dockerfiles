@@ -25,4 +25,5 @@ VOLUME ["/app"]
 WORKDIR /app
 
 # Set up the command arguments
+ENTRYPOINT ["composer", "--ansi"]
 CMD ["composer"]
