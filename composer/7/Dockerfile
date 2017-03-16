@@ -8,8 +8,9 @@
 FROM phalconphp/php:alpine-php7-min
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /composer
+ENV COMPOSER_ALLOW_SUPERUSER 1 \
+    COMPOSER_HOME /composer \
+    PATH=$COMPOSER_HOME/vendor/bin:$PATH
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     chmod +x /usr/local/bin/composer
