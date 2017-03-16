@@ -15,9 +15,6 @@ ENV COMPOSER_HOME=/root/composer \
     COMPOSER_ALLOW_SUPERUSER=1 \
     APPLICATION_PATH="/project"
 
-LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"PHP 7.0 and Apache for Ubuntu 16.04\",\"License\":\"BSD\",\"Version\":\"1.1.0\",\"Layouts\":18}"
-
 # Add installers
 ADD installers.tar /
 
