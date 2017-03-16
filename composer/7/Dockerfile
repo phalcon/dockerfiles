@@ -23,6 +23,6 @@ VOLUME ["/app"]
 
 # Define working directory
 WORKDIR /app
-
+ENTRYPOINT ["composer"]
 # Set up the command arguments
 CMD ["composer"]
