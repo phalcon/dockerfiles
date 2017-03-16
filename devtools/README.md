@@ -1,39 +1,18 @@
 # Phalcon Devtools
 
-Composer is a dependency manager for PHP.
-
-## Supported tags and respective `Dockerfile` links
-
-* `5.4` [(5.4/Dockerfile)](https://github.com/phalcon/dockerfiles/tree/master/composer/5.4)
-* `5.5` [(5.5/Dockerfile)](https://github.com/phalcon/dockerfiles/tree/master/composer/5.5)
-* `5.6` [(5.6/Dockerfile)](https://github.com/phalcon/dockerfiles/tree/master/composer/5.6)
-* `7`, `7.0`, `latest` [(7/Dockerfile)](https://github.com/phalcon/dockerfiles/tree/master/composer/7)
+Command line devtools
 
 This image is updated via pull requests to the `phalconphp/dockerfiles` [GitHub repo](https://github.com/phalcon/dockerfiles).
 
-## What is Composer?
-
-Composer is a tool for dependency management in PHP. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you.
-
-Composer is not a package manager in the same sense as Yum or Apt are. Yes, it deals with "packages" or libraries, but it manages them on a per-project basis, installing them in a directory (e.g. vendor) inside your project. By default it does not install anything globally.
-
-> [getcomposer.org](https://getcomposer.org)
-
 ## How to use this image
 
-You can run the default `composer` command simply:
+You can run the default `phalcon` command simply:
 
 ```
-$ docker run -it --rm phalconphp/composer help
+$ docker run -it --rm phalconphp/devtools:7 help
 ```
 
-You can also pass in additional flags to `composer`:
-
-```
-$ docker run -it --rm -v $(pwd):/app phalconphp/composer create-project vendor/project:version target-directory
-```
-
-And you can create alias in order to implement convenient runner. Create file called `/usr/local/bin/composer` as follows:
+And you can create alias in order to implement convenient runner. Create file called `/usr/local/bin/devtools` as follows:
 
 ```sh
 #!/usr/bin/env bash
@@ -43,32 +22,32 @@ mkdir -p ${HOME}/.composer
 
 docker run -it --rm \
     -v $(pwd):/app \
-    -v ${HOME}/.ssh:/root/.ssh \
-    -v ${HOME}/.composer:/root/composer \
-    phalconphp/composer "$@"
+    phalconphp/devtools:7 "$@"
 ```
 
 Make it executable:
 
 ```
-$ sudo chmod a+x /usr/local/bin/composer
+$ sudo chmod a+x /usr/local/bin/devtools
 ```
 
 Test:
 
 ```
-$ composer --version
-Composer version 1.2.0 2016-07-19 01:28:52
+$ devtools
+Phalcon DevTools (3.0.5)
+
+Available commands:
+  info             (alias of: i)
+  commands         (alias of: list, enumerate)
+  controller       (alias of: create-controller)
+  module           (alias of: create-module)
+  model            (alias of: create-model)
+  all-models       (alias of: create-all-models)
+  project          (alias of: create-project)
+  scaffold         (alias of: create-scaffold)
+  migration        (alias of: create-migration)
+  webtools         (alias of: create-webtools)
 ```
 
-## License
-
-View [license](https://github.com/composer/composer/blob/master/LICENSE) information for the software contained in this image.
-
-## Supported Docker versions
-
-This image is officially supported on Docker version 1.12.0.
-
-Support for older versions (down to 1.10) is provided on a best-effort basis.
-
-Please see [the Docker installation documentation](https://docs.docker.com/installation/) for details on how to upgrade your Docker daemon.
+WIP readme PRs welcome
