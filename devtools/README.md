@@ -22,7 +22,7 @@ mkdir -p ${HOME}/.composer
 
 docker run -it --rm \
     -v $(pwd):/app \
-    phalconphp/devtools:7 "$@"
+    phalconphp/devtools:7 "${*:1}"
 ```
 
 Make it executable:
