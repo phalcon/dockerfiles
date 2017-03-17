@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ZEPHIRDIR=/usr/share/zephir
+export ZEPHIRDIR=/usr/share/zephir
 ZEPHIR_DOWNLOAD_URL=https://github.com/phalcon/zephir.git
 
 mkdir -p $ZEPHIRDIR

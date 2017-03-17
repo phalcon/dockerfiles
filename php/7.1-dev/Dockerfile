@@ -3,6 +3,9 @@
 #
 # https://github.com/phalcon/dockerfiles
 #
+# Run it as:
+# docker run -it --rm --privileged=true phalconphp/php:7.1-dev bash
+#
 
 # Pull base image
 FROM debian:jessie

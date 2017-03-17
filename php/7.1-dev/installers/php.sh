@@ -44,7 +44,10 @@ cd ${PHP_SOURCE_DIR}
 ./configure \
 	--with-config-file-path="$PHP_INI_DIR" \
 	--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
-	--disable-cgi \
+	--enable-debug \
+	--enable-maintainer-zts \
+	--enable-cgi \
+	--enable-cli \
 	--enable-ftp \
 	--enable-mbstring \
 	--enable-mysqlnd \

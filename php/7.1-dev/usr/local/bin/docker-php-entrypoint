@@ -2,6 +2,20 @@
 
 set -o errexit   # set -e : exit the script if any statement returns a non-true return value
 
+# Enable core dumps
+ulimit -c unlimited || true
+echo "Set: ulimit -c unlimited"
+
+# Specify filename and path for core dumps
+echo "/tmp/cores/core.%e.%p.%h.%t" > /proc/sys/kernel/core_pattern
+
+mkdir -p /tmp/cores
+
+# Set folder permissions
+chmod a+rwx /tmp/cores
+
+chmod +x /usr/local/bin/core_dump
+
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
 	set -- php "$@"
