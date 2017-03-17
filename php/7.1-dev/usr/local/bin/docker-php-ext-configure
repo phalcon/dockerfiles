@@ -1,5 +1,6 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+
+set -o errexit   # set -e : exit the script if any statement returns a non-true return value
 
 # prefer user supplied CFLAGS, but default to our PHP_CFLAGS
 : ${CFLAGS:=$PHP_CFLAGS}
@@ -8,15 +9,16 @@ set -e
 export CFLAGS CPPFLAGS LDFLAGS
 
 srcExists=
-if [ -d /usr/src/php ]; then
+if [ -d ${PHP_SOURCE_DIR} ]; then
 	srcExists=1
 fi
+
 docker-php-source extract
 if [ -z "$srcExists" ]; then
-	touch /usr/src/php/.docker-delete-me
+	touch ${PHP_SOURCE_DIR}/.docker-delete-me
 fi
 
-cd /usr/src/php/ext
+cd ${PHP_SOURCE_DIR}/ext
 
 ext="$1"
 if [ -z "$ext" ] || [ ! -d "$ext" ]; then
@@ -24,7 +26,7 @@ if [ -z "$ext" ] || [ ! -d "$ext" ]; then
 	echo >&2 "   ie: $0 gd --with-jpeg-dir=/usr/local/something"
 	echo >&2
 	echo >&2 'Possible values for ext-name:'
-	find /usr/src/php/ext \
+	find ${PHP_SOURCE_DIR}/ext \
 			-mindepth 2 \
 			-maxdepth 2 \
 			-type f \
@@ -36,21 +38,6 @@ if [ -z "$ext" ] || [ ! -d "$ext" ]; then
 	exit 1
 fi
 shift
-
-pm='unknown'
-if [ -e /lib/apk/db/installed ]; then
-	pm='apk'
-fi
-
-if [ "$pm" = 'apk' ]; then
-	if \
-		[ -n "$PHPIZE_DEPS" ] \
-		&& ! apk info --installed .phpize-deps > /dev/null \
-		&& ! apk info --installed .phpize-deps-configure > /dev/null \
-	; then
-		apk add --no-cache --virtual .phpize-deps-configure $PHPIZE_DEPS
-	fi
-fi
 
 set -x
 cd "$ext"

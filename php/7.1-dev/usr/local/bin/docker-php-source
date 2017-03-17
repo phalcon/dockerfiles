@@ -1,7 +1,6 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-dir=/usr/src/php
+set -o errexit   # set -e : exit the script if any statement returns a non-true return value
 
 usage() {
 	echo "usage: $0 COMMAND"
@@ -9,22 +8,22 @@ usage() {
 	echo "Manage php source tarball lifecycle."
 	echo
 	echo "Commands:"
-	echo "   extract  extract php source tarball into directory $dir if not already done."
-	echo "   delete   delete extracted php source located into $dir if not already done."
+	echo "   extract  extract php source tarball into directory ${PHP_SOURCE_DIR} if not already done."
+	echo "   delete   delete extracted php source located into ${PHP_SOURCE_DIR} if not already done."
 	echo
 }
 
 case "$1" in
 	extract)
-		mkdir -p "$dir"
-		if [ ! -f "$dir/.docker-extracted" ]; then
-			tar -Jxf /usr/src/php.tar.xz -C "$dir" --strip-components=1
-			touch "$dir/.docker-extracted"
+		mkdir -p "${PHP_SOURCE_DIR}"
+		if [ ! -f "${PHP_SOURCE_DIR}/.docker-extracted" ]; then
+			tar -Jxf /usr/src/php.tar.xz -C "${PHP_SOURCE_DIR}" --strip-components=1
+			touch "${PHP_SOURCE_DIR}/.docker-extracted"
 		fi
 		;;
 
 	delete)
-		rm -rf "$dir"
+		rm -rf "${PHP_SOURCE_DIR}"
 		;;
 
 	*)

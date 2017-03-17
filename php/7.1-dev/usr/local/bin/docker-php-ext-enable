@@ -1,5 +1,6 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+
+set -o errexit   # set -e : exit the script if any statement returns a non-true return value
 
 cd "$(php -r 'echo ini_get("extension_dir");')"
 
@@ -76,7 +77,7 @@ for module in $modules; do
 		continue
 	fi
 
-	ini="/usr/local/etc/php/conf.d/${iniName:-"docker-php-ext-$ext.ini"}"
+	ini="${PHP_INI_DIR}/conf.d/${iniName:-"docker-php-ext-$ext.ini"}"
 	if ! grep -q "$line" "$ini" 2>/dev/null; then
 		echo "$line" >> "$ini"
 	fi

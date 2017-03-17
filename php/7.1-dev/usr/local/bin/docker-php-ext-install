@@ -1,5 +1,6 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+
+set -o errexit   # set -e : exit the script if any statement returns a non-true return value
 
 # prefer user supplied CFLAGS, but default to our PHP_CFLAGS
 : ${CFLAGS:=$PHP_CFLAGS}
@@ -8,15 +9,15 @@ set -e
 export CFLAGS CPPFLAGS LDFLAGS
 
 srcExists=
-if [ -d /usr/src/php ]; then
+if [ -d ${PHP_SOURCE_DIR} ]; then
 	srcExists=1
 fi
 docker-php-source extract
 if [ -z "$srcExists" ]; then
-	touch /usr/src/php/.docker-delete-me
+	touch ${PHP_SOURCE_DIR}/.docker-delete-me
 fi
 
-cd /usr/src/php/ext
+cd ${PHP_SOURCE_DIR}/ext
 
 usage() {
 	echo "usage: $0 [-jN] ext-name [ext-name ...]"
@@ -78,23 +79,6 @@ if [ -z "$exts" ]; then
 	exit 1
 fi
 
-pm='unknown'
-if [ -e /lib/apk/db/installed ]; then
-	pm='apk'
-fi
-
-apkDel=
-if [ "$pm" = 'apk' ]; then
-	if [ -n "$PHPIZE_DEPS" ]; then
-		if apk info --installed .phpize-deps-configure > /dev/null; then
-			apkDel='.phpize-deps-configure'
-		elif ! apk info --installed .phpize-deps > /dev/null; then
-			apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS
-			apkDel='.phpize-deps'
-		fi
-	fi
-fi
-
 popDir="$PWD"
 for ext in $exts; do
 	cd "$ext"
@@ -110,10 +94,6 @@ for ext in $exts; do
 	cd "$popDir"
 done
 
-if [ "$pm" = 'apk' ] && [ -n "$apkDel" ]; then
-	apk del $apkDel
-fi
-
-if [ -e /usr/src/php/.docker-delete-me ]; then
+if [ -e ${PHP_SOURCE_DIR}/.docker-delete-me ]; then
 	docker-php-source delete
 fi
