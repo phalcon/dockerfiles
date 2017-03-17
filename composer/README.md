@@ -43,7 +43,9 @@ mkdir -p ${HOME}/.composer
 
 docker run -it --rm \
     -v $(pwd):/app \
-    phalconphp/composer:7 "${*:1}"
+    -v ${HOME}/.ssh:/root/.ssh \
+    -v ${HOME}/.composer:/root/composer \
+    phalconphp/composer :7 "${*:1}"
 ```
 
 Make it executable:
