@@ -11,7 +11,7 @@ MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set up the application directory
 VOLUME ["/app"]
-RUN apk update && apk add git && composer global require phalcon/devtools \
+RUN apk update && apk add --no-cache --update git && composer global require phalcon/devtools \
     && mv /root/.composer/vendor/bin/phalcon.php /root/.composer/vendor/bin/phalcon \
     && export PATH=/root/.composer/vendor/bin:$PATH
 # Define working directory
