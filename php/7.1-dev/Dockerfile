@@ -16,7 +16,7 @@ ADD base.tar /
 # Set environment variables
 ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
     PHP_CPPFLAGS="$PHP_CFLAGS" \
-    PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
+    PHP_LDFLAGS="-Wl,-O0 -Wl,--hash-style=both -pie" \
     PHP_EXTRA_CONFIGURE_ARGS=--enable-maintainer-zts \
     PHP_INI_DIR=/usr/local/etc/php \
     PHP_SOURCE_DIR=/usr/src/php \
