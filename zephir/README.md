@@ -43,19 +43,27 @@ docker_bin="$(which docker 2> /dev/null)"
 # 5.4, 5.5, 5.6, 7, 7.0, latest
 PHP_VERSION=7
 
-${docker_bin} run -it --rm \
-    --privileged=true \
-    -e ZEND_DONT_UNLOAD_MODULES=1 \
-    -v $(pwd):/zephir \
-    phalconphp/zephir:${PHP_VERSION} "$@"
+#!/usr/bin/env bash
+
+docker_bin="$(which docker 2> /dev/null)"
+
+tty=
+tty -s && tty=--tty
+
+${docker_bin} run \
+  $tty \
+  --interactive \
+  --rm \
+  -v $(pwd):/code \
+  phalconphp/zephir:${PHP_VERSION} "$@"
 
 ret=$?
 
 if [ ${ret} -ne 0 ]; then
-    errors="$(pwd)/compile-errors.log"
-    if [ -e ${errors} ]; then
-        cat ${errors}
-    fi
+  errors="$(pwd)/compile-errors.log"
+  if [ -e ${errors} ]; then
+    cat ${errors}
+  fi
 fi
 ```
 
