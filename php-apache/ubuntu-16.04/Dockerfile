@@ -57,6 +57,7 @@ RUN mkdir -p $APPLICATION_PATH/public \
         php-ssh2 \
         php7.0-tidy \
         php-yaml \
+        lsb-release \
         libssh2-1-dev \
         libyaml-dev \
         build-essential \
