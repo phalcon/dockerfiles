@@ -16,9 +16,6 @@ ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
     TERM=xterm
 
-LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Ubuntu 12.04\",\"License\":\"BSD\",\"Version\":\"1.0.1\"}"
-
 # Add base tools
 ADD base.tar /
 

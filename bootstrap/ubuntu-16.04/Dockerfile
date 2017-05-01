@@ -13,15 +13,22 @@ ENV TIMEZONE=UTC \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
-LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Ubuntu 16.04\",\"License\":\"BSD\",\"Version\":\"0.1.0\",\"Layouts\":5}"
-
 # Add base tools
 ADD baselayout.tar /
 
 # Init bootstrap (and install ansible)
 RUN export DEBIAN_FRONTEND=noninteractive \
     && set -x \
+    # System update
+    && /usr/local/bin/apt-upgrade \
+    # Install base stuff
+    && /usr/local/bin/apt-install \
+        software-properties-common \
+        lsb-release \
+        ca-certificates \
+        apt-transport-https \
+        locales \
+        tzdata \
     # Fix root terminal
     && echo "export TERM=xterm" >> /root/.bashrc \
     # Generate base locale
@@ -32,15 +39,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" | tee /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
+    && apt-add-repository multiverse \
     # System update
     && /usr/local/bin/apt-upgrade \
-    # Install base stuff
-    && /usr/local/bin/apt-install \
-        software-properties-common \
-        lsb-release \
-        ca-certificates \
-        apt-transport-https \
-    && apt-add-repository multiverse \
     # Install ansible
     && /usr/local/bin/apt-install \
         python-minimal \

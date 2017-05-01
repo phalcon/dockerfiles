@@ -18,9 +18,6 @@ ENV TIMEZONE=UTC \
     USER=root \
     HOME="/root"
 
-LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for Alpine 3.4\",\"License\":\"BSD\",\"Version\":\"1.0.1\"}"
-
 # Add base tools
 ADD base.tar /
 
