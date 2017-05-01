@@ -9,9 +9,6 @@ FROM phalconphp/bootstrap:alpine-3
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-LABEL vendor=Phalcon\ Framework \
-      com.phalconphp.image-specs="{\"Description\":\"Base Dockerfile for Alpine 3.4\",\"License\":\"BSD\",\"Version\":\"1.0.1\"}"
-
 RUN \
     # Install base stuff
     /usr/local/bin/apk-install \
