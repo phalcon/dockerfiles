@@ -24,6 +24,7 @@ RUN apt -y update \
         curl \
         locales \
         lsb-release \
+        openssh-server \
         software-properties-common \
         sudo \
         tzdata \
