@@ -4,7 +4,9 @@ FROM phalconphp/bootstrap:ubuntu-14.04
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set environment variables
-ENV DEBIAN_FRONTEND="noninteractive" LC_ALL="C.UTF-8" LANG="C.UTF-8"
+ENV DEBIAN_FRONTEND="noninteractive" \
+    LC_ALL="C.UTF-8" \
+    LANG="C.UTF-8"
 
 RUN apt-get clean -y \
     && /usr/local/bin/apt-upgrade \

@@ -3,8 +3,7 @@ FROM phalconphp/build:ubuntu-trusty
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-RUN \
-    LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
+RUN LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
     && apt-get clean -y \
     && /usr/local/bin/apt-upgrade \
     && /usr/local/bin/apt-install \

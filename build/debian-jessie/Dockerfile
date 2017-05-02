@@ -4,7 +4,9 @@ FROM phalconphp/bootstrap:debian-8
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
 # Set environment variables
-ENV DEBIAN_FRONTEND="noninteractive" LC_ALL="C.UTF-8" LANG="C.UTF-8"
+ENV DEBIAN_FRONTEND="noninteractive" \
+    LC_ALL="C.UTF-8" \
+    LANG="C.UTF-8"
 
 ADD backports.list /etc/apt/sources.list.d/
 ADD preferences /etc/apt/preferences
