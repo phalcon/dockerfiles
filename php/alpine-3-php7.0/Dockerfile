@@ -46,6 +46,7 @@ RUN \
         yaml-dev \
         php7-dev \
     # Install missed deps from EDGE
+    && /usr/local/bin/apk-install libressl-dev --repository http://dl-3.alpinelinux.org/alpine/edge/main/ \
     && /usr/local/bin/apk-install gearman-dev --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
     # Create useful symlinks
     && ln -s /usr/bin/phpize7 /usr/bin/phpize \
