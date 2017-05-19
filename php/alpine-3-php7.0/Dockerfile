@@ -43,7 +43,6 @@ RUN \
         libsodium-dev \
         libssh2-dev \
         imagemagick-dev \
-        yaml-dev \
         php7-dev \
     # Install missed deps from EDGE
     && /usr/local/bin/apk-install libressl-dev --repository http://dl-3.alpinelinux.org/alpine/edge/main/ \
@@ -56,6 +55,7 @@ RUN \
         libsodium \
         libmemcached-dev \
         libtool \
+        yaml-dev \
     # Install extensions
     && /usr/local/bin/apk-install \
         php7-dba \
