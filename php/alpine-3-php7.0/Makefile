@@ -1,8 +1,9 @@
 NAME = phalconphp/php
-TAG = alpine-3-php7
+VERSION = alpine-php7
+ALIAS = alpine-3-php7
 SHELL = /bin/bash
 
-.PHONY: pre-build docker-build post-build clean build release push do-push post-push
+.PHONY: pre-build docker-build post-build clean build release push tag do-push post-push
 
 build: pre-build docker-build post-build
 
@@ -12,14 +13,18 @@ pre-build:
 post-build: clean
 
 docker-build:
-	docker build -t $(NAME):$(TAG) --no-cache --rm .
+	docker build -t $(NAME):$(VERSION) --no-cache --rm .
 
-release: build push
+release: build tag push
 
 push: do-push post-push
 
+tag:
+	docker tag $(NAME):$(VERSION) $(NAME):$(ALIAS)
+
 do-push:
-	docker push $(NAME):$(TAG)
+	docker push $(NAME):$(VERSION)
+	docker push $(NAME):$(ALIAS)
 
 post-push:
 

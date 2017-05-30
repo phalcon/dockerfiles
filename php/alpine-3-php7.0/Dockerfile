@@ -5,7 +5,7 @@
 #
 
 # Pull base image
-FROM webdevops/php:alpine-3-php7
+FROM webdevops/php:alpine-php7
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
@@ -68,6 +68,9 @@ RUN \
         php7-pspell \
         php7-tidy \
         php7-xdebug \
+    # Install tools
+    && /usr/local/bin/apk-install \
+        jq \
     # Patch PHP 7
     && sed -ri "s|#( ?)(include <sys/poll.h>)|#\1include <poll.h>|g" /usr/include/php7/main/php_network.h \
     # Install phalcon
