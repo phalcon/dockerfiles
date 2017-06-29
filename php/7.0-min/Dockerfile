@@ -9,7 +9,7 @@ FROM php:7.0-cli
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-ENV PHALCON_VERSION 3.1.2
+ENV PHALCON_VERSION 3.2.0
 
 RUN cd /tmp \
 	&& curl -sSLO https://codeload.github.com/phalcon/cphalcon/tar.gz/v$PHALCON_VERSION \

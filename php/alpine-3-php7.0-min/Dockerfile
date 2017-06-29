@@ -9,7 +9,7 @@ FROM php:7.0-alpine
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-ENV PHALCON_VERSION=3.1.2
+ENV PHALCON_VERSION=3.2.0
 
 RUN \
     # Install dev dependencies
@@ -29,7 +29,7 @@ RUN \
     # Cleanup
     && apk del build-dependencies \
     && rm -rf cphalcon-$PHALCON_VERSION \
-        v3.1.2 \
+        v3.2.0 \
         /var/cache/apk/* \
         /tmp/* \
         /var/tmp/* \
