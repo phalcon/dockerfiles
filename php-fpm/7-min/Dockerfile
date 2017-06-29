@@ -9,10 +9,10 @@ FROM php:7.0-fpm
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-RUN curl -O https://codeload.github.com/phalcon/cphalcon/tar.gz/v3.0.4
-RUN tar xvzf v3.0.4
-RUN cd cphalcon-3.0.4/build && ./install
-RUN cd ../../ && rm -Rf cphalcon-3.0.4 && rm -Rf v3.0.4
+RUN curl -O https://codeload.github.com/phalcon/cphalcon/tar.gz/v3.2.0
+RUN tar xvzf v3.2.0
+RUN cd cphalcon-3.2.0/build && ./install
+RUN cd ../../ && rm -Rf cphalcon-3.2.0 && rm -Rf v3.2.0
 RUN echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
 
 RUN apt-get autoremove -y && \
