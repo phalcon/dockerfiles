@@ -100,7 +100,7 @@ RUN printf "\n" | pecl install yaml && \
     ln -s /etc/php/5.6/mods-available/yaml.ini /etc/php/5.6/cli/conf.d/20-yaml.ini
 
 # Install ext-libsodium
-RUN printf "\n" | pecl install -a libsodium && \
+RUN printf "\n" | pecl install -a libsodium-1.0.6 && \
     echo 'extension=libsodium.so' | tee /etc/php/5.6/mods-available/libsodium.ini && \
     ln -s /etc/php/5.6/mods-available/libsodium.ini /etc/php/5.6/cli/conf.d/20-libsodium.ini
 
