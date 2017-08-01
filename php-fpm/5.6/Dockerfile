@@ -14,9 +14,6 @@ ENV PHP_MEMORY_LIMIT=512M \
     PHP_MAX_FILE_UPLOAD=200 \
     PHP_MAX_POST=100M
 
-# Adding repositories
-RUN LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php
-
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -yq --no-install-suggests --no-install-recommends --force-yes php5.6-fpm
