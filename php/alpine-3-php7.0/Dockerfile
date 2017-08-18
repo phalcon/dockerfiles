@@ -45,11 +45,11 @@ RUN \
         imagemagick-dev \
         php7-dev \
     # Install missed deps from EDGE
-    && /usr/local/bin/apk-install libressl-dev --repository http://dl-3.alpinelinux.org/alpine/edge/main/ \
-    && /usr/local/bin/apk-install gearman-dev --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+    && /usr/local/bin/apk-install libressl-dev --repository http://dl-4.alpinelinux.org/alpine/edge/main/ \
+    && /usr/local/bin/apk-install gearman-dev --repository http://dl-4.alpinelinux.org/alpine/edge/testing/ \
     # Create useful symlinks
-    && ln -s /usr/bin/phpize7 /usr/bin/phpize \
-    && ln -s /usr/bin/php-config7 /usr/bin/php-config \
+    && ln -sf /usr/bin/phpize7 /usr/bin/phpize \
+    && ln -sf /usr/bin/php-config7 /usr/bin/php-config \
     # Install dependencies
     && /usr/local/bin/apk-install \
         libsodium \
@@ -58,14 +58,18 @@ RUN \
         yaml-dev \
     # Install extensions
     && /usr/local/bin/apk-install \
+        php7-amqp \
         php7-dba \
         php7-gmp \
+        php7-imagick \
         php7-imap \
+        php7-memcached \
         php7-odbc \
         php7-pdo_odbc \
         php7-pdo_pgsql \
         php7-pgsql \
         php7-pspell \
+        php7-redis \
         php7-tidy \
         php7-xdebug \
     # Install tools
@@ -85,12 +89,9 @@ RUN \
     && sed -i "$ s|\-n||g" /usr/bin/pecl \
     && pecl channel-update pecl.php.net \
     # Install PECL extensions
-    && printf "\n" | pecl install -a imagick \
-    && printf "\n" | pecl install -a memcached \
     && printf "\n" | pecl install -f mongodb-${MONGODB_DRIVER_VERSION} \
     && printf "\n" | pecl install -a msgpack \
     && printf "\n" | pecl install -a igbinary \
-    && printf "\n" | pecl install -a redis \
     && printf "\n" | pecl install -a ssh2-${SSH2_DRIVER_VERSION} \
     && printf "\n" | pecl install -a libsodium \
     && printf "\n" | pecl install -a yaml-${YAML_DRIVER_VERSION} \
