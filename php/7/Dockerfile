@@ -102,7 +102,7 @@ RUN printf "\n" | pecl install yaml-2.0.0 && \
 
 # Install ext-libsodium
 RUN printf "\n" | pecl install -a libsodium && \
-    echo 'extension=libsodium.so' | tee /etc/php/7.0/mods-available/libsodium.ini && \
+    echo 'extension=sodium.so' | tee /etc/php/7.0/mods-available/libsodium.ini && \
     ln -s /etc/php/7.0/mods-available/libsodium.ini /etc/php/7.0/cli/conf.d/20-libsodium.ini
 
 # Install ext-xdebug
