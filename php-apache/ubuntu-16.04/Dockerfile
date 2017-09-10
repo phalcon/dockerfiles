@@ -21,9 +21,9 @@ ADD installers.tar /
 RUN mkdir -p $APPLICATION_PATH/public \
     # These vars need to be exported twice
     && export DEBIAN_FRONTEND=noninteractive \
-    && export COMPOSER_HOME=/root/composer \
-    && export PATH=/root/composer/vendor/bin:$PATH \
-    && export COMPOSER_ALLOW_SUPERUSER=1 \
+       COMPOSER_HOME=/root/composer \
+       PATH=/root/composer/vendor/bin:$PATH \
+       COMPOSER_ALLOW_SUPERUSER=1 \
     && chown -R $APPLICATION_USER:$APPLICATION_GROUP $APPLICATION_PATH \
     # Adding repositories
     && curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash \
@@ -44,14 +44,14 @@ RUN mkdir -p $APPLICATION_PATH/public \
         php-igbinary \
         php7.0-imagick \
         php7.0-imap \
-        php-libsodium \
+        php-sodium \
         php-memcache \
         php7.0-mongodb \
         php7.0-msgpack \
         php-pear \
         php7.0-odbc \
         php7.0-pgsql \
-        php7.0-phalcon \
+        php-phalcon \
         php7.0-pspell \
         php7.0-recode \
         php-ssh2 \
