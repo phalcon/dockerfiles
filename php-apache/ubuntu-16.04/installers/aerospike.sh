@@ -1,11 +1,11 @@
 #!/bin/bash
 
-git clone --depth=1 -q https://github.com/aerospike/aerospike-client-php /tmp/aerospike-ext && cd /tmp/aerospike-ext/src/aerospike
+git clone --depth=1 -q https://github.com/aerospike/aerospike-client-php /tmp/aerospike-ext && cd /tmp/aerospike-ext/src
 
 ln -sf /usr/lib/x86_64-linux-gnu/libcrypto.so /usr/local/lib/libcrypto.so
 ln -sf /usr/lib/x86_64-linux-gnu/libcrypto.a /usr/local/lib/libcrypto.a
 
-DOWNLOAD_PHP_UNIT=0 ./build.sh --loglevel OFF
+./build.sh --loglevel OFF
 make install
 
 echo extension=aerospike.so > /etc/php/7.0/mods-available/aerospike.ini
