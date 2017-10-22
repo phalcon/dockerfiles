@@ -8,22 +8,22 @@ FROM webdevops/php-apache-dev:ubuntu-16.04
 
 MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
 
-ENV COMPOSER_HOME=/root/composer \
-    PATH=/root/composer/vendor/bin:$PATH \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    APPLICATION_PATH="/project"
+COPY artifacts .
 
-ADD installers.tar /
+ENV PATH=/root/composer/vendor/bin:$PATH \
+    COMPOSER_HOME=/root/composer \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_HOME=/root/composer \
+    APPLICATION_PATH="/project" \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN ls -al artifacts
 
 RUN mkdir -p $APPLICATION_PATH/public \
-    && export DEBIAN_FRONTEND=noninteractive \
-       COMPOSER_HOME=/root/composer \
-       PATH=/root/composer/vendor/bin:$PATH \
-       COMPOSER_ALLOW_SUPERUSER=1 \
     && chown -R $APPLICATION_USER:$APPLICATION_GROUP $APPLICATION_PATH \
     && curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash \
     && apt-add-repository ppa:ondrej/apache2 \
-    && LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
+    && LANG=C.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && apt-get update -y
 
@@ -43,7 +43,6 @@ RUN apt-get -o Dpkg::Options::="--force-confnew" install -y -f --no-install-reco
         php-pear \
         php7.0-odbc \
         php7.0-pgsql \
-        php-phalcon \
         php7.0-pspell \
         php7.0-recode \
         php-ssh2 \
@@ -52,9 +51,7 @@ RUN apt-get -o Dpkg::Options::="--force-confnew" install -y -f --no-install-reco
         lsb-release \
         libssh2-1-dev \
         libyaml-dev \
-        build-essential \
-        make \
-        re2c
+        libssl-dev
 
 RUN wget https://phar.io/releases/phive.phar \
     && wget https://phar.io/releases/phive.phar.asc \
@@ -75,13 +72,17 @@ RUN wget https://phar.io/releases/phive.phar \
     && curl -sOL http://www.phing.info/get/phing-latest.phar \
     && chmod +x phing-latest.phar \
     && mv phing-latest.phar /usr/local/bin/phing \
-    && bash /installers/aerospike.sh \
-    && bash /installers/handlersocketi.sh \
-    && bash /installers/pinba.sh \
-    && bash /installers/weakref.sh \
     && mkdir $COMPOSER_HOME \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && chmod +x /usr/local/bin/composer
+
+RUN cp -R /artifacts/etc/php/7.0/mods-available /etc/php/7.0/mods-available \
+    && cp -R /artifacts/usr/lib/php/`php-config --phpapi` /usr/lib/php/`php-config --phpapi` \
+    && FILES=/artifacts/etc/php/7.0/mods-available/* && for f in $FILES; \
+        do \
+            phpenmod -v 7.0 -s ALL `basename $f | cut -d '.' -f 1`; \
+        done \
+    && php -m
 
 RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php/7.0/cli/php.ini \
     && TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php/7.0/fpm/php.ini \
@@ -94,16 +95,14 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
     && sed -i -re 's|^(;?)(phar.readonly) =.*|\2 = off|g' /etc/php/7.0/cli/php.ini \
     && echo "apc.enable_cli = 1" >> /etc/php/7.0/mods-available/apcu.ini
 
-RUN apt-get purge -y -f \
-        build-essential \
-        make \
-        re2c \
-    && apt-get autoremove -y -f \
+RUN apt-get autoremove -y \
+    && apt-get autoclean -y \
     && apt-get clean -y \
     && rm -rf \
-        /tmp/* \
         /var/lib/apt/lists/* \
-        /installers \
+        /tmp/* \
+        /var/tmp/* \
+        /artifacts \
         /opt/docker/etc/php/fpm/pool.d/www.conf
 
 EXPOSE 80 443 9000

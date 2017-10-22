@@ -1,6 +1,8 @@
 NAME = phalconphp/php-apache
 TAG = ubuntu-16.04
 SHELL = /bin/bash
+PHP_VERSION= 7.0
+ARTIFACTS_IMAGE = klay/mkimage:$(TAG)-php-$(PHP_VERSION)
 
 .PHONY: pre-build docker-build post-build clean build release push do-push post-push
 
@@ -12,7 +14,11 @@ pre-build:
 post-build: clean
 
 docker-build:
-	docker build -t $(NAME):$(TAG) --no-cache --rm .
+	docker pull $(ARTIFACTS_IMAGE)
+	docker create --name extract $(ARTIFACTS_IMAGE)
+	docker cp extract:/artifacts ./artifacts
+	docker rm -f extract
+	docker build -t $(NAME):$(TAG) .
 
 release: build push
 
@@ -24,6 +30,6 @@ do-push:
 post-push:
 
 clean:
-	rm -f installers.tar
+	rm -rf ./artifacts
 
 # vim:ft=make:noet:ci:pi:sts=0:sw=4:ts=4:tw=78:fenc=utf-8:et
