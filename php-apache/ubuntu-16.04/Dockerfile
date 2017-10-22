@@ -32,7 +32,6 @@ RUN apt-get -o Dpkg::Options::="--force-confnew" install -y -f --no-install-reco
         php-apcu-bc \
         php7.0-dev \
         php7.0-dba \
-        php7.0-gearman \
         php7.0-gmp \
         php-igbinary \
         php7.0-imagick \
