@@ -1,5 +1,6 @@
 NAME = phalconphp/php-fpm
-VERSION = 7.1
+VERSION = 7.1-min
+ALIAS = 7-min
 SHELL = /bin/bash
 
 .PHONY: pre-build docker-build post-build build release push tag do-push post-push
@@ -19,10 +20,12 @@ push: do-push post-push
 
 tag:
 	docker tag $(NAME):$(VERSION) $(NAME):$(VERSION)
+	docker tag $(NAME):$(VERSION) $(NAME):$(ALIAS)
 	docker tag $(NAME):$(VERSION) $(NAME):latest
 
 do-push:
 	docker push $(NAME):$(VERSION)
+	docker push $(NAME):$(ALIAS)
 	docker push $(NAME):latest
 
 post-push:
