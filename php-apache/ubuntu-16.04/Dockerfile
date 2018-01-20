@@ -6,9 +6,9 @@
 
 FROM webdevops/php-apache-dev:ubuntu-16.04
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-COPY artifacts .
+COPY artifacts /artifacts
 
 ENV PATH=/root/composer/vendor/bin:$PATH \
     COMPOSER_HOME=/root/composer \
@@ -17,14 +17,12 @@ ENV PATH=/root/composer/vendor/bin:$PATH \
     APPLICATION_PATH="/project" \
     DEBIAN_FRONTEND=noninteractive
 
-RUN ls -al artifacts
-
 RUN mkdir -p $APPLICATION_PATH/public \
     && chown -R $APPLICATION_USER:$APPLICATION_GROUP $APPLICATION_PATH \
-    && curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash \
     && apt-add-repository ppa:ondrej/apache2 \
     && LANG=C.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
+    && chmod +x /usr/sbin/policy-rc.d \
     && apt-get update -y
 
 RUN apt-get -o Dpkg::Options::="--force-confnew" install -y -f --no-install-recommends \
@@ -73,12 +71,12 @@ RUN wget https://phar.io/releases/phive.phar \
     && chmod +x phing-latest.phar \
     && mv phing-latest.phar /usr/local/bin/phing \
     && mkdir $COMPOSER_HOME \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && chmod +x /usr/local/bin/composer
 
-RUN cp -R /artifacts/etc/php/7.0/mods-available /etc/php/7.0/mods-available \
-    && cp -R /artifacts/usr/lib/php/`php-config --phpapi` /usr/lib/php/`php-config --phpapi` \
-    && FILES=/artifacts/etc/php/7.0/mods-available/* && for f in $FILES; \
+RUN cp -R /artifacts/etc/php/7.0/mods-available/*.ini /etc/php/7.0/mods-available \
+    && cp -R /artifacts/usr/lib/php/20151012/*.so /usr/lib/php/`php-config --phpapi` \
+    && for f in `ls /artifacts/etc/php/7.0/mods-available`; \
         do \
             phpenmod -v 7.0 -s ALL `basename $f | cut -d '.' -f 1`; \
         done \

@@ -9,7 +9,6 @@ ARTIFACTS_IMAGE = klay/mkimage:$(TAG)-php-$(PHP_VERSION)
 build: pre-build docker-build post-build
 
 pre-build:
-	tar -cvf installers.tar installers
 
 post-build: clean
 
