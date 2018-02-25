@@ -42,7 +42,8 @@ RUN apt-get update -y \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \
-    && rm -rf /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/log -type f | while read f; do echo -ne '' > ${f} >/dev/null 2>&1 || true; done
 
 ADD configs /
 
