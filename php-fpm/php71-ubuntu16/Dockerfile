@@ -141,7 +141,11 @@ RUN mkdir -p \
         /opt/geoip \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && chmod +x /usr/local/bin/composer \
-    && composer --version --no-ansi
+    && composer --version --no-ansi \
+    && rm -rf /etc/nginx \
+    && git clone --depth=1 -q https://github.com/h5bp/server-configs-nginx /etc/nginx \
+    && mkdir -p /etc/nginx/conf.d \
+    && mkdir -p $NGINX_LOG_PATH
 
 COPY --from=build-env /opt/prce /opt/prce
 COPY --from=build-env /usr/sbin/nginx /usr/sbin/nginx
@@ -155,11 +159,8 @@ RUN mv /artifacts/aerospike /usr/local/ \
     && phpenmod -v 7.1 aerospike || true \
     && phpdismod -v 7.1 pinba || true \
     && phpdismod -v 7.1 xdebug || true \
-    && mv /etc/nginx /etc/nginx.dist \
-    && git clone --depth=1 -q https://github.com/h5bp/server-configs-nginx /etc/nginx \
-    && mkdir -p /etc/nginx/conf.d \
-    && mkdir -p $NGINX_LOG_PATH \
     && /usr/local/bin/go-replace -s '%NGINX_LOG_PATH%' -r "${NGINX_LOG_PATH}" /etc/nginx/nginx.conf \
+    && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
     && pecl channel-update pecl.php.net \
     && curl -sSL https://phar.io/releases/phive.phar -o /usr/bin/phive \
     && curl -sSL https://phar.io/releases/phive.phar.asc -o /tmp/phive.phar.asc \
