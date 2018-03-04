@@ -144,8 +144,7 @@ RUN mkdir -p \
     && composer --version --no-ansi \
     && rm -rf /etc/nginx \
     && git clone --depth=1 -q https://github.com/h5bp/server-configs-nginx /etc/nginx \
-    && mkdir -p /etc/nginx/conf.d \
-    && mkdir -p $NGINX_LOG_PATH
+    && mkdir -p /etc/nginx/conf.d $NGINX_LOG_PATH
 
 COPY --from=build-env /opt/prce /opt/prce
 COPY --from=build-env /usr/sbin/nginx /usr/sbin/nginx
@@ -206,5 +205,6 @@ RUN apt-get autoremove -y \
         /tmp/debug
 
 EXPOSE 80 443 9000
+VOLUME ["/var/log/nginx", "/tmp/nginx", "/tmp/debug"]
 
 ENTRYPOINT ["/entrypoint.sh"]
