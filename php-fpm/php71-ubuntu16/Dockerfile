@@ -83,6 +83,7 @@ LABEL description="Slimmed-down image to use for production with PHP, Supervisor
 RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt-get update -y \
     && apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y -f --no-install-recommends \
+        dnsutils \
         iproute2 \
         libc6-dev \
         libgeoip-dev \
