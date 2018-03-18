@@ -160,20 +160,7 @@ RUN mv /artifacts/aerospike /usr/local/ \
     && phpdismod -v 7.1 xdebug || true \
     && /usr/local/bin/go-replace -s '%NGINX_LOG_PATH%' -r "${NGINX_LOG_PATH}" /etc/nginx/nginx.conf \
     && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
-    && pecl channel-update pecl.php.net \
-    && curl -sSL https://phar.io/releases/phive.phar -o /usr/bin/phive \
-    && curl -sSL https://phar.io/releases/phive.phar.asc -o /tmp/phive.phar.asc \
-    && gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79 \
-    && gpg --verify /tmp/phive.phar.asc /usr/bin/phive \
-    && chmod +x /usr/bin/phive \
-    && curl -sSL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar -o /usr/local/bin/phpcs \
-    && chmod +x /usr/local/bin/phpcs \
-    && curl -sSL https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar -o /usr/local/bin/phpcbf \
-    && chmod +x /usr/local/bin/phpcbf \
-    && curl -sSL http://static.phpmd.org/php/latest/phpmd.phar -o /usr/local/bin/phpmd \
-    && chmod +x /usr/local/bin/phpmd \
-    && curl -sSL http://www.phing.info/get/phing-latest.phar -o /usr/local/bin/phing \
-    && chmod +x /usr/local/bin/phing
+    && pecl channel-update pecl.php.net
 
 ARG BUILD_ID=0
 ARG VERSION=0.0.1
