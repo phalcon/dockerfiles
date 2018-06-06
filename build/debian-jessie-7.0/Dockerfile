@@ -1,7 +1,7 @@
 # Pull base image
 FROM phalconphp/build:debian-jessie
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 RUN apt-get clean -y \
     && /usr/local/bin/apt-upgrade \

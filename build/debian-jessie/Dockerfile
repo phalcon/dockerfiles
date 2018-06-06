@@ -1,7 +1,7 @@
 # Pull base image
 FROM phalconphp/bootstrap:debian-8
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 # Set environment variables
 ENV DEBIAN_FRONTEND="noninteractive" \

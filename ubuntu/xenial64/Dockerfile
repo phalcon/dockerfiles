@@ -1,5 +1,5 @@
 #
-# Ubuntu 14.04.4 Dockerfile
+# Ubuntu 16.04 Dockerfile
 #
 # https://github.com/phalcon/dockerfiles
 #

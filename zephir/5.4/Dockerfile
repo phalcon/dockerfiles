@@ -7,7 +7,7 @@
 # Pull base image
 FROM phalconphp/php:5.4
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 LABEL vendor=Phalcon\ Framework \
       com.phalconphp.image-specs="{\"Description\":\"Zephir for PHP 5.4\",\"License\":\"BSD\",\"Version\":\"1.0.0\",\"Layouts\":14}"

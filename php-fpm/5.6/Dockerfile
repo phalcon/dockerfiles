@@ -7,7 +7,7 @@
 # Pull base image
 FROM phalconphp/php:5.6
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 ENV PHP_MEMORY_LIMIT=512M \
     MAX_UPLOAD=50M \

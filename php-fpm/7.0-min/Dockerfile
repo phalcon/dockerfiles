@@ -6,9 +6,9 @@
 
 FROM php:7.0-fpm
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-ENV PHALCON_VERSION=3.2.4
+ENV PHALCON_VERSION=3.4.0
 
 RUN curl -sSL "https://codeload.github.com/phalcon/cphalcon/tar.gz/v${PHALCON_VERSION}" | tar -xz \
     && cd cphalcon-${PHALCON_VERSION}/build \

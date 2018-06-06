@@ -7,7 +7,7 @@
 # Pull base image
 FROM php:7.0-alpine
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 ENV PHALCON_VERSION=3.2.1
 

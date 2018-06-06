@@ -1,7 +1,7 @@
 # Pull base image
 FROM phalconphp/build:centos7
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 RUN /usr/local/bin/yum-upgrade \
     && curl -s https://setup.ius.io | bash \
