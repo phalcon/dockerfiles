@@ -7,7 +7,7 @@
 # Pull base image
 FROM phalconphp/bootstrap:ubuntu-12.04
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 RUN \
     # Install base stuff

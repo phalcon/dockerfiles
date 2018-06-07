@@ -7,7 +7,7 @@
 # Pull base image
 FROM phalconphp/php:7
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 # Set environment variables
 ENV ZEPHIRDIR=/usr/share/zephir \

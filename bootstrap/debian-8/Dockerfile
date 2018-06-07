@@ -6,7 +6,7 @@
 
 FROM debian:8
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 # Set environment variables
 ENV TIMEZONE=UTC \

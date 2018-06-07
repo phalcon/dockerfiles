@@ -1,7 +1,7 @@
 # Pull base image
 FROM phalconphp/build:debian-stretch
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 RUN apt-get clean -y \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \

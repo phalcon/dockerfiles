@@ -1,7 +1,7 @@
 # Pull base image
 FROM phalconphp/build:ubuntu-trusty
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 RUN LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
     && apt-get clean -y \

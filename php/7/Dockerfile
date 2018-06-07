@@ -7,7 +7,7 @@
 # Pull base image
 FROM phalconphp/ubuntu:14.04.4
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 # Adding repositories
 RUN curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | bash && \

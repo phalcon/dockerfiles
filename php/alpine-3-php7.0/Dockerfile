@@ -7,7 +7,7 @@
 # Pull base image
 FROM webdevops/php:alpine-php7
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 # To override this run: docker run -e
 ENV COMPOSER_HOME=/root/composer \

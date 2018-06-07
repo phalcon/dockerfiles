@@ -7,7 +7,7 @@
 # Pull base image
 FROM phalconphp/base:alpine-3
 
-MAINTAINER Serghei Iakovlev <serghei@phalconphp.com>
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 ENV BEANSTALKD_VERSION="1.10"
 
