@@ -1,17 +1,12 @@
-#
-# Ubuntu 16.04 Dockerfile
-#
-# https://github.com/phalcon/dockerfiles
-#
-
 FROM ubuntu:16.04
 
-ARG DEBIAN_FRONTEND=noninteractive
+LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 # Set environment variables
 ENV TIMEZONE=UTC \
     LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive
 
 # Install base stuff
 RUN apt -y update \

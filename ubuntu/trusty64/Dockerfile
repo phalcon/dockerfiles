@@ -1,10 +1,4 @@
-#
-# Ubuntu 14.04.4 Dockerfile
-#
-# https://github.com/phalcon/dockerfiles
-#
-
-FROM ubuntu:14.04.4
+FROM ubuntu:14.04
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 

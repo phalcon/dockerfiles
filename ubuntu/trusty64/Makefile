@@ -1,7 +1,7 @@
 NAME = phalconphp/ubuntu
 VERSION = 14
 ALIAS_1 = 14.04
-ALIAS_2 = 14.04.4
+ALIAS_2 = trusty64
 SHELL = /bin/bash
 
 .PHONY: pre-build docker-build post-build clean build release push tag do-push post-push
