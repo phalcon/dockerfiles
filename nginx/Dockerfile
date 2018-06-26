@@ -1,5 +1,5 @@
 # Pull base image
-FROM phalconphp/ubuntu:14.04.4
+FROM phalconphp/ubuntu:14.04
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
