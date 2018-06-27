@@ -28,7 +28,6 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends \
     php7.0-dev \
     php7.0-dba \
     php7.0-gd \
-    php7.0-gearman \
     php7.0-gettext \
     php7.0-gmp \
     php7.0-imagick \
@@ -60,7 +59,6 @@ RUN apt-get install -yq --no-install-suggests --no-install-recommends \
     php7.0-zip \
     libcurl4-openssl-dev \
     libreadline6-dev \
-    libgearman-dev \
     libevent-dev \
     librecode-dev \
     libsqlite3-dev \
@@ -132,7 +130,7 @@ RUN TIMEZONE=`cat /etc/timezone`; sed -i "s|;date.timezone =.*|date.timezone = $
     echo "apc.enable_cli = 1" | tee -a /etc/php/7.0/mods-available/apcu.ini && \
     echo 'extension=memcache.so' | tee /etc/php/7.0/mods-available/memcache.ini
 
-RUN phpenmod gearman redis memcache xdebug
+RUN phpenmod redis memcache xdebug
 
 # Cleanup package manager
 RUN apt-get autoremove -y && \

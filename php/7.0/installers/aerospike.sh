@@ -6,7 +6,7 @@ cd /tmp/aerospike-ext
 wget -O aerospike.zip https://github.com/aerospike/aerospike-client-php/archive/master.zip
 unzip aerospike.zip
 
-cd aerospike-client-php-master/src/aerospike
+cd aerospike-client-php-master/src
 
 DOWNLOAD_PHP_UNIT=0 ./build.sh -l OFF || exit 1
 make install
