@@ -9,8 +9,6 @@ FROM php:7.0-alpine
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-ENV PHALCON_VERSION=3.2.1
-
 RUN \
     # Install dev dependencies
     apk --update add --virtual build-dependencies \
@@ -19,19 +17,15 @@ RUN \
         file \
         re2c \
         make \
+        git \
     # Install latest Phalcon
-    && curl -sS -o /tmp/phalcon.tar.gz https://codeload.github.com/phalcon/cphalcon/tar.gz/v$PHALCON_VERSION \
-    && cd /tmp/ \
-    && tar xvzf phalcon.tar.gz \
-    && cd cphalcon-$PHALCON_VERSION/build \
+    && git clone --depth 1 https://github.com/phalcon/cphalcon.git /tmp/phalcon \
+    && cd /tmp/phalcon/build \
     && sh install \
     && echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/50-phalcon.ini \
     # Cleanup
     && apk del build-dependencies \
-    && rm -rf cphalcon-$PHALCON_VERSION \
-        v3.2.1 \
+    && rm -rf \
         /var/cache/apk/* \
         /tmp/* \
-        /var/tmp/* \
-    # Remove unneeded envirnment vars
-    && unset PHALCON_VERSION
+        /var/tmp/*
