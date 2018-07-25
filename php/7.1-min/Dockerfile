@@ -9,7 +9,7 @@ FROM php:7.1-cli
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-ENV PHALCON_VERSION 3.2.1
+ENV PHALCON_VERSION 3.4.0
 
 RUN cd /tmp \
 	&& curl -sSLO https://codeload.github.com/phalcon/cphalcon/tar.gz/v$PHALCON_VERSION \
