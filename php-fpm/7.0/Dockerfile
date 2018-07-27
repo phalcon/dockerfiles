@@ -5,7 +5,7 @@
 #
 
 # Pull base image
-FROM phalconphp/php:7
+FROM phalconphp/php:7.0
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
