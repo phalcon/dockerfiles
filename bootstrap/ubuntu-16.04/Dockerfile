@@ -46,9 +46,12 @@ RUN set -e \
         build-essential \
         libssl-dev \
         libffi-dev \
-    && apt autoremove -y -f \
-    && apt clean -y \
+    && apt autoremove -y 2&>1 >/dev/null || true \
+    && apt clean -y 2&>1 >/dev/null || true \
     && rm -rf \
         /var/lib/apt/lists/* \
         /tmp/* \
-        /var/tmp/*
+        /var/tmp/* \
+        /var/cache/* \
+    && mkdir -p /var/cache/apt \
+    && find /var/log -type f | while read f; do echo -ne '' > ${f} 2&>1 > /dev/null || true; done
