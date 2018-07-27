@@ -1,16 +1,11 @@
-# Pull base image
 FROM phalconphp/bootstrap:ubuntu-16.04
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-# Set environment variables
-ENV DEBIAN_FRONTEND="noninteractive" \
-    LC_ALL="C.UTF-8" \
-    LANG="C.UTF-8"
-
-RUN apt-get clean -y \
-    && /usr/local/bin/apt-upgrade \
-    && /usr/local/bin/apt-install \
+RUN apt clean -y \
+    && apt update -y \
+    && apt upgrade -y \
+    && apt install -y \
         gdb \
         gnupg \
         wget \
@@ -32,7 +27,9 @@ RUN apt-get clean -y \
         doxygen \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
-    && apt-get autoremove -y \
-    && apt-get autoclean -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt autoremove -y \
+    && apt clean -y \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done

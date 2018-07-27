@@ -11,7 +11,7 @@ pre-build:
 post-build: clean
 
 docker-build:
-	docker build -t $(NAME):$(TAG) --no-cache --rm .
+	docker build -t $(NAME):$(TAG) --no-cache --force-rm --compress .
 
 release: build push
 
