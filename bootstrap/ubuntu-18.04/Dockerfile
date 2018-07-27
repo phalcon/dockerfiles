@@ -3,23 +3,27 @@ FROM ubuntu:18.04
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
 ENV TIMEZONE=UTC \
+    LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     DEBIAN_FRONTEND=noninteractive
 
-RUN set -e \
-    && set -u \
-    && apt update -y\
+RUN apt clean -y \
+    && apt update -y \
     && apt upgrade -y \
+    && apt install -y locales \
+    && export LANGUAGE=${LANGUAGE} \
+    && export LANG=${LANG} \
+    && export LC_ALL=${LC_ALL} \
+    && locale-gen ${LANG} \
+    && dpkg-reconfigure --frontend noninteractive locales \
     && apt install -y \
         software-properties-common \
         lsb-release \
         ca-certificates \
         apt-transport-https \
-        locales \
         tzdata \
     && echo "export TERM=xterm" >> /root/.bashrc \
-    && locale-gen ${LANG} \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" | tee /etc/timezone \
@@ -46,12 +50,9 @@ RUN set -e \
         build-essential \
         libssl-dev \
         libffi-dev \
-    && apt autoremove -y 2&>1 >/dev/null || true \
-    && apt clean -y 2&>1 >/dev/null || true \
-    && rm -rf \
-        /var/lib/apt/lists/* \
-        /tmp/* \
-        /var/tmp/* \
-        /var/cache/* \
-    && mkdir -p /var/cache/apt \
-    && find /var/log -type f | while read f; do echo -ne '' > ${f} 2&>1 > /dev/null || true; done
+    && apt autoremove -y \
+    && apt clean -y \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
