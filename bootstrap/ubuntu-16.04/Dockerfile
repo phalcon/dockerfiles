@@ -1,49 +1,32 @@
-#
-# Bootstrap Dockerfile for Ubuntu 16.04
-#
-# https://github.com/phalcon/dockerfiles
-#
-
 FROM ubuntu:16.04
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-# Set environment variables
 ENV TIMEZONE=UTC \
     LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive
 
-# Add base tools
-ADD baselayout.tar /
-
-# Init bootstrap (and install ansible)
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && set -x \
-    # System update
-    && /usr/local/bin/apt-upgrade \
-    # Install base stuff
-    && /usr/local/bin/apt-install \
+RUN set -e \
+    && set -u \
+    && apt update -y\
+    && apt upgrade -y \
+    && apt install -y \
         software-properties-common \
         lsb-release \
         ca-certificates \
         apt-transport-https \
         locales \
         tzdata \
-    # Fix root terminal
     && echo "export TERM=xterm" >> /root/.bashrc \
-    # Generate base locale
     && locale-gen ${LANG} \
-    # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
-    # Setup timezone
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" | tee /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
-    && apt-add-repository multiverse \
-    # System update
-    && /usr/local/bin/apt-upgrade \
-    # Install ansible
-    && /usr/local/bin/apt-install \
+    && apt-add-repository -y multiverse \
+    && apt update -y \
+    && apt install -y \
         python-minimal \
         python-setuptools \
         python-pip \
@@ -58,12 +41,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && hash -r \
     && pip install ansible \
     && chmod 750 /usr/local/bin/ansible* \
-    # Cleanup
-    && apt-get purge -y -f --force-yes \
+    && apt purge -y -f \
         python-dev \
         build-essential \
         libssl-dev \
         libffi-dev \
-    && apt-get autoremove -y -f \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt autoremove -y -f \
+    && apt clean -y \
+    && rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/*
