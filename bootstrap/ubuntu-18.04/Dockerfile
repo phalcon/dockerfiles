@@ -17,7 +17,8 @@ RUN apt clean -y \
     && export LC_ALL=${LC_ALL} \
     && locale-gen ${LANG} \
     && dpkg-reconfigure --frontend noninteractive locales \
-    && apt install -y \
+    && apt install --no-install-recommends -yq \
+        apt-utils \
         software-properties-common \
         lsb-release \
         ca-certificates \
@@ -30,26 +31,7 @@ RUN apt clean -y \
     && dpkg-reconfigure --frontend noninteractive tzdata \
     && apt-add-repository -y multiverse \
     && apt update -y \
-    && apt install -y \
-        python-minimal \
-        python-setuptools \
-        python-pip \
-        python-paramiko \
-        python-jinja2 \
-        python-cffi \
-        python-dev \
-        libffi-dev \
-        libssl-dev \
-        build-essential \
-    && pip install --upgrade pip \
-    && hash -r \
-    && pip install ansible \
-    && chmod 750 /usr/local/bin/ansible* \
-    && apt purge -y -f \
-        python-dev \
-        build-essential \
-        libssl-dev \
-        libffi-dev \
+    && apt upgrade -y \
     && apt autoremove -y \
     && apt clean -y \
     && rm -rf /tmp/* /var/tmp/* \
