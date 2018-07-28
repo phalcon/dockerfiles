@@ -1,54 +1,42 @@
-#
-# Bootstrap Dockerfile for Ubuntu 12.04
-#
-# https://github.com/phalcon/dockerfiles
-#
-
-# Pull base image
 FROM ubuntu:12.04
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-# Set environment variables
 ENV TIMEZONE=UTC \
+    LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    TERM=xterm
+    DEBIAN_FRONTEND=noninteractive
 
-# Add base tools
-ADD base.tar /
-
-# Init bootstrap
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && set -x \
-    # Add multiverse
+RUN apt-get clean -y \
     && echo "deb http://archive.ubuntu.com/ubuntu/ precise-security multiverse" >> /etc/apt/sources.list \
     && echo "deb-src http://archive.ubuntu.com/ubuntu/ precise-security multiverse" >> /etc/apt/sources.list \
     && echo "deb http://archive.ubuntu.com/ubuntu/ precise multiverse" >> /etc/apt/sources.list \
     && echo "deb-src http://archive.ubuntu.com/ubuntu/ precise multiverse" >> /etc/apt/sources.list \
-    # Fix root terminal
-    && echo "export TERM=${TERM}" >> /root/.bashrc \
-    # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start
-    && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
-    # Generate base locale
-    && locale-gen en_US ${LANG} \
-    && dpkg-reconfigure locales \
-    && update-locale LANG=${LANG} \
-    # Setup timezone
-    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo "${TIMEZONE}" > /etc/timezone \
-    && dpkg-reconfigure tzdata \
-    # System update
-    && /usr/local/bin/apt-upgrade \
-    # Install base stuff
-    && /usr/local/bin/apt-install \
+    && apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get install -y locales \
+    && export LANGUAGE=${LANGUAGE} \
+    && export LANG=${LANG} \
+    && export LC_ALL=${LC_ALL} \
+    && locale-gen ${LANG} \
+    && dpkg-reconfigure --frontend noninteractive locales \
+    && apt-get install --no-install-recommends -yq \
         apt-utils \
         software-properties-common \
         python-software-properties \
         lsb-release \
         ca-certificates \
         apt-transport-https \
-    # Cleanup
-    && apt-get autoremove -y -f \
-    && apt-get clean -y
+        tzdata \
+    && echo "export TERM=xterm" >> /root/.bashrc \
+    && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && echo "${TIMEZONE}" | tee /etc/timezone \
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
