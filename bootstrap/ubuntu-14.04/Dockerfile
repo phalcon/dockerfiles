@@ -30,6 +30,9 @@ RUN apt-get clean -y \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" | tee /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
+    && apt-add-repository -y multiverse \
+    && apt update -y \
+    && apt upgrade -y \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
