@@ -11,7 +11,7 @@ pre-build:
 post-build:
 
 docker-build:
-	docker build -t $(NAME):$(VERSION) --no-cache --rm .
+	docker build -t $(NAME):$(VERSION) --no-cache --force-rm --compress .
 
 release: build push
 
