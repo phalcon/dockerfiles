@@ -1,16 +1,18 @@
-# Pull base image
 FROM phalconphp/build:ubuntu-trusty
 
 LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 
-RUN LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php \
+RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt-get clean -y \
-    && /usr/local/bin/apt-upgrade \
-    && /usr/local/bin/apt-install \
-       php7.0-dev \
-       php7.0-common \
-       php7.0-cli \
+    && apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get install --no-install-recommends -yq \
+        php7.0-dev \
+        php7.0-common \
+        php7.0-cli \
     && apt-get autoremove -y \
-    && apt-get autoclean -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
