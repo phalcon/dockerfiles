@@ -28,3 +28,9 @@ php:
 
 ```
 where `nginx.conf` is default `nginx` config file and is located in same directory as docker-compose.yml
+
+## Supported Docker versions
+
+These images is officially supported on Docker >= 1.13.0.
+
+Please see [the Docker installation documentation](https://docs.docker.com/installation/) for details on how to upgrade your Docker daemon.
