@@ -1,11 +1,12 @@
 # Phalcon Dockerfiles
 
-To use Phalcon with docker, we make use of these images.
+Dockerfiles from Phalcon for PHP, Apache and Nginx (with PHP5 and PHP7) and more.
+
+![phalccon-images](https://raw.githubusercontent.com/phalcon/dockerfiles/master/docs/phalccon-images.png)
 
 You can either build the image yourself with the docker file which is hosted on this repository simply by doing a `docker build <directoryname>`
 
 Alternatively you can also pull a image from docker.io. For example to pull php-fpm for php7 from registry, all you need to execute is: `docker pull phalconphp/php-fpm:7`
-
 
 ## Using for development
 
