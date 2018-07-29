@@ -33,7 +33,7 @@ RUN apt clean -y \
     && apt autoremove -y \
     && apt clean -y \
     && rm -rf /tmp/* /var/tmp/* \
-    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
     && find /var/cache -type f -delete \
     && find /var/log -type f | while read f; do echo -n '' > ${f}; done
 
