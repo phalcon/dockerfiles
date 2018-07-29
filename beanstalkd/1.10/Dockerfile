@@ -1,20 +1,17 @@
-#
-# Beanstalkd Dockerfile
-#
-# https://github.com/phalcon/dockerfiles
-#
+FROM phalconphp/base:alpine-3.4
 
-# Pull base image
-FROM phalconphp/base:alpine-3
+LABEL description="Minimal beanstalkd image based on Alpine Linux" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.beanstalkd-1.10"
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+ENV BEANSTALKD_VERSION="1.10" \
+    BEANSTALKD_PORT="11300" \
+    BEANSTALKD_JOB_SIZE="65536"
 
-ENV BEANSTALKD_VERSION="1.10"
-
-RUN addgroup -S beanstalk \
-    && adduser -S -G beanstalk beanstalk \
-    && /usr/local/bin/apk-install 'su-exec>=0.2' \
-    && /usr/local/bin/apk-install --virtual build-dependencies \
+RUN apk update \
+    && apk upgrade --force \
+    && apk add --no-cache --virtual .build-deps \
         gcc \
         make \
         musl-dev \
@@ -23,18 +20,12 @@ RUN addgroup -S beanstalk \
     && sed -i "s|#include <sys/fcntl.h>|#include <fcntl.h>|g" sd-daemon.c \
     && make || return 1 \
     && make PREFIX=/usr install \
-    && mkdir -p /var/lib/beanstalkd \
-    && chown beanstalk:beanstalk /var/lib/beanstalkd \
-    && /usr/local/bin/apk-delete build-dependencies \
-    && rm -rf /tmp/* \
-    && rm -rf /var/cache/apk/*
+    && apk del .build-deps \
+    && rm -rf /tmp/* /var/cache/apk/* \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
 
-# Expose ports
-EXPOSE 11300
+ADD configs /
 
-# Expose volumes
+EXPOSE $BEANSTALKD_PORT
+
 VOLUME ["/var/lib/beanstalkd"]
-
-# Set up the command arguments
-ENTRYPOINT ["beanstalkd", "-p", "11300", "-u", "beanstalk"]
-CMD ["-b", "/var/lib/beanstalkd"]
