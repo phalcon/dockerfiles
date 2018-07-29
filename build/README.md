@@ -1,3 +1,3 @@
 # Phalcon Build
 
-Docker images to build Phalcon in supported platforms.
+Docker images to build Phalcon for supported platforms.
