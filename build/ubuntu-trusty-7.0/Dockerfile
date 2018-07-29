@@ -1,6 +1,9 @@
 FROM phalconphp/build:ubuntu-trusty
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on Ubuntu 14.04" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.trusty-7.0"
 
 RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt-get clean -y \

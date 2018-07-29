@@ -1,6 +1,9 @@
 FROM phalconphp/build:ubuntu-bionic
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on Ubuntu 18.04" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.bionic-7.1"
 
 RUN apt purge -y \
         php7.0-common \

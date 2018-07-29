@@ -1,6 +1,9 @@
 FROM phalconphp/bootstrap:ubuntu-14.04
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on Ubuntu 14.04" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.trusty"
 
 RUN apt-get clean -y \
     && apt-get update -y \

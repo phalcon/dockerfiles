@@ -3,7 +3,7 @@ FROM phalconphp/bootstrap:ubuntu-18.04
 LABEL description="Slimmed-down base image to use for production with Ubuntu 18.04 and supervisord" \
     maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
     vendor=Phalcon \
-    name="com.phalconphp.images.base"
+    name="com.phalconphp.images.base.ubuntu-18.04"
 
 RUN apt clean -y \
     && apt update -y \

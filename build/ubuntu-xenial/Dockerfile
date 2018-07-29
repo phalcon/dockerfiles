@@ -1,6 +1,9 @@
 FROM phalconphp/bootstrap:ubuntu-16.04
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on Ubuntu 16.04" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.xenial"
 
 RUN apt clean -y \
     && apt update -y \

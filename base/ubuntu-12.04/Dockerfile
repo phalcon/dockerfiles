@@ -3,7 +3,7 @@ FROM phalconphp/bootstrap:ubuntu-12.04
 LABEL description="Slimmed-down base image to use for production with Ubuntu 12.04 and supervisord" \
     maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
     vendor=Phalcon \
-    name="com.phalconphp.images.base"
+    name="com.phalconphp.images.base.ubuntu-12.04"
 
 RUN apt-get clean -y \
     && echo "deb http://archive.ubuntu.com/ubuntu/ precise-backports main restricted" >> /etc/apt/sources.list \
