@@ -1,23 +1,25 @@
-VENDOR_NAME = phalconphp
-IMAGE_NAME ?= base
-IMAGE_TAG ?= ubuntu-16.04
-FQIN = $(VENDOR_NAME)/$(IMAGE_NAME):$(IMAGE_TAG)
+NAME = phalconphp/base
+VERSION = ubuntu-16.04
+SHELL = /bin/bash
 
-.PHONY: build
-build:
-	docker build \
-		--pull \
-		--compress \
-		--force-rm \
-		-t $(FQIN) \
-		--no-cache \
-		--rm .
+.PHONY: pre-build docker-build post-build build release push do-push post-push
 
-.PHONY: release
+build: pre-build docker-build post-build
+
+pre-build:
+
+post-build:
+
+docker-build:
+	docker build -t $(NAME):$(VERSION) --no-cache --force-rm --compress .
+
 release: build push
 
-.PHONY: push
-push:
-	docker push $(FQIN)
+push: do-push post-push
+
+do-push:
+	docker push $(NAME):$(VERSION)
+
+post-push:
 
 # vim:ft=make:noet:ci:pi:sts=0:sw=4:ts=4:tw=78:fenc=utf-8:et

@@ -1,19 +1,14 @@
-FROM ubuntu:16.04
+FROM phalconphp/bootstrap:ubuntu-16.04
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    TERM="xterm" \
-    LANG="C.UTF-8" \
-    LC_ALL="C.UTF-8"
-
-LABEL description="Base application image with Ubuntu 16.04" \
+LABEL description="Slimmed-down base image to use for production with Ubuntu 16.04 and supervisord" \
     maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
     vendor=Phalcon \
-    name=base
+    name="com.phalconphp.images.base"
 
-RUN apt-get update -y \
-    && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends \
-        apt-utils \
+RUN apt clean -y \
+    && apt update -y \
+    && apt upgrade -y \
+    && apt install --no-install-recommends -yq \
         cron \
         curl \
         dnsutils \
@@ -25,8 +20,6 @@ RUN apt-get update -y \
         logrotate \
         lsb-release \
         net-tools \
-        re2c \
-        software-properties-common \
         sudo \
         supervisor \
         swig \
@@ -36,14 +29,13 @@ RUN apt-get update -y \
         wget \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && mkdir -p /var/log/supervisor \
-    && curl -sSL https://github.com/webdevops/go-replace/releases/download/1.1.2/gr-64-linux -o /usr/local/bin/go-replace \
-    && chmod +x /usr/local/bin/go-replace \
-    && /usr/local/bin/go-replace --regex -s '^[\s]*su root syslog' -r "# su root syslog" /etc/logrotate.conf \
-    && apt-get autoremove -y \
-    && apt-get autoclean -y \
-    && apt-get clean -y \
+    && sed -i "s/^[\s]*su root syslog/# su root syslog/g" /etc/logrotate.conf \
+    && apt autoremove -y \
+    && apt clean -y \
     && rm -rf /tmp/* /var/tmp/* \
-    && find /var/log -type f | while read f; do echo -ne '' > ${f} >/dev/null 2>&1 || true; done
+    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
 
 ADD configs /
 
