@@ -1,27 +1,25 @@
 NAME = phalconphp/build
-TAG = ubuntu-xenial
+VERSION = ubuntu-xenial
 SHELL = /bin/bash
 
-.PHONY: pre-build docker-build post-build clean build release push do-push post-push
+.PHONY: pre-build docker-build post-build build release push do-push post-push
 
 build: pre-build docker-build post-build
 
 pre-build:
 
-post-build: clean
+post-build:
 
 docker-build:
-	docker build -t $(NAME):$(TAG) --no-cache --force-rm --compress .
+	docker build -t $(NAME):$(VERSION) --no-cache --force-rm --compress .
 
 release: build push
 
 push: do-push post-push
 
 do-push:
-	docker push $(NAME):$(TAG)
+	docker push $(NAME):$(VERSION)
 
 post-push:
-
-clean:
 
 # vim:ft=make:noet:ci:pi:sts=0:sw=4:ts=4:tw=78:fenc=utf-8:et

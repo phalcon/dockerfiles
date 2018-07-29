@@ -5,26 +5,30 @@ LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
 RUN apt clean -y \
     && apt update -y \
     && apt upgrade -y \
-    && apt install -y \
-        gdb \
-        gnupg \
-        wget \
-        git \
-        ccache \
-        devscripts \
-        debhelper \
-        fakeroot \
-        cdbs \
-        equivs \
-        rpm \
+    && apt install --no-install-recommends -yq \
         alien \
-        sudo \
+        binutils-dev \
+        ccache \
+        cdbs \
         cmake \
+        curl \
+        debhelper \
+        devscripts \
+        doxygen \
+        equivs \
+        fakeroot \
+        gdb \
+        gdebi-core \
+        git \
+        gnupg \
+        libpcre3-dev \
         libreadline-dev \
         libyaml-dev \
-        binutils-dev \
+        re2c \
+        rpm \
+        sudo \
+        wget \
         zlib1g-dev \
-        doxygen \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
     && apt autoremove -y \
