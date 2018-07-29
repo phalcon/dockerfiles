@@ -28,6 +28,8 @@ RUN apk update \
         wget \
         wget \
         xz \
+    && mkdir -m 0644 -p /var/log/supervisor /var/log/cron /var/spool/cron/crontabs /etc/cron.d \
+    && touch /var/log/cron/cron.log \
     && apk add --no-cache --virtual .gosu-deps dpkg \
     && export DPKG_ARCH="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$DPKG_ARCH" \
@@ -44,11 +46,9 @@ RUN apk update \
     && gosu nobody true \
     && apk del .gosu-deps \
     && rm -rf /tmp/* /var/cache/apk/* \
-    && rm -r /usr/local/bin/gosu.asc
+    && rm -f /usr/local/bin/gosu.asc \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
 
 ADD configs /
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
-
-
-
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
