@@ -6,7 +6,8 @@ ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    TERM=xterm
 
 RUN apt-get clean -y \
     && echo "deb http://archive.ubuntu.com/ubuntu/ precise-security multiverse" >> /etc/apt/sources.list \
@@ -29,7 +30,6 @@ RUN apt-get clean -y \
         ca-certificates \
         apt-transport-https \
         tzdata \
-    && echo "export TERM=xterm" >> /root/.bashrc \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" | tee /etc/timezone \
@@ -37,6 +37,6 @@ RUN apt-get clean -y \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
-    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
     && find /var/cache -type f -delete \
     && find /var/log -type f | while read f; do echo -n '' > ${f}; done
