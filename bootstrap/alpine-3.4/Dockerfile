@@ -1,35 +1,28 @@
 FROM alpine:3.4
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Bootstrap image to use for production with Alpine 3.4" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.bootstrap.alpine-3.4"
 
 ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
-    TERM=xterm \
-    GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
-    GLIBC_VERSION=2.27-r0
+    TERM=xterm
 
-RUN echo http://dl-4.alpinelinux.org/alpine/v3.4/community/ >> /etc/apk/repositories \
-    && apk update \
+RUN apk update \
     && apk upgrade --force \
-    && apk add --update --no-cache \
+    && apk add --no-cache \
         bash \
         bash-completion \
         ca-certificates \
+        coreutils \
+        musl-utils \
         tzdata \
         openssl \
-    && apk add --no-cache --virtual .build-deps \
-        curl \
-        musl-dev \
-    && for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION} glibc-i18n-${GLIBC_VERSION}; do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done \
-    && apk add --allow-untrusted /tmp/*.apk \
-    && ( /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 -i en_US en_US.UTF-8 || true ) \
-    && find /usr/glibc-compat/bin -type f -exec sh -c '[ -f /usr/bin/$(basename $1) ] || ln -s $1 /usr/bin/$(basename $1)' find-sh {} \; \
-    && update-ca-certificates \
+    && update-ca-certificates 2>/dev/null || true \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" | tee /etc/timezone \
-    && apk del .build-deps \
     && rm -rf /tmp/* /var/cache/apk/* \
-    && unset GLIBC_REPO GLIBC_VERSION \
     && find /var/log -type f | while read f; do echo -n '' > ${f}; done
