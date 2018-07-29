@@ -1,30 +1,44 @@
-#
-# Base Dockerfile for Ubuntu 12.04
-#
-# https://github.com/phalcon/dockerfiles
-#
-
-# Pull base image
 FROM phalconphp/bootstrap:ubuntu-12.04
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Slimmed-down base image to use for production with Ubuntu 12.04 and supervisord" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.base"
 
-RUN \
-    # Install base stuff
-    /usr/local/bin/apt-install \
+RUN apt-get clean -y \
+    && echo "deb http://archive.ubuntu.com/ubuntu/ precise-backports main restricted" >> /etc/apt/sources.list \
+    && echo "deb-src http://archive.ubuntu.com/ubuntu/ precise-backports main restricted" >> /etc/apt/sources.list \
+    && apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get install --no-install-recommends -yq \
+        cron \
         curl \
+        dnsutils \
         git \
         gnupg \
+        iproute \
+        less \
+        logrotate \
+        lsb-release \
         net-tools \
         sudo \
+        supervisor \
+        swig \
+        tmpreaper \
+        unzip \
+        vim \
         wget \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    # Cleanup
-    && apt-get autoremove -y -f \
-    && apt-get clean -y
+    && mkdir -p /var/log/supervisor \
+    && wget --quiet -O /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
+    && chmod a+x /usr/bin/jq \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/lib/apt/lists -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
 
-# Define working directory
-WORKDIR /root
+ADD configs /
 
-# Define default command
-CMD ["/bin/bash"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
