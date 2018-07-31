@@ -41,5 +41,4 @@ The List of Alpine installed packages (excluding their dependencies):
 * `unzip`
 * `vim`
 * `wget`
-* `wget`
 * `xz`

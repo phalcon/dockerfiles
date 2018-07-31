@@ -16,6 +16,7 @@ RUN apk update \
         git \
         gnupg \
         iproute2 \
+        jq \
         less \
         logrotate \
         net-tools \
@@ -25,7 +26,6 @@ RUN apk update \
         tar \
         unzip \
         vim \
-        wget \
         wget \
         xz \
     && mkdir -m 0644 -p /var/log/supervisor /var/log/cron /var/spool/cron/crontabs /etc/cron.d \

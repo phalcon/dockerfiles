@@ -2,7 +2,7 @@ ARGS = $(filter-out $@,$(MAKECMDGOALS))
 MAKEFLAGS += --silent
 
 .PHONY: build
-build: build-ubuntu build-alpine
+build: build-ubuntu build-alpine build-beanstalkd
 
 .PHONY: release
 release: release-ubuntu release-alpine release-beanstalkd
@@ -14,10 +14,10 @@ build-ubuntu: build-bootstraps-ubuntu build-builders-ubuntu build-base-ubuntu
 release-ubuntu: release-bootstraps-ubuntu release-builders-ubuntu release-base-ubuntu
 
 .PHONY: build-alpine
-build-alpine: build-bootstraps-alpine build-base-alpine
+build-alpine: build-bootstraps-alpine build-builders-alpine build-base-alpine
 
 .PHONY: release-alpine
-release-alpine: release-bootstraps-alpine release-base-alpine
+release-alpine: release-bootstraps-alpine release-builders-alpine release-base-alpine
 
 .PHONY: build-beanstalkd
 build-beanstalkd:
@@ -106,6 +106,14 @@ release-bootstraps-ubuntu:
 	cd bootstrap/ubuntu-14.04 && $(MAKE) release
 	cd bootstrap/ubuntu-16.04 && $(MAKE) release
 	cd bootstrap/ubuntu-18.04 && $(MAKE) release
+
+.PHONY: build-builders-alpine
+build-builders-alpine:
+	cd build/alpine-3.4 && $(MAKE) build
+
+.PHONY: release-builders-alpine
+release-builders-alpine:
+	cd build/alpine-3.4 && $(MAKE) release
 
 .PHONY: build-bootstraps-alpine
 build-bootstraps-alpine:
