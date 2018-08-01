@@ -1,13 +1,6 @@
 # Nginx Dockerfiles
 
-## Base Docker Image
-
-[phalconphp/ubuntu](https://hub.docker.com/r/phalconphp/ubuntu/)
-
-## Installation
-
-1. Install [Docker](https://www.docker.com/)
-2. Download [build](https://hub.docker.com/r/phalconphp/nginx/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull phalconphp/nginx`
+Slimmed-down images to use for production Nginx on Alpine Linux.
 
 ## Usage
 
@@ -15,14 +8,15 @@
 $ docker run -d -p 80:80 phalconphp/nginx
 ```
 
+Open `http://127.0.0.1/nginx-status` to see the status page.
+
 ### Attach persistent/shared directories
 
 ```sh
 docker run \
     -d \
     --name docker-nginx \
-    -v <conf.d-dir>:/etc/nginx/conf.d \
-    -v <sites-enabled-dir>:/etc/nginx/sites-enabled \
+    -v <sites-config>:/etc/nginx/sites-enabled/default \
     -v <certs-dir>:/etc/nginx/certs \
     -v <www-dir>:/var/www/mysite \
     -p 80:80 \
