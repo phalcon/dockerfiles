@@ -1,9 +1,11 @@
-# Pull base image
 FROM phalconphp/build:centos7
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on CentOS 7" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.centos7-ius72"
 
-RUN /usr/local/bin/yum-upgrade \
+RUN yum upgrade -y \
     && curl -s https://setup.ius.io | bash \
     && yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
     && yum install -y \
@@ -14,13 +16,15 @@ RUN /usr/local/bin/yum-upgrade \
     && echo "source /opt/rh/devtoolset-7/enable" | tee -a /etc/profile \
     && source /opt/rh/devtoolset-7/enable \
     && gcc --version \
-    # make this better
     && ln -sf /opt/rh/devtoolset-7/root/usr/bin/gcc /usr/bin/gcc \
     && yum-config-manager --enable remi-php72 \
-    && /usr/local/bin/yum-install \
-        php-cli \
-        php-pdo \
-        php-json \
-        php-common \
-        php-devel \
-    && yum clean all
+    && yum -y install \
+        php72u-cli \
+        php72u-pdo \
+        php72u-json \
+        php72u-common \
+        php72u-devel \
+    && yum clean all \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
