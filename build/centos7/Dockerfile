@@ -1,51 +1,55 @@
-# Pull base image
 FROM phalconphp/bootstrap:centos-7
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on CentOS 7" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.centos7"
 
-# Set environment variables
 ENV PATH=/usr/lib/ccache:$PATH
 
-RUN /usr/local/bin/yum-upgrade \
-    && /usr/local/bin/yum-install \
+RUN yum upgrade -y \
+    && yum -y install \
         autoconf \
         automake \
         binutils \
+        binutils-devel \
         bison \
+        ccache \
+        cmake3 \
+        dnf \
+        dnf-plugins-core \
+        doxygen \
         flex \
         gcc \
         gcc-c++ \
         gettext \
-        dnf \
-        dnf-plugins-core \
-        yum-utils \
-        libtool \
-        re2c \
-        make \
-        patch \
-        pkgconfig \
-        redhat-rpm-config \
-        rpm-build \
-        rpm-sign \
-        yum-utils \
-        rpm-build \
-        rpmdevtools \
-        sudo \
-        wget \
         git \
         gnupg \
-        pygpgme \
-        wget \
-        ccache \
-        cmake3 \
-        readline-devel \
+        libtool \
         libyaml-devel \
-        binutils-devel \
-        zlib-devel \
-        doxygen \
+        make \
+        patch \
         perl-Test-Harness \
+        pkgconfig \
+        pygpgme \
+        re2c \
+        readline-devel \
+        redhat-rpm-config \
+        rpm-build \
+        rpm-build \
+        rpm-sign \
+        rpmdevtools \
         scl-utils \
         scl-utils-build \
+        sudo \
+        wget \
+        wget \
+        yum-utils \
+        yum-utils \
+        zlib-devel \
     && wget -qO - https://packagecloud.io/install/repositories/phalcon/stable/script.rpm.sh | bash \
     && sed -i.bak -n -e '/^Defaults.*requiretty/ { s/^/# /;};/^%wheel.*ALL$/ { s/^/# / ;} ;/^#.*wheel.*NOPASSWD/ { s/^#[ ]*//;};p' /etc/sudoers \
-    && yum clean all
+    && yum clean all \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
