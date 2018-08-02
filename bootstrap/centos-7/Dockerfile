@@ -1,49 +1,21 @@
-#
-# Bootstrap Dockerfile for CentOS 7
-#
-# https://github.com/phalcon/dockerfiles
-#
-
 FROM centos:7
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Bootstrap image to use for production with Ubuntu 12.04" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.bootstrap.centos-7"
 
-# Set environment variables
 ENV TIMEZONE=UTC \
+    LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    TERM=xterm
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon\ Framework \
-    com.phalconphp.image-specs="{\"Description\":\"Bootstrap Dockerfile for CentOS 7\",\"License\":\"BSD\",\"Version\":\"0.1.0\",\"Layouts\":5}"
-
-# Add base tools
-ADD baselayout.tar /
-
-# Init bootstrap (and install ansible)
-RUN set -x \
-    # Fix root terminal
-    && echo "export TERM=xterm" >> /root/.bashrc \
-    # System update
-    && rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-    && /usr/local/bin/yum-upgrade \
-    # Install ansible
-    && /usr/local/bin/yum-install \
+RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+    && yum upgrade -y \
+    && yum -y install \
         epel-release \
-        PyYAML \
-        python-jinja2 \
-        python-httplib2 \
-        python-keyczar \
-        python-paramiko \
-        python-setuptools \
-        python-setuptools-devel \
-        libffi \
-        python-devel \
-        libffi-devel \
-    && easy_install pip \
-    && pip install --upgrade pip \
-    && hash -r \
-    && pip install ansible \
-    && chmod 750 /usr/bin/ansible* \
-    && yum erase -y python-devel \
-    && yum clean all
+    && yum clean all \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
