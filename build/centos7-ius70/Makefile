@@ -1,27 +1,31 @@
 NAME = phalconphp/build
-TAG = centos7-ius70
+VERSION = centos7-ius70
 SHELL = /bin/bash
-
-.PHONY: pre-build docker-build post-build clean build release push do-push post-push
 
 build: pre-build docker-build post-build
 
+.PHONY: pre-build
 pre-build:
 
-post-build: clean
+.PHONY: post-build
+post-build:
 
+.PHONY: docker-build
 docker-build:
-	docker build -t $(NAME):$(TAG) --no-cache --rm .
+	docker build --pull -t $(NAME):$(VERSION) --no-cache --force-rm --compress .
 
+.PHONY: release
 release: build push
 
+.PHONY: push
 push: do-push post-push
 
+.PHONY: do-push
 do-push:
-	docker push $(NAME):$(TAG)
+	docker push $(NAME):$(VERSION)
 
+.PHONY: post-push
 post-push:
 
-clean:
-
 # vim:ft=make:noet:ci:pi:sts=0:sw=4:ts=4:tw=78:fenc=utf-8:et
+
