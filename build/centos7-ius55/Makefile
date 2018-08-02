@@ -4,9 +4,6 @@ SHELL = /bin/bash
 
 .PHONY: pre-build docker-build post-build clean build release push do-push post-push
 
-all:
-	$(error The PHP 5.5 no longer supported bu IUS repo maintainer)
-
 build: pre-build docker-build post-build
 
 pre-build: all
@@ -14,14 +11,14 @@ pre-build: all
 post-build: clean
 
 docker-build:
-	docker build -t $(NAME):$(TAG) --no-cache --rm .
+	$(info The PHP 5.5 no longer supported bu IUS repo maintainer)
 
 release: build push
 
 push: do-push post-push
 
 do-push:
-	docker push $(NAME):$(TAG)
+	$(info The PHP 5.5 no longer supported bu IUS repo maintainer)
 
 post-push:
 
