@@ -2,7 +2,7 @@
 
 Dockerfiles from Phalcon for PHP, Apache and Nginx (with PHP5 and PHP7) and more.
 
-![phalccon-images](https://raw.githubusercontent.com/phalcon/dockerfiles/master/docs/phalccon-images-1533103072.png)
+![phalccon-images](https://raw.githubusercontent.com/phalcon/dockerfiles/master/docs/phalccon-images-1533189242.png)
 
 You can either build the image yourself with the docker file which is hosted on this repository simply by doing a `docker build <directoryname>`
 
