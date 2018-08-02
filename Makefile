@@ -2,16 +2,22 @@ ARGS = $(filter-out $@,$(MAKECMDGOALS))
 MAKEFLAGS += --silent
 
 .PHONY: build
-build: build-ubuntu build-alpine build-beanstalkd
+build: build-ubuntu build-centos build-alpine build-beanstalkd build-nginx
 
 .PHONY: release
-release: release-ubuntu release-alpine release-beanstalkd
+release: release-ubuntu release-centos release-alpine release-beanstalkd release-nginx
 
 .PHONY: build-ubuntu
 build-ubuntu: build-bootstraps-ubuntu build-builders-ubuntu build-base-ubuntu
 
 .PHONY: release-ubuntu
 release-ubuntu: release-bootstraps-ubuntu release-builders-ubuntu release-base-ubuntu
+
+.PHONY: build-centos
+build-centos: build-bootstraps-centos build-builders-centos
+
+.PHONY: release-centos
+release-centos: release-bootstraps-centos release-builders-centos
 
 .PHONY: build-alpine
 build-alpine: build-bootstraps-alpine build-builders-alpine build-base-alpine
@@ -23,9 +29,17 @@ release-alpine: release-bootstraps-alpine release-builders-alpine release-base-a
 build-beanstalkd:
 	cd beanstalkd/1.10 && $(MAKE) build
 
+.PHONY: build-nginx
+build-nginx:
+	cd nginx/1.12 && $(MAKE) build
+
 .PHONY: release-beanstalkd
 release-beanstalkd:
 	cd beanstalkd/1.10 && $(MAKE) release
+
+.PHONY: release-nginx
+release-nginx:
+	cd nginx/1.12 && $(MAKE) release
 
 .PHONY: build-base
 build-base: build-base-ubuntu build-base-alpine
@@ -34,16 +48,16 @@ build-base: build-base-ubuntu build-base-alpine
 release-base: release-base-ubuntu release-base-alpine
 
 .PHONY: build-builders
-build-builders: build-builders-ubuntu
+build-builders: build-builders-ubuntu build-builders-centos build-builders-alpine
 
 .PHONY: release-builders
-release-builders: release-builders-ubuntu
+release-builders: release-builders-ubuntu release-builders-centos release-builders-alpine
 
 .PHONY: build-bootstraps
-build-bootstraps: build-bootstraps-ubuntu build-bootstraps-alpine
+build-bootstraps: build-bootstraps-ubuntu build-bootstraps-centos build-bootstraps-alpine
 
 .PHONY: release-bootstraps
-release-bootstraps: release-bootstraps-ubuntu release-bootstraps-alpine
+release-bootstraps: release-bootstraps-ubuntu release-bootstraps-centos release-bootstraps-alpine
 
 .PHONY: build-base-ubuntu
 build-base-ubuntu:
@@ -93,6 +107,24 @@ release-builders-ubuntu:
 	cd build/ubuntu-bionic-7.1 && $(MAKE) release
 	cd build/ubuntu-bionic-7.2 && $(MAKE) release
 
+.PHONY: build-builders-centos
+build-builders-centos:
+	cd build/centos7       && $(MAKE) build
+	cd build/centos7-ius55 && $(MAKE) build
+	cd build/centos7-ius56 && $(MAKE) build
+	cd build/centos7-ius70 && $(MAKE) build
+	cd build/centos7-ius71 && $(MAKE) build
+	cd build/centos7-ius72 && $(MAKE) build
+
+.PHONY: release-builders-centos
+release-builders-centos:
+	cd build/centos7       && $(MAKE) release
+	cd build/centos7-ius55 && $(MAKE) release
+	cd build/centos7-ius56 && $(MAKE) release
+	cd build/centos7-ius70 && $(MAKE) release
+	cd build/centos7-ius71 && $(MAKE) release
+	cd build/centos7-ius72 && $(MAKE) release
+
 .PHONY: build-bootstraps-ubuntu
 build-bootstraps-ubuntu:
 	cd bootstrap/ubuntu-12.04 && $(MAKE) build
@@ -106,6 +138,14 @@ release-bootstraps-ubuntu:
 	cd bootstrap/ubuntu-14.04 && $(MAKE) release
 	cd bootstrap/ubuntu-16.04 && $(MAKE) release
 	cd bootstrap/ubuntu-18.04 && $(MAKE) release
+
+.PHONY: build-bootstraps-centos
+build-bootstraps-centos:
+	cd bootstrap/centos-7 && $(MAKE) build
+
+.PHONY: release-bootstraps-centos
+release-bootstraps-centos:
+	cd bootstrap/centos-7 && $(MAKE) release
 
 .PHONY: build-builders-alpine
 build-builders-alpine:
