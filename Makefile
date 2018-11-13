@@ -2,16 +2,16 @@ ARGS = $(filter-out $@,$(MAKECMDGOALS))
 MAKEFLAGS += --silent
 
 .PHONY: build
-build: build-ubuntu build-centos build-alpine build-beanstalkd build-nginx
+build: build-ubuntu build-centos build-alpine
 
 .PHONY: release
-release: release-ubuntu release-centos release-alpine release-beanstalkd release-nginx
+release: release-ubuntu release-centos release-alpine
 
 .PHONY: build-ubuntu
-build-ubuntu: build-bootstraps-ubuntu build-builders-ubuntu build-base-ubuntu
+build-ubuntu: build-bootstraps-ubuntu build-builders-ubuntu
 
 .PHONY: release-ubuntu
-release-ubuntu: release-bootstraps-ubuntu release-builders-ubuntu release-base-ubuntu
+release-ubuntu: release-bootstraps-ubuntu release-builders-ubuntu
 
 .PHONY: build-centos
 build-centos: build-bootstraps-centos build-builders-centos
@@ -20,32 +20,10 @@ build-centos: build-bootstraps-centos build-builders-centos
 release-centos: release-bootstraps-centos release-builders-centos
 
 .PHONY: build-alpine
-build-alpine: build-bootstraps-alpine build-builders-alpine build-base-alpine
+build-alpine: build-bootstraps-alpine build-builders-alpine
 
 .PHONY: release-alpine
-release-alpine: release-bootstraps-alpine release-builders-alpine release-base-alpine
-
-.PHONY: build-beanstalkd
-build-beanstalkd:
-	cd beanstalkd/1.10 && $(MAKE) build
-
-.PHONY: build-nginx
-build-nginx:
-	cd nginx/1.12 && $(MAKE) build
-
-.PHONY: release-beanstalkd
-release-beanstalkd:
-	cd beanstalkd/1.10 && $(MAKE) release
-
-.PHONY: release-nginx
-release-nginx:
-	cd nginx/1.12 && $(MAKE) release
-
-.PHONY: build-base
-build-base: build-base-ubuntu build-base-alpine
-
-.PHONY: release-base
-release-base: release-base-ubuntu release-base-alpine
+release-alpine: release-bootstraps-alpine release-builders-alpine
 
 .PHONY: build-builders
 build-builders: build-builders-ubuntu build-builders-centos build-builders-alpine
@@ -58,28 +36,6 @@ build-bootstraps: build-bootstraps-ubuntu build-bootstraps-centos build-bootstra
 
 .PHONY: release-bootstraps
 release-bootstraps: release-bootstraps-ubuntu release-bootstraps-centos release-bootstraps-alpine
-
-.PHONY: build-base-ubuntu
-build-base-ubuntu:
-	cd base/ubuntu-12.04 && $(MAKE) build
-	cd base/ubuntu-14.04 && $(MAKE) build
-	cd base/ubuntu-16.04 && $(MAKE) build
-	cd base/ubuntu-18.04 && $(MAKE) build
-
-.PHONY: release-base-ubuntu
-release-base-ubuntu:
-	cd base/ubuntu-12.04 && $(MAKE) release
-	cd base/ubuntu-14.04 && $(MAKE) release
-	cd base/ubuntu-16.04 && $(MAKE) release
-	cd base/ubuntu-18.04 && $(MAKE) release
-
-.PHONY: build-base-alpine
-build-base-alpine:
-	cd base/alpine-3.4 && $(MAKE) build
-
-.PHONY: release-base-alpine
-release-base-alpine:
-	cd base/alpine-3.4 && $(MAKE) release
 
 .PHONY: build-builders-ubuntu
 build-builders-ubuntu:
