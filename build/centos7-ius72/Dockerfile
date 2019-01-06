@@ -5,8 +5,7 @@ LABEL description="Docker images to build Phalcon on CentOS 7" \
     vendor=Phalcon \
     name="com.phalconphp.images.build.centos7-ius72"
 
-#
-# This image has commented `centos-sclo-rh-source' repo in the
+# This image has disabled `centos-sclo-rh-source' repo in the
 # /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
 #
 # The `yum-builddep' from `yum-utils' package, for some unknown to me
@@ -44,9 +43,9 @@ RUN yum upgrade -y \
         php72u-json \
         php72u-common \
         php72u-devel \
-        yum install php-pear \
-    && printf "\n" | pecl install --force psr 1> /dev/null \
-    && echo 'extension=psr.so' > /etc/php.d/20-psr.ini \
+        php72-php-pecl-psr \
+        php72-php-pecl-psr-devel \
+    && echo 'extension=/opt/remi/php72/root/usr/lib64/php/modules/psr.so' > /etc/php.d/20-psr.ini \
     && yum clean all \
     && rm -rf /tmp/* /var/tmp/* \
     && find /var/cache -type f -delete \
