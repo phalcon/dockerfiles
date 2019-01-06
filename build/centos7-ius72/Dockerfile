@@ -43,16 +43,8 @@ RUN yum upgrade -y \
         php72u-json \
         php72u-common \
         php72u-devel \
-        php72-php-pecl-psr \
-        php72-php-pecl-psr-devel \
-    && ln -s /opt/remi/php72/root/usr/lib64/php/modules/psr.so `php-config --extension-dir`/psr.so \
-    && ls -l `php-config --extension-dir` \
-    && ln -s /etc/opt/remi/php72/php.d/40-psr.ini /etc/php.d/40-psr.ini \
-    && ls -l /etc/php.d \
-    && ln -s /etc/opt/remi/php72/php.d/40-psr.ini /etc/php-zts.d/40-psr.ini \
-    && ls -l /etc/php-zts.d \
-    && ln -s /opt/remi/php72/root/usr/include/php/ext/psr `php-config --include-dir`/ext/psr \
-    && ls -l `php-config --include-dir`/ext \
+        php-pecl-psr \
+        php-pecl-psr-devel \
     && yum clean all \
     && rm -rf /tmp/* /var/tmp/* \
     && find /var/cache -type f -delete \
