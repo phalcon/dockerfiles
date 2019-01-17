@@ -38,13 +38,15 @@ RUN yum upgrade -y \
     && mv repo.patch /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
     && yum-config-manager --enable remi-php72 \
     && yum -y install \
-        php72u-cli \
-        php72u-pdo \
-        php72u-json \
-        php72u-common \
-        php72u-devel \
+        pcre-devel \
+        php-cli \
+        php-pdo \
+        php-json \
+        php-common \
+        php-devel \
         php-pecl-psr \
         php-pecl-psr-devel \
+    && for p in cli pdo json common devel; do yum info php-${p} | egrep "Name|Version" && echo; done \
     && yum clean all \
     && rm -rf /tmp/* /var/tmp/* \
     && find /var/cache -type f -delete \
