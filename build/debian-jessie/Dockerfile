@@ -1,15 +1,13 @@
-# Pull base image
 FROM phalconphp/bootstrap:debian-8
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker image to build Phalcon for Debian Jessie" \
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.build.jessie"
 
-# Set environment variables
 ENV DEBIAN_FRONTEND="noninteractive" \
     LC_ALL="C.UTF-8" \
     LANG="C.UTF-8"
-
-ADD backports.list /etc/apt/sources.list.d/
-ADD preferences /etc/apt/preferences
 
 RUN apt-get clean -y \
     && /usr/local/bin/apt-upgrade \
@@ -39,4 +37,7 @@ RUN apt-get clean -y \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
