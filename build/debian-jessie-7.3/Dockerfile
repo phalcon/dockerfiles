@@ -1,10 +1,9 @@
-# Pull base image
 FROM phalconphp/build:debian-jessie
 
-LABEL description="Docker images to build Phalcon on Debian Jessie" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.build.jessie-7.3"
+LABEL description="Docker image to build Phalcon for Debian Jessie" \
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.build.jessie-7.3"
 
 RUN apt-get clean -y \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
