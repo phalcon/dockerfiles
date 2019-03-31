@@ -6,11 +6,15 @@
 
 FROM debian:8
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Bootstrap image to use for production with Debian Jessie" \
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.bootstrap.debian-8"
 
 # Set environment variables
 ENV TIMEZONE=UTC \
     LANG=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
     LC_ALL=en_US.UTF-8
 
 # Add base tools
