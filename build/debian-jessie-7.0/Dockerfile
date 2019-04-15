@@ -1,7 +1,10 @@
 # Pull base image
 FROM phalconphp/build:debian-jessie
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on Debian Jessie" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.jessie-7.0"
 
 RUN apt-get clean -y \
     && /usr/local/bin/apt-upgrade \
@@ -15,4 +18,7 @@ RUN apt-get clean -y \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done

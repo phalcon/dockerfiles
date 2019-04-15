@@ -1,7 +1,10 @@
 # Pull base image
 FROM phalconphp/bootstrap:debian-9
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Docker images to build Phalcon on Debian Stretch" \
+    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+    vendor=Phalcon \
+    name="com.phalconphp.images.build.stretch"
 
 # Set environment variables
 ENV DEBIAN_FRONTEND="noninteractive" \
@@ -32,8 +35,10 @@ RUN apt-get clean -y \
         zlib1g-dev \
         doxygen \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
