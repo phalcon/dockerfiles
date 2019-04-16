@@ -1,9 +1,9 @@
-FROM alpine:3.4
+FROM alpine:3.9
 
-LABEL description="Bootstrap image to use for production with Alpine 3.4" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.bootstrap.alpine-3.4"
+LABEL description="Bootstrap image to use for production with Alpine 3" \
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.bootstrap.alpine-3"
 
 ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
