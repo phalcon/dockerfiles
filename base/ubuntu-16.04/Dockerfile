@@ -26,7 +26,7 @@ RUN apt-get install --no-install-recommends -yq \
         logrotate \
         wget \
     && cd /tmp \
-    && wget -O "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
+    && wget --quiet -O "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
         "https://github.com/Supervisor/supervisor/archive/${SUPERVISOR_VERSION}.tar.gz" \
     && tar -xzf "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
     && cd "supervisor-${SUPERVISOR_VERSION}" \
@@ -35,8 +35,8 @@ RUN apt-get install --no-install-recommends -yq \
     && /usr/local/bin/supervisord --version \
     && sed -i "s/^[\s]*su root syslog/# su root syslog/g" /etc/logrotate.conf \
     && export DPKG_ARCH="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$DPKG_ARCH" \
-    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$DPKG_ARCH.asc" \
+    && wget --quiet -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$DPKG_ARCH" \
+    && wget --quiet -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$DPKG_ARCH.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && export GPG_KEY="B42F6819007F00F88E364FD4036A9C25BF357DD4" \
     && ( \
@@ -49,7 +49,7 @@ RUN apt-get install --no-install-recommends -yq \
     && gosu nobody true
 
 # cleanup
-RUN apt-get purge $BUILDDEPS \
+RUN apt-get purge -y $BUILDDEPS \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
