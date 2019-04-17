@@ -6,7 +6,7 @@ LABEL description="Slimmed-down base image to use for production with crond and 
       name="com.phalconphp.images.base.ubuntu-16.04"
 
 ENV SUPERVISOR_VERSION=4.0.1 \
-    GOSU_VERSION=1.11
+    GOSU_VERSION=1.11 \
     BUILDDEPS="gnupg python-setuptools"
 
 # remove from base image unobvious cron jobs
