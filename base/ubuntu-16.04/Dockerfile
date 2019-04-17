@@ -5,28 +5,25 @@ LABEL description="Slimmed-down base image to use for production with crond and 
       vendor=Phalcon \
       name="com.phalconphp.images.base.ubuntu-16.04"
 
-ENV SUPERVISOR_VERSION=4.0.1
-ENV GOSU_VERSION=1.11
+ENV SUPERVISOR_VERSION=4.0.1 \
+    GOSU_VERSION=1.11
+    BUILDDEPS="gnupg python-setuptools"
 
-RUN apt clean -y \
-    && apt update -y \
-    && apt upgrade -y \
-    && apt install --no-install-recommends -yq \
+# remove from base image unobvious cron jobs
+RUN [ -d /etc/cron.hourly ] && rm /etc/cron.hourly/* ; \
+    [ -d /etc/cron.daily ] && rm /etc/cron.daily/* ; \
+    [ -d /etc/cron.weekly ] && rm /etc/cron.weekly/* ; \
+    [ -d /etc/cron.monthly ] && rm /etc/cron.monthly/* ; \
+    exit 0 ;
+
+# persistent / runtime deps
+RUN apt-get update \
+    && apt-get install --no-install-recommends -yq $BUILDDEPS
+
+# install base packages
+RUN apt-get install --no-install-recommends -yq \
         cron \
-        curl \
-        dnsutils \
-        git \
-        gnupg \
-        iproute2 \
-        jq \
-        less \
         logrotate \
-        lsb-release \
-        net-tools \
-        python-setuptools \
-        swig \
-        tmpreaper \
-        unzip \
         wget \
     && cd /tmp \
     && wget -O "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
@@ -49,9 +46,12 @@ RUN apt clean -y \
         ) \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && chmod +x /usr/local/bin/gosu \
-    && gosu nobody true \
-    && apt autoremove -y \
-    && apt clean -y \
+    && gosu nobody true
+
+# cleanup
+RUN apt-get purge $BUILDDEPS \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
     && rm /usr/local/bin/gosu.asc \
     && find /var/cache/apt/archives /var/lib/apt/lists \
