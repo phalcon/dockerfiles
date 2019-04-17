@@ -13,12 +13,13 @@ RUN apk update \
     && apk upgrade --force \
     && apk add --no-cache \
         dcron \
+        gnupg \
         logrotate \
         tar \
         wget \
         xz \
     && cd /tmp \
-    && apk add --no-cache --virtual .build-deps dpkg py-setuptools gnupg \
+    && apk add --no-cache --virtual .build-deps dpkg py-setuptools \
     && wget --quiet -O "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
         "https://github.com/Supervisor/supervisor/archive/${SUPERVISOR_VERSION}.tar.gz" \
     && tar -xzf "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
