@@ -1,9 +1,9 @@
 FROM ubuntu:16.04
 
 LABEL description="Bootstrap image to use for production with Ubuntu 16.04" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.bootstrap.ubuntu-16.04"
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.bootstrap.ubuntu-16.04"
 
 ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
