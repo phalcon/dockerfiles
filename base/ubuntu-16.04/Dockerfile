@@ -7,7 +7,7 @@ LABEL description="Slimmed-down base image to use for production with crond and 
 
 ENV SUPERVISOR_VERSION=4.0.1 \
     GOSU_VERSION=1.11 \
-    BUILDDEPS="gnupg python-setuptools"
+    BUILDDEPS="python-setuptools"
 
 # remove from base image unobvious cron jobs
 RUN [ -d /etc/cron.hourly ] && rm /etc/cron.hourly/* ; \
@@ -23,6 +23,7 @@ RUN apt-get update \
 # install base packages
 RUN apt-get install --no-install-recommends -yq \
         cron \
+        gnupg \
         logrotate \
         wget \
     && cd /tmp \
@@ -49,7 +50,7 @@ RUN apt-get install --no-install-recommends -yq \
     && gosu nobody true
 
 # cleanup
-RUN apt-get purge -y $BUILDDEPS \
+RUN apt-get purge -y $BUILDDEPS python-pkg-resources \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
