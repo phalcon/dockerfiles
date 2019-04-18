@@ -1,9 +1,9 @@
 FROM ubuntu:18.04
 
 LABEL description="Bootstrap image to use for production with Ubuntu 18.04" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.bootstrap.ubuntu-18.04"
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.bootstrap.ubuntu-18.04"
 
 ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
@@ -22,11 +22,12 @@ RUN apt clean -y \
     && locale-gen ${LANG} \
     && dpkg-reconfigure --frontend noninteractive locales \
     && apt install --no-install-recommends -yq \
-        apt-utils \
-        software-properties-common \
-        lsb-release \
-        ca-certificates \
         apt-transport-https \
+        apt-utils \
+        ca-certificates \
+        lsb-release \
+        python-software-properties \
+        software-properties-common \
         tzdata \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
