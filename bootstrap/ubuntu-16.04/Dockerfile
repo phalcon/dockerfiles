@@ -22,12 +22,12 @@ RUN apt clean -y \
     && locale-gen ${LANG} \
     && dpkg-reconfigure --frontend noninteractive locales \
     && apt install --no-install-recommends -yq \
-        apt-utils \
-        software-properties-common \
-        python-software-properties \
-        lsb-release \
-        ca-certificates \
         apt-transport-https \
+        apt-utils \
+        ca-certificates \
+        lsb-release \
+        python-software-properties \
+        software-properties-common \
         tzdata \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
