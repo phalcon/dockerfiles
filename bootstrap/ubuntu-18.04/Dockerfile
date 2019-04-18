@@ -26,7 +26,6 @@ RUN apt clean -y \
         apt-utils \
         ca-certificates \
         lsb-release \
-        python-software-properties \
         software-properties-common \
         tzdata \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
