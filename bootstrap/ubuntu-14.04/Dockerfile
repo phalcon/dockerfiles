@@ -1,9 +1,9 @@
 FROM ubuntu:14.04
 
 LABEL description="Bootstrap image to use for production with Ubuntu 14.04" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.bootstrap.ubuntu-14.04"
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.bootstrap.ubuntu-14.04"
 
 ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
@@ -34,8 +34,8 @@ RUN apt-get clean -y \
     && echo "${TIMEZONE}" | tee /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
     && apt-add-repository -y multiverse \
-    && apt update -y \
-    && apt upgrade -y \
+    && apt-get update -y \
+    && apt-get upgrade -y \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
