@@ -15,11 +15,13 @@ RUN apk update \
         dcron \
         gnupg \
         logrotate \
+        py-setuptools \
+        python \
         tar \
         wget \
         xz \
     && cd /tmp \
-    && apk add --no-cache --virtual .build-deps dpkg py-setuptools \
+    && apk add --no-cache --virtual .build-deps dpkg \
     && wget --quiet -O "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
         "https://github.com/Supervisor/supervisor/archive/${SUPERVISOR_VERSION}.tar.gz" \
     && tar -xzf "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
@@ -41,7 +43,8 @@ RUN apk update \
         ) \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && chmod +x /usr/local/bin/gosu \
-    && gosu nobody true
+    && gosu nobody true \
+    && python --version
 
 # cleanup
 RUN apk del .build-deps \
@@ -51,4 +54,4 @@ RUN apk del .build-deps \
 
 COPY ./configs /
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
