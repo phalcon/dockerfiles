@@ -24,6 +24,7 @@ RUN apk update \
     && sed -i "s|#include <sys/fcntl.h>|#include <fcntl.h>|g" sd-daemon.c \
     && make || return 1 \
     && make PREFIX=/usr install \
+    && mkdir -p $BEANSTALKD_LIB \
     && beanstalkd -v
 
 # cleanup
