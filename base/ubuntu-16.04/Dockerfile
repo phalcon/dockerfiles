@@ -6,8 +6,7 @@ LABEL description="Slimmed-down base image to use for production with crond and 
       name="com.phalconphp.images.base.ubuntu-16.04"
 
 ENV SUPERVISOR_VERSION=4.0.1 \
-    GOSU_VERSION=1.11 \
-    BUILDDEPS="python-setuptools"
+    GOSU_VERSION=1.11
 
 # remove from base image unobvious cron jobs
 RUN [ -d /etc/cron.hourly ] && rm /etc/cron.hourly/* ; \
@@ -16,15 +15,13 @@ RUN [ -d /etc/cron.hourly ] && rm /etc/cron.hourly/* ; \
     [ -d /etc/cron.monthly ] && rm /etc/cron.monthly/* ; \
     exit 0 ;
 
-# persistent / runtime deps
 RUN apt-get update \
-    && apt-get install --no-install-recommends -yq $BUILDDEPS
-
-# install base packages
-RUN apt-get install --no-install-recommends -yq \
+    && apt-get install --no-install-recommends -yq \
         cron \
         gnupg \
         logrotate \
+        python \
+        python-setuptools \
         wget \
     && cd /tmp \
     && wget --quiet -O "supervisor-${SUPERVISOR_VERSION}.tar.gz" \
@@ -50,7 +47,7 @@ RUN apt-get install --no-install-recommends -yq \
     && gosu nobody true
 
 # cleanup
-RUN apt-get purge -y $BUILDDEPS python-pkg-resources \
+RUN apt-get purge -y \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
