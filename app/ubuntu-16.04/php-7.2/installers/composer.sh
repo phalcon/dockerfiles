@@ -12,16 +12,18 @@ set -o nounset
 # set -e : exit the script if any statement returns a non-true return value
 set -o errexit
 
-echo "Installing Zephir v${ZEPHIR_VERSION}..."
-
 mkdir -p /usr/local/bin
 
-wget --quiet -O /usr/local/bin/zephir \
-     "https://github.com/phalcon/zephir/releases/download/${ZEPHIR_VERSION}/zephir.phar"
+export COMPOSER_HOME=$COMPOSER_HOME
+export PATH=$PATH
+export COMPOSER_ALLOW_SUPERUSER=$COMPOSER_ALLOW_SUPERUSER
 
-chmod +x /usr/local/bin/zephir
+mkdir $COMPOSER_HOME
+
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+chmod +x /usr/local/bin/composer
 
 mkdir -p /artifacts/usr/local/bin
-cp /usr/local/bin/zephir /artifacts/usr/local/bin
+cp /usr/local/bin/composer /artifacts/usr/local/bin
 
-zephir --version
+composer --version --no-ansi

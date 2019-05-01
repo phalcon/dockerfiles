@@ -86,22 +86,22 @@ RUN apt-get \
 # turn the detached message off
 RUN git config --global advice.detachedHead false
 
-# install latest composer
-RUN export COMPOSER_HOME=$COMPOSER_HOME \
-    && export PATH=$PATH \
-    && export COMPOSER_ALLOW_SUPERUSER=$COMPOSER_ALLOW_SUPERUSER \
-    && mkdir $COMPOSER_HOME \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && chmod +x /usr/local/bin/composer \
-    && composer --version --no-ansi
-
 COPY ./installers /installers
 
 # build custom extensions and move it to /artifacts folder
 RUN find /installers -type f -regex ".+sh" | xargs chmod +x \
     && mkdir /artifacts \
     && bash /installers/zephir-parser.sh \
-    && bash /installers/zephir.sh
+    && bash /installers/zephir.sh \
+    && bash /installers/composer.sh \
+    && bash /installers/pinba.sh
+
+# update openssl from openssl 1.0.2g to 1.0.2o
+RUN bash /installers/openssl.sh
+
+# configure NGINX from source
+RUN bash /installers/nginx.sh
+COPY configs/nginx/nginx.conf /etc/nginx/nginx.conf
 
 RUN tree /artifacts
 

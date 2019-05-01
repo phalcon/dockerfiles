@@ -22,23 +22,26 @@ cd /tmp/zephir_parser
 
 phpize
 ./configure
-make
-make install
+make -s -j"$(getconf _NPROCESSORS_ONLN)"
+make -s install
 
-echo "[Zephir Parser]" > /etc/php/7.2/mods-available/zephir_parser.ini
-echo "extension=zephir_parser.so" >> /etc/php/7.2/mods-available/zephir_parser.ini
+php_version=`php -r 'echo phpversion();' | cut -d '.' -f 1,2`
+php_include_dir=`php-config --include-dir`
+php_ext_dir=`php-config --extension-dir`
 
-phpversion=`php -r 'echo phpversion();' | cut -d '.' -f 1,2`
+echo "[Zephir Parser]" > /etc/php/${php_version}/mods-available/zephir_parser.ini
+echo "extension=zephir_parser.so" >> /etc/php/${php_version}/mods-available/zephir_parser.ini
 
 ln -sf \
-   /etc/php/${phpversion}/mods-available/zephir_parser.ini \
-   /etc/php/${phpversion}/cli/conf.d/50-zephir_parser.ini
+   /etc/php/${php_version}/mods-available/zephir_parser.ini \
+   /etc/php/${php_version}/cli/conf.d/50-zephir_parser.ini
 
-mkdir -p /artifacts/`php-config --extension-dir`/ext
-mkdir -p /artifacts/`php-config --include-dir`
-mkdir -p /artifacts/etc/php/${phpversion}/mods-available
+mkdir -p /artifacts${php_ext_dir}
+mkdir -p /artifacts${php_include_dir}/ext
+mkdir -p /artifacts/etc/php/${php_version}/mods-available
 
-cp `php-config --extension-dir`/zephir_parser.so /artifacts/`php-config --extension-dir`
-cp -R `php-config --include-dir`/ext/zephir_parser /artifacts/`php-config --extension-dir`/ext
+cp /etc/php/${php_version}/mods-available/zephir_parser.ini /artifacts/etc/php/${php_version}/mods-available
+cp ${php_ext_dir}/zephir_parser.so /artifacts${php_ext_dir}
+cp -R ${php_include_dir}/ext/zephir_parser /artifacts/${php_include_dir}/ext
 
 php --ri "Zephir Parser"
