@@ -1,0 +1,15 @@
+/var/log/php/* {
+    rotate 1
+    daily
+    missingok
+    notifempty
+    compress
+    delaycompress
+    postrotate
+        /usr/lib/php/php7.2-fpm-reopenlogs
+    endscript
+}
+
+# Local Variables:
+# mode: conf
+# End:

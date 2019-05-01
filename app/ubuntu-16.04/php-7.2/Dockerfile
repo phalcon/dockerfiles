@@ -37,7 +37,7 @@ ENV DEBIAN_FRONTEND="noninteractive" \
     FPM_PROCESS_IDLE_TIMEOUT=5 \
     FPM_MAX_REQUEST=1024 \
     ZEPHIR_VERSION="0.11.12" \
-    ZEPHIR_PARSER_VERSION="v1.3.0" \
+    ZEPHIR_PARSER_VERSION="v1.3.1" \
     GITHUB_USER=${GITHUB_USER:-cicdbot} \
     GITHUB_TOKEN=${GITHUB_TOKEN:-""} \
     NGINX_VERSION=1.14.2 \
@@ -46,7 +46,7 @@ ENV DEBIAN_FRONTEND="noninteractive" \
     NGINX_LOG_PATH=/var/log/nginx \
     NGINX_BUILD=Ubuntu \
     PCRE_VERSION=8.43 \
-    PCRE_PATH=/opt/prce \
+    PCRE_PATH=/var/lib/pcre \
     OPENSSL_VERSION="openssl-1.0.2o"
 
 RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php \
@@ -93,7 +93,6 @@ RUN find /installers -type f -regex ".+sh" | xargs chmod +x \
     && mkdir /artifacts \
     && bash /installers/zephir-parser.sh \
     && bash /installers/zephir.sh \
-    && bash /installers/composer.sh \
     && bash /installers/pinba.sh
 
 # update openssl from openssl 1.0.2g to 1.0.2o
@@ -101,12 +100,148 @@ RUN bash /installers/openssl.sh
 
 # configure NGINX from source
 RUN bash /installers/nginx.sh
-COPY configs/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
 RUN tree /artifacts
 
 # Application image
 FROM phalconphp/base:ubuntu-16.04
+
+LABEL description="Application image to use for production with PHP and Nginx" \
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.base.ubuntu-16.04"
+
+ENV DEBIAN_FRONTEND="noninteractive" \
+    PINBA_SERVER=127.0.0.1 \
+    PATH=/root/composer/vendor/bin:$PATH \
+    COMPOSER_HOME=/root/composer \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    PCRE_PATH=/var/lib/pcre
+
+RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php
+
+# Install php 7.1 with libs and other software
+RUN apt-get update -y \
+    && apt-get \
+    -o Dpkg::Options::="--force-confdef" \
+    -o Dpkg::Options::="--force-confold" \
+    install -y -f --no-install-recommends \
+      curl \
+      dnsutils \
+      git \
+      iproute2 \
+      jq \
+      less \
+      libc6-dev \
+      libgeoip-dev \
+      libpcre3-dev \
+      libssh2-1-dev \
+      libssl-dev \
+      libyaml-dev \
+      lsb-release \
+      php-amqp \
+      php-apcu-bc \
+      php-igbinary \
+      php-mcrypt \
+      php-memcache \
+      php-pear \
+      php-sodium \
+      php-ssh2 \
+      php-xdebug \
+      php-yaml \
+      php7.2-bcmath \
+      php7.2-cgi \
+      php7.2-cli \
+      php7.2-common \
+      php7.2-curl \
+      php7.2-dba \
+      php7.2-dev \
+      php7.2-fpm \
+      php7.2-gd \
+      php7.2-gmp \
+      php7.2-imagick \
+      php7.2-imap \
+      php7.2-intl \
+      php7.2-json \
+      php7.2-mbstring \
+      php7.2-memcached \
+      php7.2-mongodb \
+      php7.2-msgpack \
+      php7.2-mysql \
+      php7.2-odbc \
+      php7.2-opcache \
+      php7.2-pgsql \
+      php7.2-phalcon \
+      php7.2-pspell \
+      php7.2-recode \
+      php7.2-redis \
+      php7.2-soap \
+      php7.2-tidy \
+      php7.2-xml \
+      php7.2-zip \
+      re2c \
+      software-properties-common \
+      swig \
+      tmpreaper \
+      unzip \
+      vim \
+      wget
+
+RUN mkdir -p \
+    /tmp/debug \
+    /run/php \
+    /var/log/php \
+    /tmp/nginx/proxy \
+    /tmp/nginx/cache \
+    $COMPOSER_HOME
+
+COPY --from=build-env /artifacts/ /
+COPY ./configs/etc/php/7.2/ /etc/php/7.2/
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && chmod +x /usr/local/bin/composer \
+    && composer --version --no-ansi
+
+# Disable mods
+RUN phpdismod -v 7.2 apcu_bc \
+    && phpdismod -v 7.2 apcu \
+    && phpdismod -v 7.2 mongodb \
+    && phpdismod -v 7.2 pinba \
+    && phpdismod -v 7.2 xdebug
+
+ADD ./configs/geoip/GeoLite.tar.gz /var/lib/geoip/
+
+RUN apt-get install -y \
+    libjansson-dev \
+    libmaxminddb0 \
+    mmdb-bin \
+    nginx \
+    openssl \
+    zlib1g-dev
+
+COPY --from=build-env $PCRE_PATH $PCRE_PATH
+COPY --from=build-env /usr/sbin/nginx /usr/sbin/nginx
+
+COPY ./configs/etc/supervisor/ /etc/supervisor/
+COPY ./configs/etc/nginx/ /etc/nginx/
+COPY ./configs/etc/logrotate.d/ /etc/logrotate.d/
+
+# start scripts
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./entrypoint.d /entrypoint.d
+RUN chmod +x /entrypoint.sh
+
+# cleanup
+RUN apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache/apt/archives /var/lib/apt/lists \
+       -not -name lock \
+       -type f \
+       -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
 
 # Local Variables:
 # tab-width: 4

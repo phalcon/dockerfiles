@@ -1,0 +1,26 @@
+/var/log/nginx/*.log
+/var/log/nginx/*.json {
+    daily
+    missingok
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    create 0640 www-data adm
+    sharedscripts
+    prerotate
+        if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+            run-parts /etc/logrotate.d/httpd-prerotate; \
+        fi \
+    endscript
+    postrotate
+        # rotete nginx log if run under service
+        # invoke-rc.d nginx rotate >/dev/null 2>&1
+        # rotate nginx log if run under supervisor
+        /bin/kill -USR1 $(/usr/bin/supervisorctl pid nginx:nginxd)
+    endscript
+}
+
+# Local Variables:
+# mode: conf
+# End:
