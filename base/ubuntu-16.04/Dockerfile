@@ -47,8 +47,7 @@ RUN apt-get update \
     && gosu nobody true
 
 # cleanup
-RUN apt-get purge -y \
-    && apt-get autoremove -y \
+RUN apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
     && rm /usr/local/bin/gosu.asc \
