@@ -12,11 +12,13 @@ set -o nounset
 # set -e : exit the script if any statement returns a non-true return value
 set -o errexit
 
-targz_download_and_extract() {
+gunzip_uri() {
     source=$1
     destination=$2
+
     cd /tmp
-    wget -O $destination $source
+
+    wget --quiet -O $destination $source
     tar -xzf $destination
 }
 
@@ -38,13 +40,13 @@ git clone \
     https://github.com/arut/nginx-dav-ext-module \
     /tmp/nginx-dav-ext-module
 
-targz_download_and_extract \
+gunzip_uri \
     "https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz" \
     /tmp/pcre.tar.gz
 
 mv /tmp/pcre-${PCRE_VERSION} $PCRE_PATH
 
-targz_download_and_extract \
+gunzip_uri \
     "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" \
     /tmp/nginx.tar.gz
 

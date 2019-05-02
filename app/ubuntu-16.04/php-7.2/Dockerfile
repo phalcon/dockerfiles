@@ -19,7 +19,6 @@ RUN apt-get -y update \
 ENV DEBIAN_FRONTEND=noninteractive \
     ZEPHIR_VERSION=0.11.12 \
     ZEPHIR_PARSER_VERSION=v1.3.1 \
-    LIB_MAXMINDDB_VERSION=1.3.2 \
     NGINX_VERSION=1.16.0 \
     NGINX_USER=www-data \
     NGINX_CONF_PATH=/etc/nginx \
@@ -63,18 +62,18 @@ RUN apt-get \
         mmdb-bin \
         libmaxminddb0
 
-# turn the detached message off
+# Turn the detached message off
 RUN git config --global advice.detachedHead false
 
 COPY ./installers /installers
 
-# build custom extensions and move it to /artifacts folder
+# Build custom extensions and move it to /artifacts folder
 RUN mkdir /artifacts \
     && bash /installers/zephir-parser.sh \
     && bash /installers/zephir.sh \
     && bash /installers/pinba.sh
 
-# update openssl from openssl 1.0.2g to 1.0.2o
+# Update openssl from openssl 1.0.2g to 1.0.2o
 RUN bash /installers/openssl.sh
 
 # configure NGINX from source
@@ -107,6 +106,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PINBA_SERVER=${PINBA_SERVER:-} \
     GITHUB_USER=${GITHUB_USER:-} \
     GITHUB_TOKEN=${GITHUB_TOKEN:-}
+
+COPY ./configs/etc/dpkg/dpkg.cfg.d/ /etc/dpkg/dpkg.cfg.d/
 
 RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php
 
@@ -175,7 +176,6 @@ RUN apt-get update -y \
       tmpreaper \
       tree \
       unzip \
-      vim \
       wget
 
 # Create required directories
@@ -233,6 +233,7 @@ COPY ./entrypoint.d /entrypoint.d
 # Final check and preparing entrypoint
 RUN echo \
     && nginx -v \
+    && php --version | head -n 1 \
     && composer --version --no-ansi \
     && zephir --version \
     && php -r 'echo "Phalcon " . \Phalcon\Version::get() . "\n";' \
@@ -246,6 +247,9 @@ RUN echo \
 RUN apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
+    && rm -rf /usr/share/doc/* \
+    && rm -rf /usr/share/man/* \
+    && rm -rf /usr/share/locale/* \
     && find /var/cache/apt/archives /var/lib/apt/lists \
        -not -name lock \
        -type f \
