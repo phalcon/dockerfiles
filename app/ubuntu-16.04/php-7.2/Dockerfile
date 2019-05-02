@@ -86,7 +86,7 @@ FROM phalconphp/base:ubuntu-16.04
 LABEL description="Application image to use for production with PHP and Nginx" \
       maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
       vendor=Phalcon \
-      name="com.phalconphp.images.base.ubuntu-16.04"
+      name="com.phalconphp.images.ubuntu-16.04.php-7.2"
 
 ARG GITHUB_TOKEN
 ARG GITHUB_USER
@@ -106,6 +106,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PINBA_SERVER=${PINBA_SERVER:-} \
     GITHUB_USER=${GITHUB_USER:-} \
     GITHUB_TOKEN=${GITHUB_TOKEN:-}
+
+# TODO: HEALTHCHECK
 
 COPY ./configs/etc/dpkg/dpkg.cfg.d/ /etc/dpkg/dpkg.cfg.d/
 
@@ -133,7 +135,6 @@ RUN apt-get update -y \
       php-amqp \
       php-apcu-bc \
       php-igbinary \
-      php-mcrypt \
       php-memcache \
       php-pear \
       php-sodium \
