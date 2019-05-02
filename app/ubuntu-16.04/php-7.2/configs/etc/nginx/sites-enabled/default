@@ -1,0 +1,18 @@
+server {
+    listen 80;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    include /etc/nginx/locations/nginx-status.conf;
+    include /etc/nginx/locations/protect-system-files.conf;
+    include /etc/nginx/locations/silent-access.conf;
+}
+
+# Local Variables:
+# mode: nginx
+# End:
