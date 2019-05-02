@@ -1,8 +1,20 @@
-# `phalconphp/base:ubuntu-16.04`
+# `phalconphp/ubuntu-16.04:php-7.2`
 
 Application image to use for production with PHP and Nginx.
 
 ## Usage
+
+Run the following command to get the Application Docker image:
+
+``` sh
+$ docker pull phalconphp/ubuntu-16.04:php-7.2
+```
+
+### Simple run
+
+``` sh
+$ docker run --name app -p 8081:80 phalconphp/ubuntu-16.04:php-7.2
+```
 
 ### Xdebug
 
