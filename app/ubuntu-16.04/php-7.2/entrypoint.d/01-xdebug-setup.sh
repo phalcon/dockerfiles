@@ -3,14 +3,6 @@
 # Exit the script if any statement returns a non-true return value
 set -e
 
-# Set pinba server
-if [ "x${PINBA_SERVER}" != "x" ]; then
-    sed -i -e "s/pinba.server[ \t]*=[ \t]*\(.*\)$/pinba.server = ${PINBA_SERVER}/g" \
-        /etc/php/7.2/mods-available/pinba.ini
-
-    phpenmod -v 7.2 pinba
-fi
-
 if [ "x${XDEBUG_REMOTE_PORT}" != "x" ]; then
     sed -i -e "s/xdebug.remote_port[ \t]*=[ \t]*\(.*\)$/xdebug.remote_port = ${XDEBUG_REMOTE_PORT}/g" \
         /etc/php/7.2/mods-available/xdebug.ini
@@ -24,9 +16,16 @@ fi
 if [ "x${XDEBUG_REMOTE_ENABLE}" != "x" ]; then
     sed -i -e "s/xdebug.remote_enable[ \t]*=[ \t]*\(.*\)$/xdebug.remote_enable = ${XDEBUG_REMOTE_ENABLE}/g" \
         /etc/php/7.2/mods-available/xdebug.ini
+
+    # Setting XDEBUG_REMOTE_ENABLE=1 will enable xdebug
+    case $XDEBUG_REMOTE_ENABLE in
+	"1"|"on"|"On"|"ON"|"true"|"True"|"TRUE")
+	    phpenmod -v 7.1 xdebug;
+	    ;;
+    esac
 fi
 
-# Enable xdebug only if env var XDEBUG_REMOTE_HOST is defined
+# Enable xdebug if XDEBUG_REMOTE_HOST is defined
 if [ "x${XDEBUG_REMOTE_HOST}" != "x" ]; then
     if [ ${XDEBUG_REMOTE_HOST} == "auto" ]; then
 	export XDEBUG_REMOTE_HOST=$(/sbin/ip route|awk '/default/ { print $3 }')

@@ -18,8 +18,8 @@ wget --quiet -O /tmp/openssl.tar.gz \
      "https://www.openssl.org/source/$OPENSSL_VERSION.tar.gz"
 
 tar -xzf openssl.tar.gz
-cd  $OPENSSL_VERSION/
-./config --prefix=/usr
+cd $OPENSSL_VERSION
 
+./config --prefix=/usr
 make -s -j"$(getconf _NPROCESSORS_ONLN)"
 make -s install

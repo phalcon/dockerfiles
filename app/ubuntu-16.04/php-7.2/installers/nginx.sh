@@ -20,9 +20,23 @@ targz_download_and_extract() {
     tar -xzf $destination
 }
 
-git clone --depth=1 -q https://github.com/tony2001/ngx_http_pinba_module.git /tmp/pinba
-git clone --depth=1 -q https://github.com/leev/ngx_http_geoip2_module.git    /tmp/ngx_http_geoip2_module
-git clone --depth=1 -q https://github.com/arut/nginx-dav-ext-module          /tmp/nginx-dav-ext-module
+git clone \
+    --depth=1 \
+    -q \
+    https://github.com/tony2001/ngx_http_pinba_module.git \
+    /tmp/pinba
+
+git clone \
+    --depth=1 \
+    -q \
+    https://github.com/leev/ngx_http_geoip2_module.git \
+    /tmp/ngx_http_geoip2_module
+
+git clone \
+    --depth=1 \
+    -q \
+    https://github.com/arut/nginx-dav-ext-module \
+    /tmp/nginx-dav-ext-module
 
 targz_download_and_extract \
     "https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz" \
@@ -35,6 +49,7 @@ targz_download_and_extract \
     /tmp/nginx.tar.gz
 
 cd /tmp/nginx-${NGINX_VERSION}
+
 ./configure --prefix=/usr/share/nginx \
             --sbin-path=/usr/sbin/nginx \
             --conf-path=$NGINX_CONF_PATH/nginx.conf\

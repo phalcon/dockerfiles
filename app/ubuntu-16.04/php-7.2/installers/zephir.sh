@@ -23,5 +23,3 @@ chmod +x /usr/local/bin/zephir
 
 mkdir -p /artifacts/usr/local/bin
 cp /usr/local/bin/zephir /artifacts/usr/local/bin
-
-zephir --version

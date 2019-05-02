@@ -1,5 +1,3 @@
-# docker build -t phalconphp/ubuntu-16.04:php-7.2 .
-
 # Build image
 FROM ubuntu:16.04 AS build-env
 
@@ -8,46 +6,28 @@ RUN apt-get -y update \
     && apt-get install --no-install-recommends -yq \
        autoconf \
        build-essential \
-       curl \
        gcc \
        git \
-       less \
        libjansson-dev \
        make \
        openssl \
        software-properties-common \
-       tree \
        unzip \
-       vim \
        wget \
        zlib1g-dev
 
-ARG GITHUB_TOKEN
-ARG GITHUB_USER
-
-ENV DEBIAN_FRONTEND="noninteractive" \
-    PINBA_SERVER=127.0.0.1 \
-    PATH=/root/composer/vendor/bin:$PATH \
-    COMPOSER_HOME=/root/composer \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    FPM_MAX_CHILDREN=32 \
-    FPM_START_SERVERS=6 \
-    FPM_MIN_SPARE_SERVERS=2 \
-    FPM_MAX_SPARE_SERVERS=8 \
-    FPM_PROCESS_IDLE_TIMEOUT=5 \
-    FPM_MAX_REQUEST=1024 \
-    ZEPHIR_VERSION="0.11.12" \
-    ZEPHIR_PARSER_VERSION="v1.3.1" \
-    GITHUB_USER=${GITHUB_USER:-cicdbot} \
-    GITHUB_TOKEN=${GITHUB_TOKEN:-""} \
-    NGINX_VERSION=1.14.2 \
+ENV DEBIAN_FRONTEND=noninteractive \
+    ZEPHIR_VERSION=0.11.12 \
+    ZEPHIR_PARSER_VERSION=v1.3.1 \
+    LIB_MAXMINDDB_VERSION=1.3.2 \
+    NGINX_VERSION=1.16.0 \
     NGINX_USER=www-data \
     NGINX_CONF_PATH=/etc/nginx \
     NGINX_LOG_PATH=/var/log/nginx \
     NGINX_BUILD=Ubuntu \
     PCRE_VERSION=8.43 \
     PCRE_PATH=/var/lib/pcre \
-    OPENSSL_VERSION="openssl-1.0.2o"
+    OPENSSL_VERSION=openssl-1.0.2o
 
 RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt-get update -y
@@ -89,8 +69,7 @@ RUN git config --global advice.detachedHead false
 COPY ./installers /installers
 
 # build custom extensions and move it to /artifacts folder
-RUN find /installers -type f -regex ".+sh" | xargs chmod +x \
-    && mkdir /artifacts \
+RUN mkdir /artifacts \
     && bash /installers/zephir-parser.sh \
     && bash /installers/zephir.sh \
     && bash /installers/pinba.sh
@@ -102,8 +81,6 @@ RUN bash /installers/openssl.sh
 RUN bash /installers/nginx.sh
 COPY ./configs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
-RUN tree /artifacts
-
 # Application image
 FROM phalconphp/base:ubuntu-16.04
 
@@ -112,12 +89,24 @@ LABEL description="Application image to use for production with PHP and Nginx" \
       vendor=Phalcon \
       name="com.phalconphp.images.base.ubuntu-16.04"
 
-ENV DEBIAN_FRONTEND="noninteractive" \
-    PINBA_SERVER=127.0.0.1 \
+ARG GITHUB_TOKEN
+ARG GITHUB_USER
+ARG PINBA_SERVER
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    FPM_MAX_CHILDREN=32 \
+    FPM_START_SERVERS=6 \
+    FPM_MIN_SPARE_SERVERS=2 \
+    FPM_MAX_SPARE_SERVERS=8 \
+    FPM_PROCESS_IDLE_TIMEOUT=5 \
+    FPM_MAX_REQUEST=1024 \
     PATH=/root/composer/vendor/bin:$PATH \
     COMPOSER_HOME=/root/composer \
     COMPOSER_ALLOW_SUPERUSER=1 \
-    PCRE_PATH=/var/lib/pcre
+    PCRE_PATH=/var/lib/pcre \
+    PINBA_SERVER=${PINBA_SERVER:-} \
+    GITHUB_USER=${GITHUB_USER:-} \
+    GITHUB_TOKEN=${GITHUB_TOKEN:-}
 
 RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php
 
@@ -184,34 +173,35 @@ RUN apt-get update -y \
       software-properties-common \
       swig \
       tmpreaper \
+      tree \
       unzip \
       vim \
       wget
 
+# Create required directories
 RUN mkdir -p \
-    /tmp/debug \
+    /app \
+    /tmp/xdebug-{profile,outpt} \
     /run/php \
     /var/log/php \
-    /tmp/nginx/proxy \
-    /tmp/nginx/cache \
+    /var/lib/nginx/{cache,proxy} \
     $COMPOSER_HOME
 
 COPY --from=build-env /artifacts/ /
 COPY ./configs/etc/php/7.2/ /etc/php/7.2/
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && chmod +x /usr/local/bin/composer \
-    && composer --version --no-ansi
+RUN wget -qO- https://getcomposer.org/installer | \
+       php -- --install-dir=/usr/local/bin --filename=composer \
+    && chmod +x /usr/local/bin/composer
 
-# Disable mods
+# Disable following modules by default
 RUN phpdismod -v 7.2 apcu_bc \
     && phpdismod -v 7.2 apcu \
     && phpdismod -v 7.2 mongodb \
     && phpdismod -v 7.2 pinba \
     && phpdismod -v 7.2 xdebug
 
-ADD ./configs/geoip/GeoLite.tar.gz /var/lib/geoip/
-
+# Nginx with GeoIP setup
 RUN apt-get install -y \
     libjansson-dev \
     libmaxminddb0 \
@@ -220,19 +210,39 @@ RUN apt-get install -y \
     openssl \
     zlib1g-dev
 
+RUN mkdir -p /usr/share/GeoIP \
+    && wget -qO - \
+      http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz \
+      | gunzip -c > /usr/share/GeoIP/maxmind-city.mmdb \
+    && wget -qO - \
+      http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz \
+      | gunzip -c > /usr/share/GeoIP/maxmind-country.mmdb
+
 COPY --from=build-env $PCRE_PATH $PCRE_PATH
 COPY --from=build-env /usr/sbin/nginx /usr/sbin/nginx
-
-COPY ./configs/etc/supervisor/ /etc/supervisor/
 COPY ./configs/etc/nginx/ /etc/nginx/
+
+# Supervisor && logrotate
+COPY ./configs/etc/supervisor/ /etc/supervisor/
 COPY ./configs/etc/logrotate.d/ /etc/logrotate.d/
 
-# start scripts
+# Startup scripts
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./entrypoint.d /entrypoint.d
-RUN chmod +x /entrypoint.sh
 
-# cleanup
+# Final check and preparing entrypoint
+RUN echo \
+    && nginx -v \
+    && composer --version --no-ansi \
+    && zephir --version \
+    && php -r 'echo "Phalcon " . \Phalcon\Version::get() . "\n";' \
+    && echo -n "Zephir Parser " && php \
+      -d extension=`php-config --extension-dir`/zephir_parser.so \
+      --ri "Zephir Parser" | grep Version | awk '{print $3}' \
+    && echo \
+    && chmod +x /entrypoint.sh
+
+# Cleanup
 RUN apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
@@ -240,8 +250,18 @@ RUN apt-get autoremove -y \
        -not -name lock \
        -type f \
        -delete \
-    && find /var/cache -type f -delete \
+    && find /var/cache -type f -not -name lock -delete \
     && find /var/log -type f | while read f; do echo -n '' > ${f}; done
+
+VOLUME /app \
+       /var/log/nginx \
+       /var/log/php \
+       /tmp/xdebug-profile \
+       /tmp/xdebug-outupt \
+       /var/lib/nginx/cache \
+       /var/lib/nginx/proxy
+
+WORKDIR /app
 
 # Local Variables:
 # tab-width: 4
