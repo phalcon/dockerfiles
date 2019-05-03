@@ -119,12 +119,8 @@ RUN apt-get update -y \
     -o Dpkg::Options::="--force-confdef" \
     -o Dpkg::Options::="--force-confold" \
     install -y -f --no-install-recommends \
-      curl \
       dnsutils \
-      git \
       iproute2 \
-      jq \
-      less \
       libc6-dev \
       libgeoip-dev \
       libpcre3-dev \
@@ -171,11 +167,9 @@ RUN apt-get update -y \
       php7.2-tidy \
       php7.2-xml \
       php7.2-zip \
-      re2c \
       software-properties-common \
       swig \
       tmpreaper \
-      tree \
       unzip \
       wget
 
