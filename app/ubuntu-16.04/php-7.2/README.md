@@ -16,6 +16,15 @@ $ docker pull phalconphp/ubuntu-16.04:php-7.2
 $ docker run --name app -p 8081:80 phalconphp/ubuntu-16.04:php-7.2
 ```
 
+Of course to run container in background you'll need to use `-d` option,
+the `--name` and `-p` options are optional:
+
+``` sh
+$ docker run -d phalconphp/ubuntu-16.04:php-7.2
+```
+
+For more see: `docker run --help`.
+
 ### PHP application example
 
 ``` sh
@@ -145,12 +154,18 @@ VOLUME /app/storage/logs
 
 ``` sh
 # build it
-docker build --pull -t phalconphp/example-app:2.0.0 .
+docker build --pull -t acme/example-app:2.0.0 .
+
+# we may want to create alias for version "2.0.0""
+docker tag acme/example-app:2.0.0 acme/example-app:latest
 ```
 
 ``` sh
 # run it
-docker run -p 80:80 phalconphp/example-app:2.0.0
+docker run -d -p 80:80 acme/example-app:2.0.0
+
+# or, if we want just "latest"
+docker run -d -p 80:80 acme/example-app
 ```
 
 ### Xdebug
