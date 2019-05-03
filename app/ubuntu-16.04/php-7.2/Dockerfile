@@ -113,7 +113,7 @@ COPY ./configs/etc/dpkg/dpkg.cfg.d/ /etc/dpkg/dpkg.cfg.d/
 
 RUN LC_ALL=C.UTF-8 apt-add-repository -y ppa:ondrej/php
 
-# Install php 7.1 with libs and other software
+# Install php 7.2 with libs and other software
 RUN apt-get update -y \
     && apt-get \
     -o Dpkg::Options::="--force-confdef" \
