@@ -78,6 +78,81 @@ docker run \
     phalconphp/ubuntu-16.04:php-7.2
 ```
 
+### Using custom per-application image
+
+``` sh
+$ tree
+.
+├── docker
+│   ├── config
+│   │   ├── nginx
+│   │   │   └── sites-enabled
+│   │   │       └── app.conf
+│   │   └── php
+│   │       └── app.ini
+│   └── provision
+│       └── after-build.sh
+├── Dockerfile
+├─── public
+│   └── index.php
+└─── storage
+    └── logs
+```
+
+``` dockerfile
+FROM phalconphp/ubuntu-16.04:php-7.2
+
+# It is not an iportant part of our image. However, it is useful to pass these
+# variables on building stage for future diagnosing a running application
+ARG BUILD_ID=0
+ARG VERSION=0.0.1
+
+ENV BUILD_ID=${BUILD_ID} \
+    APPLICATION_VERSION=${VERSION} \
+    DEBIAN_FRONTEND=noninteractive
+
+LABEL build_id="${BUILD_ID}" \
+      version="${VERSION}" \
+      description="Our application image" \
+      maintainer="John Doe <john@doe.com>" \
+      vendor=Acme \
+      name="com.acme.images.apps.example"
+
+# "/app" is a working directory as it set in parent image. We copy all files
+# inside current working dir. This approach implies that we don't use the
+# current container to install PHP dependencies using composer and build any
+# preject related stuff. Any required project dependencies should be received
+# on host system or via special build images. We're use this image as a real
+# container for the application, not as a build system.
+COPY . /app
+
+# Copy virtual host, custom PHP configuration and disable default site
+RUN rm -f /etc/nginx/sites-enabled/default \
+    && cp -R /app/docker/config/nginx/* /etc/nginx/ \
+    && ln -s /app/docker/config/php/app.ini /etc/php/7.2/cli/conf.d/999-app.ini \
+    && ln -s /app/docker/config/php/app.ini /etc/php/7.2/fpm/conf.d/999-app.ini
+
+# Run custom script after build, e.g cleaning up, custom settings, disabling
+# redundant modules, etc
+RUN bash /app/docker/provision/after-build.sh
+
+# Expose required ports
+EXPOSE 80 443
+
+# Amend parent volumes
+VOLUME /app/storage/logs
+```
+
+``` sh
+# build it
+docker build --pull -t phalconphp/example-app:2.0.0 .
+```
+
+``` sh
+# run it
+docker run -p 80:80 phalconphp/example-app:2.0.0
+```
+
 ### Xdebug
 
 Xdebug is disabled by default. To enable it you'll need pass
