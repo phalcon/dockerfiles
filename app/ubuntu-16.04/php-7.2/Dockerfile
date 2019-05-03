@@ -245,6 +245,7 @@ RUN apt-get autoremove -y \
     && rm -rf /usr/share/doc/* \
     && rm -rf /usr/share/man/* \
     && rm -rf /usr/share/locale/* \
+    && rm -f /var/log/php7.2-fpm.log \
     && find /var/cache/apt/archives /var/lib/apt/lists \
        -not -name lock \
        -type f \
