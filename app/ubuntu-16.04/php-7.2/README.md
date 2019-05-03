@@ -16,6 +16,68 @@ $ docker pull phalconphp/ubuntu-16.04:php-7.2
 $ docker run --name app -p 8081:80 phalconphp/ubuntu-16.04:php-7.2
 ```
 
+### PHP application example
+
+``` sh
+# Host system
+$ tree
+.
+├── docker
+│   └── nginx.conf
+└── public
+    └── index.php
+
+2 directories, 2 files
+```
+
+``` php
+<?php
+// index.php
+phpinfo();
+```
+
+``` nginx
+# nginx.conf
+server {
+    listen 80 default_server;
+
+    server_name example.com;
+
+    index index.php;
+    root /app/public;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass             unix:/run/php/php7.2-fpm.sock;
+        fastcgi_index            index.php;
+
+        include                  fastcgi_params;
+
+        fastcgi_param            SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        fastcgi_intercept_errors on;
+        fastcgi_read_timeout     300;
+        fastcgi_buffer_size      16k;
+        fastcgi_buffers          4 16k;
+    }
+}
+```
+
+``` sh
+# run application
+docker run \
+    -p 8081:80 \
+    -v $(pwd):/app \
+    -v $(pwd)/docker/nginx.conf:/etc/nginx/sites-enabled/default:ro \
+    phalconphp/ubuntu-16.04:php-7.2
+```
+
 ### Xdebug
 
 Xdebug is disabled by default. To enable it you'll need pass
