@@ -31,3 +31,11 @@ Xdebug is disabled by default. To enable it you'll need pass
 If you want to start debug session manually pass variable `XDEBUG_SESSION_START`
 via `GET`, `POST` or `COOKIE`. Note: To use this feature you'll need set
 `XDEBUG_REMOTE_HOST`.
+
+## Build
+
+To build image from the source just use command as follows:
+
+``` sh
+$ build --pull -t phalconphp/ubuntu-16.04:php-7.2 .
+```
