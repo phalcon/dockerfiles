@@ -111,7 +111,7 @@ $ tree
 ``` dockerfile
 FROM phalconphp/ubuntu-16.04:php-7.2
 
-# It is not an iportant part of our image. However, it is useful to pass these
+# It is not an important part of our image. However, it is useful to pass these
 # variables on building stage for future diagnosing a running application
 ARG BUILD_ID=0
 ARG VERSION=0.0.1
@@ -130,7 +130,7 @@ LABEL build_id="${BUILD_ID}" \
 # "/app" is a working directory as it set in parent image. We copy all files
 # inside current working dir. This approach implies that we don't use the
 # current container to install PHP dependencies using composer and build any
-# preject related stuff. Any required project dependencies should be received
+# project related stuff. Any required project dependencies should be obtained
 # on host system or via special build images. We're use this image as a real
 # container for the application, not as a build system.
 COPY . /app
