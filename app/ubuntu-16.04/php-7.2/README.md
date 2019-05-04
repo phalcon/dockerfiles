@@ -135,11 +135,15 @@ LABEL build_id="${BUILD_ID}" \
 # container for the application, not as a build system.
 COPY . /app
 
+# However, composer is here, and you can always use it if this is your strategy
+# to build application image.
+RUN composer --version
+
 # Copy virtual host, custom PHP configuration and disable default site
 RUN rm -f /etc/nginx/sites-enabled/default \
     && cp -R /app/docker/config/nginx/* /etc/nginx/ \
-    && ln -s /app/docker/config/php/app.ini /etc/php/7.2/cli/conf.d/999-app.ini \
-    && ln -s /app/docker/config/php/app.ini /etc/php/7.2/fpm/conf.d/999-app.ini
+    && ln -s /app/docker/config/php/app.ini /etc/php/7.2/cli/conf.d/100-app.ini \
+    && ln -s /app/docker/config/php/app.ini /etc/php/7.2/fpm/conf.d/100-app.ini
 
 # Run custom script after build, e.g cleaning up, custom settings, disabling
 # redundant modules, etc
