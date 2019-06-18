@@ -1,9 +1,15 @@
 FROM phalconphp/bootstrap:ubuntu-14.04
 
 LABEL description="Docker images to build Phalcon on Ubuntu 14.04" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.build.trusty"
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.build.trusty"
+
+# A hack to prevent running udev triggers
+COPY ./provision.d /
+RUN chmod +x /usr/sbin/policy-rc.d \
+    && dpkg-divert --local --rename --add /sbin/initctl \
+    && ln -sf /bin/true /sbin/initctl
 
 RUN apt-get clean -y \
     && apt-get update -y \
