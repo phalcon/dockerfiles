@@ -5,6 +5,8 @@ LABEL description="Docker images to build Phalcon on Ubuntu 14.04" \
     vendor=Phalcon \
     name="com.phalconphp.images.build.trusty-7.3"
 
+ONBUILD RUN echo "Ubuntu 14.04 is no longer supported by ppa:ondrej/php maintainers"
+
 RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt-get clean -y \
     && apt-get update -y \
