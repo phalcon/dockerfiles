@@ -3,7 +3,7 @@ FROM phalconphp/bootstrap:debian-10
 LABEL description="Docker image to build Phalcon on Debian Buster" \
       maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
       vendor=Phalcon \
-      name="com.phalconphp.images.build.debian-buster"
+      name="com.phalconphp.images.build.buster"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yq \
