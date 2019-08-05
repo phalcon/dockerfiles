@@ -1,71 +1,37 @@
-#
-# Bootstrap Dockerfile for Debian 9
-#
-# https://github.com/phalcon/dockerfiles
-#
-
 FROM debian:stretch
 
-LABEL maintainer="Serghei Iakovlev <serghei@phalconphp.com>"
+LABEL description="Bootstrap image to use for production with Debian Stretch" \
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.bootstrap.stretch"
 
-# Set environment variables
 ENV TIMEZONE=UTC \
+    LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
+    TERM=xterm
 
-# Add base tools
-ADD baselayout.tar /
-
-# Init bootstrap (and install ansible)
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && printf "LANGUAGE=\"en_US.UTF-8\"\nLC_ALL=\"en_US.UTF-8\"" >> /etc/environment \
-    && set -x \
-    # Fix root terminal
-    && echo "export TERM=xterm" >> /root/.bashrc \
-    # Enable non-free
+RUN apt-get clean -y \
     && sed -ri 's/(deb.*\/debian stretch main)/\1 contrib non-free /' -- /etc/apt/sources.list \
-    # Setup timezone
-    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo "${TIMEZONE}" | tee /etc/timezone &> /dev/null \
-    && dpkg-reconfigure --frontend=noninteractive tzdata \
-    # System update
-    && /usr/local/bin/apt-upgrade \
-    # Install locales
-    && /usr/local/bin/apt-install locales \
-    # Setup base locale
-    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
-    && dpkg-reconfigure --frontend=noninteractive locales \
-    && update-locale LANG=${LANG} \
-    # Install base stuff
-    && /usr/local/bin/apt-install \
-        software-properties-common \
-        lsb-release \
-        locales \
-        ca-certificates \
+    && apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get install -y locales \
+    && export LANGUAGE=${LANGUAGE} \
+    && export LANG=${LANG} \
+    && export LC_ALL=${LC_ALL} \
+    && locale-gen ${LANG} \
+    && dpkg-reconfigure --frontend noninteractive locales \
+    && apt-get install --no-install-recommends -yq \
         apt-transport-https \
-    # Install ansible
-    && /usr/local/bin/apt-install \
-        python-minimal \
-        python-setuptools \
-        python-pip \
-        python-paramiko \
-        python-jinja2 \
-        python-cffi \
-        python-dev \
-        libffi-dev \
-        libssl-dev \
-        build-essential \
-    && pip install --upgrade pip \
-    && hash -r \
-    && pip install ansible \
-    && chmod 750 /usr/local/bin/ansible* \
-    # Cleanup
-    && apt-get purge -y -f --force-yes \
-        python-dev \
-        build-essential \
-        libssl-dev \
-        libffi-dev \
-    && apt-get autoremove -y -f \
+        apt-utils \
+        ca-certificates \
+        lsb-release \
+        software-properties-common \
+        tzdata \
+    && apt-get autoremove -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* \
+    && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
+    && find /var/cache -type f -delete \
+    && find /var/log -type f | while read f; do echo -n '' > ${f}; done
