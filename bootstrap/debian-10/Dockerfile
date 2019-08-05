@@ -1,9 +1,9 @@
 FROM debian:buster
 
-LABEL description="Bootstrap image to use for production with Debian 10" \
+LABEL description="Bootstrap image to use for production with Debian Buster" \
       maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
       vendor=Phalcon \
-      name="com.phalconphp.images.bootstrap.debian-10"
+      name="com.phalconphp.images.bootstrap.buster"
 
 ENV TIMEZONE=UTC \
     LANGUAGE=en_US.UTF-8 \
