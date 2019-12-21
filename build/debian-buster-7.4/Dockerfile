@@ -7,10 +7,6 @@ LABEL description="Docker image to build Phalcon on Debian Buster" \
 
 # TODO: Move locale stuff to the base image
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
-    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-    && echo "LANG=en_US.UTF-8" > /etc/locale.conf \
-    && locale-gen en_US.UTF-8 \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
     && apt-get update \
     && apt-get install --no-install-recommends -yq \
