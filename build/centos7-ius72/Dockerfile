@@ -1,9 +1,9 @@
 FROM phalconphp/build:centos7
 
 LABEL description="Docker images to build Phalcon on CentOS 7" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.build.centos7-ius72"
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.build.centos7-ius72"
 
 # This image has disabled `centos-sclo-rh-source' repo in the
 # /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
@@ -16,15 +16,10 @@ LABEL description="Docker images to build Phalcon on CentOS 7" \
 #
 # http://vault.centos.org/centos/7/sclo/Source/rh/repodata/repomd.xml:
 # [Errno 14] HTTP Error 404 - Not Found
-#
-# Fuck!
 
-RUN yum upgrade -y \
-    && curl -s https://setup.ius.io | bash \
+RUN curl -s https://setup.ius.io | bash \
     && yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
-    && yum install -y \
-      yum-utils \
-      centos-release-scl \
+    && yum install -y centos-release-scl \
     && yum-config-manager --enable centos-sclo-sclo-testing \
     && yum -y install devtoolset-7-gcc \
     && echo "source /opt/rh/devtoolset-7/enable" | tee -a /etc/bashrc \
