@@ -19,9 +19,7 @@ LABEL description="Docker images to build Phalcon on CentOS 7" \
 
 RUN curl -s https://setup.ius.io | bash \
     && yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
-    && yum install -y \
-      yum-utils \
-      centos-release-scl \
+    && yum install -y centos-release-scl \
     && yum-config-manager --enable centos-sclo-sclo-testing \
     && yum -y install devtoolset-7-gcc \
     && echo "source /opt/rh/devtoolset-7/enable" | tee -a /etc/bashrc \
