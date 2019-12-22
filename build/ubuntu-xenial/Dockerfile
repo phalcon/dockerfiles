@@ -1,41 +1,43 @@
 FROM phalconphp/bootstrap:ubuntu-16.04
 
 LABEL description="Docker images to build Phalcon on Ubuntu 16.04" \
-    maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
-    vendor=Phalcon \
-    name="com.phalconphp.images.build.xenial"
+      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      vendor=Phalcon \
+      name="com.phalconphp.images.build.xenial"
 
-RUN apt clean -y \
+RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
+    && apt clean -y \
     && apt update -y \
+    && echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && echo "LANG=en_US.UTF-8" > /etc/locale.conf \
+    && locale-gen en_US.UTF-8 \
     && apt upgrade -y \
     && apt install --no-install-recommends -yq \
-        alien \
-        binutils-dev \
-        ccache \
-        cdbs \
-        cmake \
-        curl \
-        debhelper \
-        devscripts \
-        doxygen \
-        equivs \
-        fakeroot \
+        build-essential \
         gdb \
-        gdebi-core \
-        git \
         gnupg \
-        libpcre3-dev \
+        wget \
+        git \
+        ccache \
+        devscripts \
+        debhelper \
+        fakeroot \
+        cdbs \
+        equivs \
+        rpm \
+        alien \
+        sudo \
+        cmake \
         libreadline-dev \
         libyaml-dev \
-        re2c \
-        rpm \
-        sudo \
-        wget \
+        binutils-dev \
         zlib1g-dev \
+        doxygen \
     && echo '%adm ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    && wget -qO - https://packagecloud.io/phalcon/stable/gpgkey | apt-key add - \
-    && apt autoremove -y \
-    && apt clean -y \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y \
     && rm -rf /tmp/* /var/tmp/* \
     && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
     && find /var/cache -type f -delete \
