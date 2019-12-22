@@ -1,7 +1,7 @@
 FROM phalconphp/bootstrap:debian-9
 
 LABEL description="Docker image to build Phalcon on Debian Stretch" \
-      maintainer="Serghei Iakovlev <serghei@phalconphp.com>" \
+      maintainer="Serghei Iakovlev <serghei@phalcon.io>" \
       vendor=Phalcon \
       name="com.phalconphp.images.build.stretch"
 
