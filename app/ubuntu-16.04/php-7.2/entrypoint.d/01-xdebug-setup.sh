@@ -20,7 +20,7 @@ if [ "x${XDEBUG_REMOTE_ENABLE}" != "x" ]; then
     # Setting XDEBUG_REMOTE_ENABLE=1 will enable xdebug
     case $XDEBUG_REMOTE_ENABLE in
 	"1"|"on"|"On"|"ON"|"true"|"True"|"TRUE")
-	    phpenmod -v 7.1 xdebug;
+	    phpenmod -v 7.2 xdebug;
 	    ;;
     esac
 fi
