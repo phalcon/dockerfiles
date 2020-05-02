@@ -262,6 +262,7 @@ VOLUME /app \
        /var/lib/nginx/proxy
 
 WORKDIR /app
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Local Variables:
 # tab-width: 4
