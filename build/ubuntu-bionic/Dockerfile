@@ -15,6 +15,7 @@ RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt upgrade -y \
     && apt install --no-install-recommends -yq \
         build-essential \
+        curl \
         gdb \
         gnupg \
         wget \
