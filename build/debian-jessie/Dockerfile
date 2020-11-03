@@ -13,6 +13,7 @@ RUN apt-get clean -y \
     && /usr/local/bin/apt-upgrade \
     && /usr/local/bin/apt-install \
         build-essential \
+        curl \
         gdb \
         gnupg \
         wget \
