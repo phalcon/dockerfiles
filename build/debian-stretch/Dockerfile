@@ -12,6 +12,7 @@ RUN apt-get update \
         gnupg \
         wget \
         git \
+        curl \
         ccache \
         devscripts \
         debhelper \
