@@ -5,7 +5,8 @@ LABEL description="Docker images to build Phalcon on Ubuntu 20.10" \
       vendor=Phalcon \
       name="com.phalconphp.images.build.focal"
 
-RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
+RUN apt update -y && apt install -yq gpg-agent && \
+    LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
     && apt clean -y \
     && apt update -y \
     && echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
