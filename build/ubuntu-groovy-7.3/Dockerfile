@@ -3,7 +3,7 @@ FROM phalconphp/build:ubuntu-groovy
 LABEL description="Docker images to build Phalcon on Ubuntu 20.04" \
       maintainer="Serghei Iakovlev <serghei@phalcon.io>" \
       vendor=Phalcon \
-      name="com.phalconphp.images.build.focal-7.2"
+      name="com.phalconphp.images.build.groovy-7.3"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -yq \

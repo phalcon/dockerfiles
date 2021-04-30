@@ -3,7 +3,7 @@ FROM phalconphp/bootstrap:ubuntu-20.10
 LABEL description="Docker images to build Phalcon on Ubuntu 20.10" \
       maintainer="Serghei Iakovlev <serghei@phalcon.io>" \
       vendor=Phalcon \
-      name="com.phalconphp.images.build.focal"
+      name="com.phalconphp.images.build.groovy"
 
 RUN apt update -y && apt install -yq gpg-agent && \
     LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
