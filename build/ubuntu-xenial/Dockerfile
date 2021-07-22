@@ -20,6 +20,7 @@ RUN LC_ALL=en_US.UTF-8 apt-add-repository -y ppa:ondrej/php \
         wget \
         git \
         ccache \
+        curl \
         devscripts \
         debhelper \
         fakeroot \
